@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+     
+        /* Header Section */
+        header {
+            width: 100%;
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,140L48,133.3C96,127,192,113,288,116.7C384,120,480,140,576,143.3C672,147,768,133,864,126.7C960,120,1056,120,1152,126.7C1248,133,1344,147,1392,153.3L1440,160L1440,200L1392,200C1344,200,1248,200,1152,200C1056,200,960,200,864,200C768,200,672,200,576,200C480,200,384,200,288,200C192,200,96,200,48,200L0,200Z"></path></svg>') repeat-x bottom;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .navbar .container-fluid {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            height: 35px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            margin-right: 15px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff8c00;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .search-bar input {
+            width: 200px;
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #a855f7;
+        }
+
+        .search-bar button {
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            border-left: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #2a2a2a;
+        }
+
+        .btn-login {
+            background-color: #8a4af3;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #a060ff;
+        }
+        /* Main Body Section */
+        main {
+            flex: 1;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+
+
+       
+       /* Phần bên trái trang yêu thích */
+       .main-container .row .col-lg-8 {
+            color: #fff;
+            font-family: Arial, sans-serif;
+            background-color: #2a2a2a;
+        }
+
+        .main-container .row .col-lg-8 h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            margin-top: 30px;
+        }
+        
+
+        .terms-service {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #363535;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+
+        
+        .terms-service h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .terms-service h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .terms-service p {
+            font-size: 1rem;
+            color: #cccccc;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .terms-service a {
+            color: #00b7eb;
+            text-decoration: none;
+        }
+
+        .terms-service a:hover {
+            text-decoration: underline;
+        }
+
+        .terms-service .section {
+            margin-bottom: 30px;
+        }
+
+        .section hr {
+            border: 0;
+            border-top: 4px solid white;
+            margin-bottom: 20px;
+        }
+        
+        .terms-service .uppercase {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+        }
+
+        
+
+        
+
+
+
+
+        /* phần bên phải trang yeeu thích  */
+        /* CSS: Style cho phần truyện phổ biến (sidebar) */
+        
+        .popular-section {
+            background: #1a1a1a; /* Gradient nền từ tím đậm đến tím nhạt */
+            padding: 20px; /* Khoảng cách bên trong */
+            border: 2px solid #424243; /* Viền tím */
+            border-radius: 10px; /* Bo góc */
+            height: 1220px; /* Chiều cao full */
+            overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung dài */
+        }
+
+        /* CSS: Container bên trong popular-section */
+        .popular-section .container {
+            background-color: #2b2929; /* Màu nền tím đậm */
+            padding: 20px; /* Khoảng cách bên trong */
+            border-radius: 10px;
+        }
+
+        /* CSS: Style cho các tab (Weekly, Monthly, All) */
+        .popular-section .tabs {
+            display: flex; /* Sử dụng flexbox để sắp xếp các tab */
+            justify-content: space-around; /* Căn đều các tab */
+            margin-bottom: 20px; /* Khoảng cách dưới */
+            border-bottom: 1px solid #666; /* Đường viền dưới xám */
+        }
+
+        /* CSS: Style cho từng tab */
+        .popular-section .tab {
+            color: #ccc; /* Màu chữ xám nhạt */
+            font-size: 1rem; /* Kích thước chữ */
+            padding: 5px 10px; /* Khoảng cách bên trong */
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            transition: color 0.3s; /* Hiệu ứng chuyển màu mượt */
+        }
+
+        /* CSS: Style cho tab đang active */
+        .popular-section .tab.active {
+            color: #f1c40f; /* Màu vàng khi active */
+            border-bottom: 2px solid #f1c40f; /* Đường viền dưới vàng */
+        }
+
+        /* CSS: Hiệu ứng hover cho tab */
+        .popular-section .tab:hover {
+            color: #f1c40f; /* Màu vàng khi hover */
+        }
+
+        /* CSS: Style cho tiêu đề Popular */
+        .popular-section h2 {
+            display: block; /* Hiển thị dạng block */
+            color: #fff; /* Màu chữ trắng */
+            font-size: 1.5rem; /* Kích thước chữ */
+            margin-bottom: 15px; /* Khoảng cách dưới */
+            text-align: center; /* Căn giữa */
+        }
+
+        /* CSS: Style cho danh sách truyện */
+        .popular-section .comic-list {
+            display: none; /* Ẩn danh sách mặc định */
+            flex-direction: column; /* Sắp xếp theo cột */
+            gap: 15px; /* Khoảng cách giữa các mục */
+        }
+
+        /* CSS: Hiển thị danh sách khi active */
+        .popular-section .comic-list.active {
+            display: flex; /* Hiển thị danh sách khi active */
+        }
+
+        /* CSS: Style cho từng mục truyện */
+        .popular-section .comic-item {
+            display: flex; /* Sử dụng flexbox để sắp xếp */
+            gap: 10px; /* Khoảng cách giữa các phần tử */
+            align-items: flex-start; /* Căn đầu dòng */
+        }
+
+        /* CSS: Style cho số thứ hạng */
+        .popular-section .comic-rank {
+            font-size: 1.2rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng */
+            width: 30px; /* Chiều rộng */
+            height: 30px; /* Chiều cao */
+            line-height: 30px; /* Căn giữa theo chiều dọc */
+            text-align: center; /* Căn giữa theo chiều ngang */
+            flex-shrink: 0; /* Không co lại */
+            background: #1a1a2e; /* Màu nền xanh đậm */
+            border: 2px solid #f1c40f; /* Viền vàng */
+            border-radius: 6px; /* Bo góc */
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.3); /* Hiệu ứng bóng */
+        }
+
+        /* CSS: Style cho hình ảnh truyện */
+        .popular-section .comic-image {
+            width: 60px; /* Chiều rộng */
+            height: 80px; /* Chiều cao */
+            object-fit: cover; /* Cắt hình ảnh để vừa khung */
+            border-radius: 8px; /* Bo góc */
+            flex-shrink: 0; /* Không co lại */
+        }
+
+        /* CSS: Style cho thông tin truyện */
+        .popular-section .comic-info {
+            flex: 1; /* Chiếm toàn bộ không gian còn lại */
+            overflow: hidden; /* Ẩn nội dung tràn ra */
+        }
+
+        /* CSS: Style cho tiêu đề truyện */
+        .popular-section .comic-title {
+            font-size: 0.95rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            color: #fff; /* Màu chữ trắng */
+            text-decoration: none; /* Bỏ gạch chân */
+            display: block; /* Hiển thị dạng block */
+            white-space: nowrap; /* Không xuống dòng */
+            overflow: hidden; /* Ẩn nội dung tràn */
+            text-overflow: ellipsis; /* Thêm dấu ba chấm khi tràn */
+        }
+
+        /* CSS: Hiệu ứng hover cho tiêu đề */
+        .popular-section .comic-title:hover {
+            color: #ff8c00; /* Màu cam khi hover */
+        }
+
+        /* CSS: Style cho nhãn Genres */
+        .popular-section .genre-label {
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng để nổi bật */
+            margin-right: 5px; /* Khoảng cách bên phải */
+        }
+
+        /* CSS: Style cho danh sách genres */
+        .popular-section .comic-meta {
+            font-size: 0.8rem; /* Kích thước chữ nhỏ */
+            color: #999; /* Màu chữ xám */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            white-space: normal; /* Cho phép xuống dòng tự nhiên */
+            word-wrap: break-word; /* Tự động ngắt từ nếu quá dài */
+            max-height: 40px; /* Giới hạn chiều cao để tạo thanh cuộn nếu genres dài */
+            overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá */
+        }
+
+        /* CSS: Tùy chỉnh thanh cuộn cho danh sách genres */
+        .popular-section .comic-meta::-webkit-scrollbar {
+            width: 6px; /* Chiều rộng thanh cuộn */
+        }
+
+        /* CSS: Màu nền cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-track {
+            background: #2c2c2c; /* Màu nền xám đậm */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Màu cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb {
+            background: #7e44c0; /* Màu tím */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Hiệu ứng hover cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb:hover {
+            background: #6a0dad; /* Màu tím đậm hơn khi hover */
+        }
+
+        /* CSS: Style cho phần xếp hạng */
+        .popular-section .comic-rating {
+            display: flex; /* Sử dụng flexbox */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            gap: 5px; /* Khoảng cách giữa các phần tử */
+            font-size: 0.8rem; /* Kích thước chữ */
+            color: #f1c40f; /* Màu vàng */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+        }
+
+        /* CSS: Style cho các ngôi sao xếp hạng */
+        .popular-section .comic-rating .stars i {
+            font-size: 0.75rem; /* Kích thước ngôi sao */
+        }
+
+        /* CSS: Ẩn phần lượt xem (nếu có) */
+        .popular-section .comic-views {
+            display: none; /* Ẩn phần lượt xem */
+        }
+
+        /* Footer Section */
+        footer {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 20px 0;
+            border-top: 2px solid #483d8b;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: #ff8c00;
+        }
+        .footer-logo img {
+            height: 40px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-left">
+                    <a class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="btn btn-login">Login</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Body Section -->
+    <main>
+        <div class="main-container">
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <h1>Terms of Service</h1>
+
+                    <div class="terms-service">
+                
+                        <div class="section">
+                            <h2>Terms of Service</h2>
+                            <hr>
+                            <p>Welcome to Asura ("we," "us," or "our"). These Terms of Service ("Terms") govern your use of our website and services. By accessing or using our platform, you agree to be bound by these Terms. If you do not agree with these Terms, please do not use our platform.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Eligibility</h2>
+                            <p>You must be at least 13 years old to use our platform. By using our services, you represent and warrant that you are 13 years of age or older. If you are under 18, you represent and warrant that you have obtained parental consent to use our platform.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Use of Our Platform</h2>
+                            <h3>2.1. License</h3>
+                            <p>Subject to your compliance with these Terms, we grant you a limited, non-exclusive, non-transferable, and revocable license to access and use our platform for personal, non-commercial purposes. You may not modify, distribute, reproduce, or sell any content from our platform without our prior written permission.</p>
+                            <h3>2.2. User Account</h3>
+                            <p>To access certain features of our platform, you may need to create a user account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate, current, and complete information when creating an account and to promptly update your account information if any changes occur.</p>
+                            <h3>2.3. Prohibited Conduct</h3>
+                            <p>When using our platform, you agree not to:</p>
+                            <p>a) Violate any applicable laws or regulations.</p>
+                            <p>b) Infringe upon the rights of others.</p>
+                            <p>c) Engage in any fraudulent, abusive, or deceptive activities.</p>
+                            <p>d) Attempt to gain unauthorized access to our platform or interfere with its proper functioning.</p>
+                            <p>e) Use our platform to distribute or transmit any malware, viruses, or harmful code.</p>
+                            <p>f) Engage in any activity that may negatively affect the user experience or disrupt our platform's infrastructure.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Content</h2>
+                            <h3>3.1. User-Generated Content</h3>
+                            <p>Our platform may allow you to submit or contribute user-generated content, such as comments or reviews. By submitting content, you grant us a worldwide, royalty-free, non-exclusive, perpetual, and irrevocable license to use, reproduce, modify, adapt, publish, translate, distribute, and display such content in connection with our platform.</p>
+                            <h3>3.2. Intellectual Property</h3>
+                            <p>All intellectual property rights in our platform, including but not limited to trademarks, logos, graphics, and content, are owned by or licensed to us. You agree not to use, copy, or distribute any content from our platform without our prior written permission.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Third-Party Links and Services</h2>
+                            <p>Our platform may contain links to third-party websites or services that are not owned or controlled by us. We are not responsible for the content, privacy practices, or actions of these third parties. You acknowledge and agree that we shall not be liable for any damages or losses arising from your use of any third-party websites or services.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Purchases</h2>
+                            <p>All transactions are final, and refunds are not issued under any circumstances. By using our services, you agree that if your account is suspended or terminated, whether voluntarily or involuntarily, you will not be eligible for any refund or compensation. Furthermore, if content from our platform is shared or published on other websites, it will result in account suspension, and no refund will be granted. By continuing to use our services, you confirm your acceptance of these terms.</p>
+                        </div>
+                
+                        <div class="section">
+                            <h2>Modifications and Termination</h2>
+                            <p>We reserve the right to modify, suspend, or terminate our platform or any part thereof at any time and without prior notice. We may also modify these Terms from time to time. Any changes to the Terms will be effective immediately upon posting the updated Terms on our platform. Your continued use of our platform after the modifications constitutes your acceptance of the revised Terms.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar (Popular Section) -->
+                <div class="col-lg-4">
+                    <!-- HTML: Phần truyện phổ biến (sidebar) -->
+                    <section class="popular-section">
+                        <div class="container">
+                            <!-- HTML: Tiêu đề Popular -->
+                            <h2>Popular</h2>
+                            <!-- HTML: Các tab điều hướng -->
+                            <div class="tabs">
+                                <span class="tab" data-tab="weekly">Weekly</span>
+                                <span class="tab active" data-tab="monthly">Monthly</span>
+                                <span class="tab" data-tab="all">All</span>
+                            </div>
+                            <!-- HTML: Danh sách truyện -->
+                            <!-- HTML: Danh sách Weekly -->
+                            <div class="comic-list" id="weeklyList">
+                                <!-- HTML: Mục truyện thứ nhất -->
+                                <div class="comic-item" data-id="1">
+                                    <span class="comic-rank">1</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/206/conversions/2732f397-thumb-small.webp" class="comic-image" alt="Dragon Slayer's Return">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Dragon Slayer's Return">Dragon Slayer's Return</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Fantasy, Adventure, Dragons
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.6</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ hai -->
+                                <div class="comic-item" data-id="2">
+                                    <span class="comic-rank">2</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" class="comic-image" alt="Shadow Blade Chronicles">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Shadow Blade Chronicles">Shadow Blade Chronicles</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Thriller, Assassin
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ ba -->
+                                <div class="comic-item" data-id="3">
+                                    <span class="comic-rank">3</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" class="comic-image" alt="Mage of the Frozen Realm">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Mage of the Frozen Realm">Mage of the Frozen Realm</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Fantasy, Magic, Adventure, Ice Magic
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.4</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tư -->
+                                <div class="comic-item" data-id="4">
+                                    <span class="comic-rank">4</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" class="comic-image" alt="Beast Tamer's Journey">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Beast Tamer's Journey">Beast Tamer's Journey</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Fantasy, Adventure, Taming, Comedy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ năm -->
+                                <div class="comic-item" data-id="5">
+                                    <span class="comic-rank">5</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" class="comic-image" alt="Crimson Archer's Legacy">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Crimson Archer's Legacy">Crimson Archer's Legacy</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Archery, Drama
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ sáu -->
+                                <div class="comic-item" data-id="6">
+                                    <span class="comic-rank">6</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" class="comic-image" alt="World's Strongest Survivor">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="World's Strongest Survivor">World's Strongest Survivor</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Survival
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ bảy -->
+                                <div class="comic-item" data-id="7">
+                                    <span class="comic-rank">7</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/283983/conversions/01JQJ3VBMPVV7DMYJ5PBFY2N3Y-thumb-small.webp" class="comic-image" alt="Eternally Regressing Knight">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Eternally Regressing Knight">Eternally Regressing Knight</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tám -->
+                                <div class="comic-item" data-id="8">
+                                    <span class="comic-rank">8</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289385/conversions/01JSF8DMSKQKQB56YZ3TW7E5Y8-thumb-small.webp" class="comic-image" alt="The Fox-Eyed Villain of the Demon Lord">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Fox-Eyed Villain of the Demon Lord">The Fox-Eyed Villain of the Demon Lord</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Crazy MC, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ chín -->
+                                <div class="comic-item" data-id="9">
+                                    <span class="comic-rank">9</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/243966/conversions/01J9KCWWJBA7Z7P1XWYXX9MEZC-thumb-small.webp" class="comic-image" alt="The Regressed Mercenary's Machine">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Regressed Mercenary's Machine">The Regressed Mercenary's Machine</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ mười -->
+                                <div class="comic-item" data-id="10">
+                                    <span class="comic-rank">10</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/272496/conversions/01JMHFP0DBPD906JMCZNAKG1RH-thumb-small.webp" class="comic-image" alt="Solo Max-Level Newbie">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Solo Max-Level Newbie">Solo Max-Level Newbie</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Comedy, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- HTML: Danh sách Monthly -->
+                            <div class="comic-list active" id="monthlyList">
+                                <!-- HTML: Mục truyện thứ nhất -->
+                                <div class="comic-item" data-id="1">
+                                    <span class="comic-rank">1</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" class="comic-image" alt="Terminilly Hill Genius Dark Knight">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Terminilly Hill Genius Dark Knight">Terminilly Hill Genius Dark Knight</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Game
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ hai -->
+                                <div class="comic-item" data-id="2">
+                                    <span class="comic-rank">2</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" class="comic-image" alt="Insanely-Talented Player">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Insanely-Talented Player">Insanely-Talented Player</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Genius MC
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ ba -->
+                                <div class="comic-item" data-id="3">
+                                    <span class="comic-rank">3</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" class="comic-image" alt="Nano Machine">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Nano Machine">Nano Machine</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Martial Arts
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tư -->
+                                <div class="comic-item" data-id="4">
+                                    <span class="comic-rank">4</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" class="comic-image" alt="Revenge of the Iron-Blooded Sword Hound">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Revenge of the Iron-Blooded Sword Hound">Revenge of the Iron-Blooded Sword Hound</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Martial Arts
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ năm -->
+                                <div class="comic-item" data-id="5">
+                                    <span class="comic-rank">5</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" class="comic-image" alt="Mr. Devourer, Please Act Like a Final Boss">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Mr. Devourer, Please Act Like a Final Boss">Mr. Devourer, Please Act Like a Final Boss</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Comedy, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ sáu -->
+                                <div class="comic-item" data-id="6">
+                                    <span class="comic-rank">6</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" class="comic-image" alt="World's Strongest Survivor">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="World's Strongest Survivor">World's Strongest Survivor</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Survival
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ bảy -->
+                                <div class="comic-item" data-id="7">
+                                    <span class="comic-rank">7</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/283983/conversions/01JQJ3VBMPVV7DMYJ5PBFY2N3Y-thumb-small.webp" class="comic-image" alt="Eternally Regressing Knight">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Eternally Regressing Knight">Eternally Regressing Knight</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tám -->
+                                <div class="comic-item" data-id="8">
+                                    <span class="comic-rank">8</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289385/conversions/01JSF8DMSKQKQB56YZ3TW7E5Y8-thumb-small.webp" class="comic-image" alt="The Fox-Eyed Villain of the Demon Lord">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Fox-Eyed Villain of the Demon Lord">The Fox-Eyed Villain of the Demon Lord</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Crazy MC, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ chín -->
+                                <div class="comic-item" data-id="9">
+                                    <span class="comic-rank">9</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/243966/conversions/01J9KCWWJBA7Z7P1XWYXX9MEZC-thumb-small.webp" class="comic-image" alt="The Regressed Mercenary's Machine">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Regressed Mercenary's Machine">The Regressed Mercenary's Machine</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ mười -->
+                                <div class="comic-item" data-id="10">
+                                    <span class="comic-rank">10</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/272496/conversions/01JMHFP0DBPD906JMCZNAKG1RH-thumb-small.webp" class="comic-image" alt="Solo Max-Level Newbie">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Solo Max-Level Newbie">Solo Max-Level Newbie</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Comedy, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- HTML: Danh sách All -->
+                            <div class="comic-list" id="allList">
+                                <!-- HTML: Mục truyện thứ nhất -->
+                                <div class="comic-item" data-id="1">
+                                    <span class="comic-rank">1</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/264695/conversions/01JHK6JX06G6QQ3R2CJWFNQM5M-thumb-small.webp" class="comic-image" alt="Legend of the Eternal Sword">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Legend of the Eternal Sword">Legend of the Eternal Sword</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Epic
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ hai -->
+                                <div class="comic-item" data-id="2">
+                                    <span class="comic-rank">2</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" class="comic-image" alt="Moonlit Sorceress">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Moonlit Sorceress">Moonlit Sorceress</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Fantasy, Romance, Magic, Drama
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ ba -->
+                                <div class="comic-item" data-id="3">
+                                    <span class="comic-rank">3</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" class="comic-image" alt="Galactic Bounty Hunter">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Galactic Bounty Hunter">Galactic Bounty Hunter</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Sci-Fi, Adventure, Thriller
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tư -->
+                                <div class="comic-item" data-id="4">
+                                    <span class="comic-rank">4</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" class="comic-image" alt="Ancient Runesmith">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Ancient Runesmith">Ancient Runesmith</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Fantasy, Crafting, Adventure, Mystery
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.6</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ năm -->
+                                <div class="comic-item" data-id="5">
+                                    <span class="comic-rank">5</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" class="comic-image" alt="Demon King's Redemption">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Demon King's Redemption">Demon King's Redemption</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Fantasy, Redemption, Drama
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ sáu -->
+                                <div class="comic-item" data-id="6">
+                                    <span class="comic-rank">6</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" class="comic-image" alt="World's Strongest Survivor">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="World's Strongest Survivor">World's Strongest Survivor</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Survival
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ bảy -->
+                                <div class="comic-item" data-id="7">
+                                    <span class="comic-rank">7</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/283983/conversions/01JQJ3VBMPVV7DMYJ5PBFY2N3Y-thumb-small.webp" class="comic-image" alt="Eternally Regressing Knight">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Eternally Regressing Knight">Eternally Regressing Knight</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ tám -->
+                                <div class="comic-item" data-id="8">
+                                    <span class="comic-rank">8</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/289385/conversions/01JSF8DMSKQKQB56YZ3TW7E5Y8-thumb-small.webp" class="comic-image" alt="The Fox-Eyed Villain of the Demon Lord">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Fox-Eyed Villain of the Demon Lord">The Fox-Eyed Villain of the Demon Lord</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Crazy MC, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ chín -->
+                                <div class="comic-item" data-id="9">
+                                    <span class="comic-rank">9</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/243966/conversions/01J9KCWWJBA7Z7P1XWYXX9MEZC-thumb-small.webp" class="comic-image" alt="The Regressed Mercenary's Machine">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="The Regressed Mercenary's Machine">The Regressed Mercenary's Machine</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Fantasy, Regression
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HTML: Mục truyện thứ mười -->
+                                <div class="comic-item" data-id="10">
+                                    <span class="comic-rank">10</span>
+                                    <img src="https://gg.asuracomic.net/storage/media/272496/conversions/01JMHFP0DBPD906JMCZNAKG1RH-thumb-small.webp" class="comic-image" alt="Solo Max-Level Newbie">
+                                    <div class="comic-info">
+                                        <a href="#" class="comic-title" title="Solo Max-Level Newbie">Solo Max-Level Newbie</a>
+                                        <div class="comic-meta">
+                                            <span class="genre-label">Genres:</span> Action, Adventure, Comedy, Fantasy
+                                        </div>
+                                        <div class="comic-rating">
+                                            <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                            <span>9.9</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Digital Millennium Copyright Act</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-logo">
+            <img src="https://asuracomic.net/images/logo.webp" alt="Footer Logo">
+        </div>
+    </footer>
+
+    <!-- JavaScript for Hot Comics Carousel -->
+    <script>
+        const slidesContainer = document.getElementById("carouselSlides");
+        const dotsContainer = document.getElementById("carouselDots");
+        const slides = slidesContainer.querySelectorAll(".carousel-slide");
+
+        slides.forEach((_, index) => {
+            const dot = document.createElement("span");
+            dot.className = `dot ${index === 0 ? "active" : ""}`;
+            dot.addEventListener("click", () => showSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            currentIndex = index;
+            const slides = document.querySelectorAll(".carousel-slide");
+            const dots = document.querySelectorAll(".dot");
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("active", i === index);
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === index);
+            });
+        }
+
+        showSlide(0);
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        }, 5000);
+    </script>
+
+
+    <!-- JavaScript for Popular Section Tabs -->
+    <script>
+        const tabs = document.querySelectorAll(".popular-section .tab");
+        const comicList = document.getElementById("comicList");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                tabs.forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+
+                const tabType = tab.getAttribute("data-tab");
+                console.log(`Switched to ${tabType} tab`);
+            });
+        });
+    </script>
+
+     <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and lists
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
+
+                // Add active class to the clicked tab
+                tab.classList.add('active');
+
+                // Show the corresponding list
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(`${tabName}List`).classList.add('active');
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

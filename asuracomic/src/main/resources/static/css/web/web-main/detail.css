@@ -1,0 +1,1033 @@
+
+        /* CSS: Thiết lập style chung cho body */
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* CSS: Style cho header */
+        /* Header Section */
+        header {
+            width: 100%;
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,140L48,133.3C96,127,192,113,288,116.7C384,120,480,140,576,143.3C672,147,768,133,864,126.7C960,120,1056,120,1152,126.7C1248,133,1344,147,1392,153.3L1440,160L1440,200L1392,200C1344,200,1248,200,1152,200C1056,200,960,200,864,200C768,200,672,200,576,200C480,200,384,200,288,200C192,200,96,200,48,200L0,200Z"></path></svg>') repeat-x bottom;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .navbar .container-fluid {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            height: 35px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            margin-right: 15px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff8c00;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .search-bar input {
+            width: 200px;
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #a855f7;
+        }
+
+        .search-bar button {
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            border-left: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #2a2a2a;
+        }
+
+        .btn-login {
+            background-color: #8a4af3;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #a060ff;
+        }
+
+        /* CSS: Style cho breadcrumb  đường dẫn*/
+        .breadcrumb-nav {
+            padding: 9px 25px;
+            background-color: #2e2e2e;
+            margin-top: -17px;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .breadcrumb-item a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            color: #ff8c00;
+        }
+
+        .breadcrumb-item.active {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+            color: #ccc;
+            margin: 0 8px;
+        }
+
+        /* CSS: Style cho phần main */
+        main {
+            flex: 1;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .main-container .row .col-lg-8 {
+            background-color: #121212;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #f0f0f0;
+        }
+
+        /* CSS: Style cho phần chi tiết truyện */
+        .comic-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .left-column {
+            width: 220px;
+            flex-shrink: 0;
+        }
+
+        .comic-cover {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .bookmark-btn {
+            width: 100%;
+            background-color: #7e44c0;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .bookmark-btn i {
+            margin-right: 6px;
+        }
+
+        .stats {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .stats span {
+            background-color: #2c2c2c;
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            background-color: #2c2c2c;
+            padding: 8px 10px;
+            border-radius: 6px;
+            justify-content: space-between;
+        }
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 1;
+            max-width: 140px;
+        }
+
+        .rating-stars i {
+            color: #fdd835;
+            font-size: 14px;
+        }
+
+        .rating-value {
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .rate-btn {
+            background-color: #a259ff;
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .right-column {
+            flex: 1;
+            min-width: 300px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1e1e1e;
+        }
+
+        .comic-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .social-icons a {
+            background-color: #2c2c2c;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .social-icons a.facebook { background-color: #3b5998; }
+        .social-icons a.twitter { background-color: #1da1f2; }
+        .social-icons a.whatsapp { background-color: #25d366; }
+        .social-icons a.pinterest { background-color: #bd081c; }
+
+        .synopsis {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .meta-info span {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .genre-tag {
+            background-color: #2e2e2e;
+            padding: 6px 12px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* CSS: Style cho phần danh sách chapter */
+        .chapter-section {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* CSS: Tiêu đề cho phần chapter */
+        .chapter-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* CSS: Style cho các nút điều hướng chapter */
+        .chapter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chapter-buttons button {
+            flex: 1;
+            padding: 15px;
+            background-color: #7e44c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chapter-buttons button:hover {
+            background-color: #6a0dad;
+        }
+
+        /* CSS: Style cho thanh tìm kiếm chapter */
+        .chapter-search-bar {
+            width: 100%;
+            padding: 10px;
+            background-color: #2c2c2c;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* CSS: Container cho danh sách chapter với thanh cuộn */
+        .chapter-list-container {
+            max-height: 300px; /* Giới hạn chiều cao để tạo thanh cuộn */
+            overflow-y: auto; /* Kích hoạt cuộn dọc */
+            padding-right: 10px; /* Khoảng cách để tránh che thanh cuộn */
+        }
+
+        /* CSS: Tùy chỉnh thanh cuộn */
+        .chapter-list-container::-webkit-scrollbar {
+            width: 8px; /* Chiều rộng thanh cuộn */
+        }
+
+        .chapter-list-container::-webkit-scrollbar-track {
+            background: #2c2c2c; /* Màu nền thanh cuộn */
+            border-radius: 10px;
+        }
+
+        .chapter-list-container::-webkit-scrollbar-thumb {
+            background: #7e44c0; /* Màu thanh cuộn */
+            border-radius: 10px;
+        }
+
+        .chapter-list-container::-webkit-scrollbar-thumb:hover {
+            background: #6a0dad; /* Màu khi hover */
+        }
+
+        /* CSS: Style cho danh sách chapter */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* CSS: Style cho từng mục chapter */
+        .chapter-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #2a2a2a;
+            margin-bottom: 5px;
+            border-left: 4px solid #7e44c0;
+            border-radius: 5px;
+        }
+
+        .chapter-list li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .chapter-list li span {
+            color: #888;
+        }
+
+        /* CSS: Style cho phần bình luận */
+        .comments-container {
+        max-width: 840px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-prompt {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+
+        }
+
+        .login-prompt span {
+        font-weight: bold;
+        margin-right: 10px;
+        color: #ffffff;
+        }
+
+        .login-prompt a {
+        color: #4ea3ff;
+        text-decoration: none;
+        }
+
+        .login-prompt a:hover {
+        text-decoration: underline;
+        }
+
+        .comment-input textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        resize: none;
+        border-radius: 6px;
+        border: 1px solid #444;
+        font-size: 14px;
+        background-color: #2b2b2b;
+        color: #e0e0e0;
+        }
+
+        .comment-input textarea:disabled {
+        background-color: #333;
+        color: #999;
+        cursor: not-allowed;
+        }
+
+        .comment-toolbar {
+        margin-top: 10px;
+        text-align: right;
+        }
+
+        .comment-toolbar button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #4ea3ff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        }
+
+        .comment-toolbar button:disabled {
+        background-color: #666;
+        cursor: not-allowed;
+        }
+
+        .comment-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+        }
+
+        .comment-item {
+        padding: 15px;
+        border-bottom: 1px solid #333;
+        }
+
+        .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        gap: 10px;
+        }
+
+        .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+
+        .username {
+        font-weight: 600;
+        color: #ffffff;
+        }
+
+        .tag.asura {
+        background-color: #ff4d4f;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        }
+
+        .timestamp {
+        color: #999;
+        font-size: 12px;
+        margin-left: auto;
+        }
+
+        .comment-text {
+        margin: 6px 0 10px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #dddddd;
+        }
+
+        .comment-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 14px;
+        color: #bbbbbb;
+        cursor: pointer;
+        }
+
+        .comment-actions span.reply {
+        color: #4ea3ff;
+        }
+
+        .comment-actions span.menu {
+        margin-left: auto;
+        }
+
+        .nested-comments {
+        list-style: none;
+        padding-left: 40px;
+        margin-top: 10px;
+        }
+
+        .nested-comments li {
+        padding-top: 10px;
+        border-top: 1px dashed #444;
+        }
+
+         /* Phần phân trang bình luận*/
+         .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination .prev-btn {
+            background-color: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .pagination .next-btn {
+            background-color: #8a4af3;
+            color: #fff;
+        }
+
+        .pagination .next-btn:hover {
+            background-color: #a060ff;
+        }
+
+
+
+        /* CSS: Style cho phần truyện liên quan */
+        .related-comics-section {
+            background-color: #1a1a1a;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #fff;
+        }
+
+        .related-comics-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .related-comics-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .related-comic-item {
+            position: relative;
+            background: transparent;
+            text-align: left;
+        }
+
+        .related-comic-item img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .related-comic-item .status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #1e90ff;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .related-comic-item a {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            margin: 8px 0 4px;
+            line-height: 1.4;
+        }
+
+        .related-comic-item a:hover {
+            color: #1e90ff;
+        }
+
+        .related-comic-item .chapter {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 4px;
+        }
+
+        .related-comic-item .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .related-comic-item .rating i {
+            color: #f1c40f;
+            font-size: 12px;
+        }
+
+        .related-comic-item .rating span {
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1000px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 180px;
+            }
+
+            .related-comic-item a {
+                font-size: 12px;
+            }
+
+            .related-comic-item .chapter,
+            .related-comic-item .rating span {
+                font-size: 10px;
+            }
+        }
+
+        /* Ensure max 5 items per row on larger screens */
+        @media (min-width: 1000px) {
+            .related-comics-list {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 150px;
+            }
+
+            .related-comic-item a {
+                font-size: 14px;
+            }
+
+            .related-comic-item .chapter,
+            .related-comic-item .rating span {
+                font-size: 12px;
+            }
+        }
+
+        /* CSS: Style cho phần truyện phổ biến (sidebar) */
+        .popular-section {
+        background: #2f2e2e; /* Gradient nền từ tím đậm đến tím nhạt */
+        padding: 20px; /* Khoảng cách bên trong */
+        height: 1220px; /* Chiều cao full */
+        overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung dài */
+        }
+
+        /* CSS: Container bên trong popular-section */
+        .popular-section .container {
+            background-color: #2b2929; /* Màu nền tím đậm */
+            padding: 20px; /* Khoảng cách bên trong */
+            border-radius: 10px;
+        }
+
+        /* CSS: Style cho các tab (Weekly, Monthly, All) */
+        .popular-section .tabs {
+            display: flex; /* Sử dụng flexbox để sắp xếp các tab */
+            justify-content: space-around; /* Căn đều các tab */
+            margin-bottom: 20px; /* Khoảng cách dưới */
+            border-bottom: 1px solid #666; /* Đường viền dưới xám */
+        }
+
+        /* CSS: Style cho từng tab */
+        .popular-section .tab {
+            color: #ccc; /* Màu chữ xám nhạt */
+            font-size: 1rem; /* Kích thước chữ */
+            padding: 5px 10px; /* Khoảng cách bên trong */
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            transition: color 0.3s; /* Hiệu ứng chuyển màu mượt */
+        }
+
+        /* CSS: Style cho tab đang active */
+        .popular-section .tab.active {
+            color: #f1c40f; /* Màu vàng khi active */
+            border-bottom: 2px solid #f1c40f; /* Đường viền dưới vàng */
+        }
+
+        /* CSS: Hiệu ứng hover cho tab */
+        .popular-section .tab:hover {
+            color: #f1c40f; /* Màu vàng khi hover */
+        }
+
+        /* CSS: Style cho tiêu đề Popular */
+        .popular-section h2 {
+            display: block; /* Hiển thị dạng block */
+            color: #fff; /* Màu chữ trắng */
+            font-size: 1.5rem; /* Kích thước chữ */
+            margin-bottom: 15px; /* Khoảng cách dưới */
+            text-align: center; /* Căn giữa */
+        }
+
+        /* CSS: Style cho danh sách truyện */
+        .popular-section .comic-list {
+            display: none; /* Ẩn danh sách mặc định */
+            flex-direction: column; /* Sắp xếp theo cột */
+            gap: 15px; /* Khoảng cách giữa các mục */
+        }
+
+        /* CSS: Hiển thị danh sách khi active */
+        .popular-section .comic-list.active {
+            display: flex; /* Hiển thị danh sách khi active */
+        }
+
+        /* CSS: Style cho từng mục truyện */
+        .popular-section .comic-item {
+            display: flex; /* Sử dụng flexbox để sắp xếp */
+            gap: 10px; /* Khoảng cách giữa các phần tử */
+            align-items: flex-start; /* Căn đầu dòng */
+        }
+
+        /* CSS: Style cho số thứ hạng */
+        .popular-section .comic-rank {
+            font-size: 1.2rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng */
+            width: 30px; /* Chiều rộng */
+            height: 30px; /* Chiều cao */
+            line-height: 30px; /* Căn giữa theo chiều dọc */
+            text-align: center; /* Căn giữa theo chiều ngang */
+            flex-shrink: 0; /* Không co lại */
+            background: #1a1a2e; /* Màu nền xanh đậm */
+            border: 2px solid #f1c40f; /* Viền vàng */
+            border-radius: 6px; /* Bo góc */
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.3); /* Hiệu ứng bóng */
+        }
+
+        /* CSS: Style cho hình ảnh truyện */
+        .popular-section .comic-image {
+            width: 60px; /* Chiều rộng */
+            height: 80px; /* Chiều cao */
+            object-fit: cover; /* Cắt hình ảnh để vừa khung */
+            border-radius: 8px; /* Bo góc */
+            flex-shrink: 0; /* Không co lại */
+        }
+
+        /* CSS: Style cho thông tin truyện */
+        .popular-section .comic-info {
+            flex: 1; /* Chiếm toàn bộ không gian còn lại */
+            overflow: hidden; /* Ẩn nội dung tràn ra */
+        }
+
+        /* CSS: Style cho tiêu đề truyện */
+        .popular-section .comic-title {
+            font-size: 0.95rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            color: #fff; /* Màu chữ trắng */
+            text-decoration: none; /* Bỏ gạch chân */
+            display: block; /* Hiển thị dạng block */
+            white-space: nowrap; /* Không xuống dòng */
+            overflow: hidden; /* Ẩn nội dung tràn */
+            text-overflow: ellipsis; /* Thêm dấu ba chấm khi tràn */
+        }
+
+        /* CSS: Hiệu ứng hover cho tiêu đề */
+        .popular-section .comic-title:hover {
+            color: #ff8c00; /* Màu cam khi hover */
+        }
+
+        /* CSS: Style cho nhãn Genres */
+        .popular-section .genre-label {
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng để nổi bật */
+            margin-right: 5px; /* Khoảng cách bên phải */
+        }
+
+        /* CSS: Style cho danh sách genres */
+        .popular-section .comic-meta {
+            font-size: 0.8rem; /* Kích thước chữ nhỏ */
+            color: #999; /* Màu chữ xám */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            white-space: normal; /* Cho phép xuống dòng tự nhiên */
+            word-wrap: break-word; /* Tự động ngắt từ nếu quá dài */
+            max-height: 40px; /* Giới hạn chiều cao để tạo thanh cuộn nếu genres dài */
+            overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá */
+        }
+
+        /* CSS: Tùy chỉnh thanh cuộn cho danh sách genres */
+        .popular-section .comic-meta::-webkit-scrollbar {
+            width: 6px; /* Chiều rộng thanh cuộn */
+        }
+
+        /* CSS: Màu nền cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-track {
+            background: #2c2c2c; /* Màu nền xám đậm */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Màu cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb {
+            background: #7e44c0; /* Màu tím */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Hiệu ứng hover cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb:hover {
+            background: #6a0dad; /* Màu tím đậm hơn khi hover */
+        }
+
+        /* CSS: Style cho phần xếp hạng */
+        .popular-section .comic-rating {
+            display: flex; /* Sử dụng flexbox */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            gap: 5px; /* Khoảng cách giữa các phần tử */
+            font-size: 0.8rem; /* Kích thước chữ */
+            color: #f1c40f; /* Màu vàng */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+        }
+
+        /* CSS: Style cho các ngôi sao xếp hạng */
+        .popular-section .comic-rating .stars i {
+            font-size: 0.75rem; /* Kích thước ngôi sao */
+        }
+
+        /* CSS: Ẩn phần lượt xem (nếu có) */
+        .popular-section .comic-views {
+            display: none; /* Ẩn phần lượt xem */
+        }
+
+        /* Footer Section */
+        footer {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 20px 0;
+            border-top: 2px solid #483d8b;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: #ff8c00;
+        }
+        .footer-logo img {
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* CSS: Style cho footer */
+        footer {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 20px 0;
+            border-top: 2px solid #483d8b;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #ff8c00;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            border-radius: 50%;
+        }

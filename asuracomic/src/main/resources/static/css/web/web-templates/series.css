@@ -1,0 +1,565 @@
+body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Header Section */
+        header {
+            width: 100%;
+        }
+
+        .navbar {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 0 6px;
+            position: relative;
+            overflow: hidden;
+            min-height: 10px;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,140L48,133.3C96,127,192,113,288,116.7C384,120,480,140,576,143.3C672,147,768,133,864,126.7C960,120,1056,120,1152,126.7C1248,133,1344,147,1392,153.3L1440,160L1440,200L1392,200C1344,200,1248,200,1152,200C1056,200,960,200,864,200C768,200,672,200,576,200C480,200,384,200,288,200C192,200,96,200,48,200L0,200Z"></path></svg>') repeat-x bottom;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .navbar .container-fluid {
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand img {
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .navbar-nav {
+            flex-grow: 1;
+            justify-content: flex-start;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff8c00;
+        }
+
+        .search-bar {
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 50%;
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-bar button {
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            border-left: none;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            background-color: #ff4500;
+            color: #fff;
+            border: none;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .btn-login:hover {
+            background-color: #ff6347;
+        }
+        /* Main Body Section */
+        main {
+            flex: 1;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+
+
+       
+       /* Phần bên trái trang yêu thích */
+       .main-container .row .col-lg-8 {
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .bookmarks-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+        }
+
+        .bookmarks-section h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .bookmarks-section hr {
+            border: 0;
+            border-top: 5px solid #ddd6d6;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filters select {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+            padding-right: 30px;
+        }
+
+        .filters select:focus {
+            outline: none;
+            border-color: #666;
+            background-color: #333;
+        }
+
+        .filters .search-btn {
+            background-color: #8a4af3;
+            color: #fff;
+            border: 1px solid #a060ff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 120px;
+        }
+
+        .filters .search-btn:hover {
+            background-color: #a060ff;
+            border-color: #c084fc;
+        }
+
+        .bookmarks-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .bookmark-item {
+            position: relative;
+            background: transparent;
+            text-align: left;
+        }
+
+        .bookmark-item .image-container {
+            position: relative;
+        }
+
+        .bookmark-item img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .bookmark-item .status {
+            position: absolute;
+            top: 23px;
+            left: -5px;
+            background: #1e90ff;
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transform: rotate(-45deg);
+        }
+
+        .bookmark-item .type {
+            position: absolute;
+            bottom: 10px;
+            left: 4px;
+            background: #ff4500;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .bookmark-item a {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #a855f7;
+            text-decoration: none;
+            margin: 4px 0;
+            line-height: 1.4;
+        }
+
+        .bookmark-item a:hover {
+            color: #c084fc;
+        }
+
+        .bookmark-item .chapter {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 4px;
+        }
+
+        .bookmark-item .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .bookmark-item .rating i {
+            color: #f1c40f;
+            font-size: 12px;
+        }
+
+        .bookmark-item .rating span {
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Phần phân trang tĩnh */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination .prev-btn {
+            background-color: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .pagination .next-btn {
+            background-color: #8a4af3;
+            color: #fff;
+        }
+
+        .pagination .next-btn:hover {
+            background-color: #a060ff;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1000px) {
+            .bookmarks-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .bookmark-item img {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bookmarks-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .bookmark-item img {
+                height: 180px;
+            }
+
+            .bookmark-item a {
+                font-size: 12px;
+            }
+
+            .bookmark-item .chapter,
+            .bookmark-item .rating span {
+                font-size: 10px;
+            }
+
+            .bookmark-item .status,
+            .bookmark-item .type {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+
+            .pagination button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+
+
+
+        /* phần bên phải trang yeeu thích  */
+        /* CSS: Style cho phần truyện phổ biến (sidebar) */
+        
+        .popular-section {
+            background: #1a1a1a; /* Gradient nền từ tím đậm đến tím nhạt */
+            padding: 20px; /* Khoảng cách bên trong */
+            border: 2px solid #424243; /* Viền tím */
+            border-radius: 10px; /* Bo góc */
+            height: 1220px; /* Chiều cao full */
+            overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung dài */
+        }
+
+        /* CSS: Container bên trong popular-section */
+        .popular-section .container {
+            background-color: #2b2929; /* Màu nền tím đậm */
+            padding: 20px; /* Khoảng cách bên trong */
+            border-radius: 10px;
+        }
+
+        /* CSS: Style cho các tab (Weekly, Monthly, All) */
+        .popular-section .tabs {
+            display: flex; /* Sử dụng flexbox để sắp xếp các tab */
+            justify-content: space-around; /* Căn đều các tab */
+            margin-bottom: 20px; /* Khoảng cách dưới */
+            border-bottom: 1px solid #666; /* Đường viền dưới xám */
+        }
+
+        /* CSS: Style cho từng tab */
+        .popular-section .tab {
+            color: #ccc; /* Màu chữ xám nhạt */
+            font-size: 1rem; /* Kích thước chữ */
+            padding: 5px 10px; /* Khoảng cách bên trong */
+            cursor: pointer; /* Con trỏ chuột khi hover */
+            transition: color 0.3s; /* Hiệu ứng chuyển màu mượt */
+        }
+
+        /* CSS: Style cho tab đang active */
+        .popular-section .tab.active {
+            color: #f1c40f; /* Màu vàng khi active */
+            border-bottom: 2px solid #f1c40f; /* Đường viền dưới vàng */
+        }
+
+        /* CSS: Hiệu ứng hover cho tab */
+        .popular-section .tab:hover {
+            color: #f1c40f; /* Màu vàng khi hover */
+        }
+
+        /* CSS: Style cho tiêu đề Popular */
+        .popular-section h2 {
+            display: block; /* Hiển thị dạng block */
+            color: #fff; /* Màu chữ trắng */
+            font-size: 1.5rem; /* Kích thước chữ */
+            margin-bottom: 15px; /* Khoảng cách dưới */
+            text-align: center; /* Căn giữa */
+        }
+
+        /* CSS: Style cho danh sách truyện */
+        .popular-section .comic-list {
+            display: none; /* Ẩn danh sách mặc định */
+            flex-direction: column; /* Sắp xếp theo cột */
+            gap: 15px; /* Khoảng cách giữa các mục */
+        }
+
+        /* CSS: Hiển thị danh sách khi active */
+        .popular-section .comic-list.active {
+            display: flex; /* Hiển thị danh sách khi active */
+        }
+
+        /* CSS: Style cho từng mục truyện */
+        .popular-section .comic-item {
+            display: flex; /* Sử dụng flexbox để sắp xếp */
+            gap: 10px; /* Khoảng cách giữa các phần tử */
+            align-items: flex-start; /* Căn đầu dòng */
+        }
+
+        /* CSS: Style cho số thứ hạng */
+        .popular-section .comic-rank {
+            font-size: 1.2rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng */
+            width: 30px; /* Chiều rộng */
+            height: 30px; /* Chiều cao */
+            line-height: 30px; /* Căn giữa theo chiều dọc */
+            text-align: center; /* Căn giữa theo chiều ngang */
+            flex-shrink: 0; /* Không co lại */
+            background: #1a1a2e; /* Màu nền xanh đậm */
+            border: 2px solid #f1c40f; /* Viền vàng */
+            border-radius: 6px; /* Bo góc */
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.3); /* Hiệu ứng bóng */
+        }
+
+        /* CSS: Style cho hình ảnh truyện */
+        .popular-section .comic-image {
+            width: 60px; /* Chiều rộng */
+            height: 80px; /* Chiều cao */
+            object-fit: cover; /* Cắt hình ảnh để vừa khung */
+            border-radius: 8px; /* Bo góc */
+            flex-shrink: 0; /* Không co lại */
+        }
+
+        /* CSS: Style cho thông tin truyện */
+        .popular-section .comic-info {
+            flex: 1; /* Chiếm toàn bộ không gian còn lại */
+            overflow: hidden; /* Ẩn nội dung tràn ra */
+        }
+
+        /* CSS: Style cho tiêu đề truyện */
+        .popular-section .comic-title {
+            font-size: 0.95rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ in đậm */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            color: #fff; /* Màu chữ trắng */
+            text-decoration: none; /* Bỏ gạch chân */
+            display: block; /* Hiển thị dạng block */
+            white-space: nowrap; /* Không xuống dòng */
+            overflow: hidden; /* Ẩn nội dung tràn */
+            text-overflow: ellipsis; /* Thêm dấu ba chấm khi tràn */
+        }
+
+        /* CSS: Hiệu ứng hover cho tiêu đề */
+        .popular-section .comic-title:hover {
+            color: #ff8c00; /* Màu cam khi hover */
+        }
+
+        /* CSS: Style cho nhãn Genres */
+        .popular-section .genre-label {
+            font-weight: bold; /* Chữ in đậm */
+            color: #f1c40f; /* Màu vàng để nổi bật */
+            margin-right: 5px; /* Khoảng cách bên phải */
+        }
+
+        /* CSS: Style cho danh sách genres */
+        .popular-section .comic-meta {
+            font-size: 0.8rem; /* Kích thước chữ nhỏ */
+            color: #999; /* Màu chữ xám */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+            white-space: normal; /* Cho phép xuống dòng tự nhiên */
+            word-wrap: break-word; /* Tự động ngắt từ nếu quá dài */
+            max-height: 40px; /* Giới hạn chiều cao để tạo thanh cuộn nếu genres dài */
+            overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá */
+        }
+
+        /* CSS: Tùy chỉnh thanh cuộn cho danh sách genres */
+        .popular-section .comic-meta::-webkit-scrollbar {
+            width: 6px; /* Chiều rộng thanh cuộn */
+        }
+
+        /* CSS: Màu nền cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-track {
+            background: #2c2c2c; /* Màu nền xám đậm */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Màu cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb {
+            background: #7e44c0; /* Màu tím */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        /* CSS: Hiệu ứng hover cho thanh cuộn */
+        .popular-section .comic-meta::-webkit-scrollbar-thumb:hover {
+            background: #6a0dad; /* Màu tím đậm hơn khi hover */
+        }
+
+        /* CSS: Style cho phần xếp hạng */
+        .popular-section .comic-rating {
+            display: flex; /* Sử dụng flexbox */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            gap: 5px; /* Khoảng cách giữa các phần tử */
+            font-size: 0.8rem; /* Kích thước chữ */
+            color: #f1c40f; /* Màu vàng */
+            margin-bottom: 3px; /* Khoảng cách dưới */
+        }
+
+        /* CSS: Style cho các ngôi sao xếp hạng */
+        .popular-section .comic-rating .stars i {
+            font-size: 0.75rem; /* Kích thước ngôi sao */
+        }
+
+        /* CSS: Ẩn phần lượt xem (nếu có) */
+        .popular-section .comic-views {
+            display: none; /* Ẩn phần lượt xem */
+        }
+
+        /* Footer Section */
+        footer {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 20px 0;
+            border-top: 2px solid #483d8b;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: #ff8c00;
+        }
+        .footer-logo img {
+            height: 40px;
+            border-radius: 50%;
+        }

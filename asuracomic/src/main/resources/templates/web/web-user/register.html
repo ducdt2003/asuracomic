@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Asura Scans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/web/web-user/register.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
+                </ul>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <button class="btn btn-login">Login</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Body Section -->
+    <main>
+        <div class="main-container">
+            <div class="logo">
+                <img src="https://asuracomic.net/images/logo.webp" alt="Asura Scans Logo">
+            </div>
+            <h1><span>Asura</span> Scans</h1>
+            <p>Register your account</p>
+            <form>
+                <div class="input-group">
+                    <i>👤</i>
+                    <input type="text" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <i>✉️</i>
+                    <input type="email" placeholder="Enter your Email">
+                </div>
+                <div class="input-group">
+                    <i>🔒</i>
+                    <input type="password" placeholder="Password">
+                    <span class="toggle-password">👁️</span>
+                </div>
+                <div class="input-group">
+                    <i>🔒</i>
+                    <input type="password" placeholder="Password Confirm">
+                    <span class="toggle-password">👁️</span>
+                </div>
+                <button class="register-btn">REGISTER</button>
+            </form>
+            <div class="login-link">
+                Already have Account? <a href="#">Login</a>
+            </div>
+            <div class="or-divider">Or continue with</div>
+            <button class="google-btn">
+                <img src="https://www.google.com/favicon.ico" alt="Google Icon">
+                CONTINUE WITH GOOGLE
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Digital Millennium Copyright Act</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-logo">
+            <img src="https://asuracomic.net/images/logo.webp" alt="Footer Logo">
+        </div>
+    </footer>
+
+    <!-- JavaScript for Password Toggle -->
+    <script>
+        const togglePassword = document.querySelectorAll('.toggle-password');
+        togglePassword.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const input = toggle.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                toggle.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

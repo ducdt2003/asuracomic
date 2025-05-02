@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Asura Scans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+       /* Header Section */
+       header {
+            width: 100%;
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,140L48,133.3C96,127,192,113,288,116.7C384,120,480,140,576,143.3C672,147,768,133,864,126.7C960,120,1056,120,1152,126.7C1248,133,1344,147,1392,153.3L1440,160L1440,200L1392,200C1344,200,1248,200,1152,200C1056,200,960,200,864,200C768,200,672,200,576,200C480,200,384,200,288,200C192,200,96,200,48,200L0,200Z"></path></svg>') repeat-x bottom;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .navbar .container-fluid {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            height: 35px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            margin-right: 15px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff8c00;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .search-bar input {
+            width: 200px;
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #a855f7;
+        }
+
+        .search-bar button {
+            background-color: #1a1a1a;
+            border: 1px solid #483d8b;
+            border-left: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #2a2a2a;
+        }
+
+        .btn-login {
+            background-color: #8a4af3;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #a060ff;
+        }
+
+        /* Main Body Section */
+        main {
+            flex: 1;
+            padding: 30px 20px;
+            background-color: transparent;
+        }
+
+        .chapter-info {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .chapter-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .chapter-title span {
+            color: #a855f7;
+        }
+
+        .breadcrumb {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            background-color: #2a2a2a;
+            padding: 8px 15px;
+            border: 1px solid #483d8b;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .breadcrumb a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #ff8c00;
+        }
+
+        .breadcrumb span {
+            color: #fff;
+            margin: 0 5px;
+        }
+
+        .chapter-link {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .chapter-link a {
+            color: #a855f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .chapter-link a:hover {
+            color: #c084fc;
+        }
+
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-share a {
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 5px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-share a:hover {
+            transform: scale(1.2);
+        }
+
+        .social-share .facebook {
+            background-color: #3b5998;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Faceok";
+        }
+        .social-share .twitter{
+            background-color: #1155e6;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Faceok";
+        }
+        .social-share .whatsapp{
+            background-color: #13df7c;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Faceok";
+        }
+        .social-share .pinterest{
+            background-color: #e55353;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Faceok";
+        }
+
+        .social-share .geop {
+            background-color: #1da1f2;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Geop";
+        }
+
+        .social-share .share-on {
+            background-color: #333;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "Share on";
+        }
+
+        .social-share .cv {
+            background-color: #e60023;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            content: "CV";
+        }
+
+
+
+
+
+
+        .chapter-description {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .chapter-description a {
+            color: #a855f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .chapter-description a:hover {
+            color: #c084fc;
+        }
+
+        .chapter-nav {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chapter-nav select {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chapter-nav select:focus {
+            border-color: #a855f7;
+        }
+
+        .chapter-nav .quality-btn {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chapter-nav .quality-btn:hover {
+            background-color: #3a3a3a;
+        }
+
+        .chapter-nav .report-btn {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s ease;
+            margin-left: -650px;
+        }
+
+        .chapter-nav .report-btn:hover {
+            background-color: #3a3a3a;
+        }
+
+        .chapter-nav .report-btn i {
+            font-size: 1rem;
+        }
+
+        .chapter-nav .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chapter-nav .nav-buttons button {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chapter-nav .nav-buttons .prev-btn {
+            background-color: #a855f7;
+        }
+
+        .chapter-nav .nav-buttons .prev-btn:hover {
+            background-color: #9333ea;
+        }
+
+        .chapter-nav .nav-buttons .next-btn:hover {
+            background-color: #3a3a3a;
+        }
+
+        /* Chapter Content */
+        .chapter-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .chapter-content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* New End Chapter Navigation */
+        .end-chapter-nav {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .end-chapter-nav select {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .end-chapter-nav select:focus {
+            border-color: #a855f7;
+        }
+
+        .end-chapter-nav .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .end-chapter-nav .nav-buttons button {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #483d8b;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .end-chapter-nav .nav-buttons .prev-btn {
+            background-color: #a855f7;
+        }
+
+        .end-chapter-nav .nav-buttons .prev-btn:hover {
+            background-color: #9333ea;
+        }
+
+        .end-chapter-nav .nav-buttons .next-btn:hover {
+            background-color: #3a3a3a;
+        }
+
+
+
+        /* CSS: Style cho phần bình luận */
+        .comments-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-prompt {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        
+        }
+
+        .login-prompt span {
+        font-weight: bold;
+        margin-right: 10px;
+        color: #ffffff;
+        }
+
+        .login-prompt a {
+        color: #4ea3ff;
+        text-decoration: none;
+        }
+
+        .login-prompt a:hover {
+        text-decoration: underline;
+        }
+
+        .comment-input textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        resize: none;
+        border-radius: 6px;
+        border: 1px solid #444;
+        font-size: 14px;
+        background-color: #2b2b2b;
+        color: #e0e0e0;
+        }
+
+        .comment-input textarea:disabled {
+        background-color: #333;
+        color: #999;
+        cursor: not-allowed;
+        }
+
+        .comment-toolbar {
+        margin-top: 10px;
+        text-align: right;
+        }
+
+        .comment-toolbar button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #4ea3ff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        }
+
+        .comment-toolbar button:disabled {
+        background-color: #666;
+        cursor: not-allowed;
+        }
+
+        .comment-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+        }
+
+        .comment-item {
+        padding: 15px;
+        border-bottom: 1px solid #333;
+        }
+
+        .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        gap: 10px;
+        }
+
+        .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+
+        .username {
+        font-weight: 600;
+        color: #ffffff;
+        }
+
+        .tag.asura {
+        background-color: #ff4d4f;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        }
+
+        .timestamp {
+        color: #999;
+        font-size: 12px;
+        margin-left: auto;
+        }
+
+        .comment-text {
+        margin: 6px 0 10px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #dddddd;
+        }
+
+        .comment-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 14px;
+        color: #bbbbbb;
+        cursor: pointer;
+        }
+
+        .comment-actions span.reply {
+        color: #4ea3ff;
+        }
+
+        .comment-actions span.menu {
+        margin-left: auto;
+        }
+
+        .nested-comments {
+        list-style: none;
+        padding-left: 40px;
+        margin-top: 10px;
+        }
+
+        .nested-comments li {
+        padding-top: 10px;
+        border-top: 1px dashed #444;
+        }
+
+         /* Phần phân trang bình luận*/
+         .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination .prev-btn {
+            background-color: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .pagination .next-btn {
+            background-color: #8a4af3;
+            color: #fff;
+        }
+
+        .pagination .next-btn:hover {
+            background-color: #a060ff;
+        }
+
+
+         /* CSS: Style cho phần truyện liên quan */
+         .related-comics-section {
+            background-color: #1a1a1a;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #fff;
+        }
+
+        .related-comics-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .related-comics-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .related-comic-item {
+            position: relative;
+            background: transparent;
+            text-align: left;
+        }
+
+        .related-comic-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .related-comic-item .status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #1e90ff;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .related-comic-item a {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            margin: 8px 0 4px;
+            line-height: 1.4;
+        }
+
+        .related-comic-item a:hover {
+            color: #1e90ff;
+        }
+
+        .related-comic-item .chapter {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 4px;
+        }
+
+        .related-comic-item .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .related-comic-item .rating i {
+            color: #f1c40f;
+            font-size: 12px;
+        }
+
+        .related-comic-item .rating span {
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1000px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 180px;
+            }
+
+            .related-comic-item a {
+                font-size: 12px;
+            }
+
+            .related-comic-item .chapter,
+            .related-comic-item .rating span {
+                font-size: 10px;
+            }
+        }
+
+        /* Ensure max 5 items per row on larger screens */
+        @media (min-width: 1000px) {
+            .related-comics-list {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-comics-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .related-comic-item img {
+                height: 150px;
+            }
+
+            .related-comic-item a {
+                font-size: 14px;
+            }
+
+            .related-comic-item .chapter,
+            .related-comic-item .rating span {
+                font-size: 12px;
+            }
+        }
+
+        
+
+        /* Footer Section */
+        footer {
+            background: linear-gradient(to bottom, #4b0082, #2c1e3d);
+            padding: 25px 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-links {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ff8c00;
+        }
+
+        .footer-logo img {
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-logo img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-left">
+                    <a class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="btn btn-login">Login</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Body Section -->
+    <main>
+        <div class="chapter-info">
+            <h1 class="chapter-title"><span>Nano Machine</span> Chapter 258 - 87 Dragon Turtle (5)</h1>
+            <div class="breadcrumb">
+                <a href="#">Asura Scans</a> <span>></span>
+                <a href="#">Nano Machine</a> <span>></span>
+                <a href="#">Nano Machine Chapter 258 - 87 Dragon Turtle (5)</a>
+            </div>
+            <div class="chapter-link">
+                <a href="#">All chapters are in Nano Machine</a>
+            </div>
+            <div class="social-share">
+                <a href="#" class="facebook" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="twitter" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="whatsapp" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="pinterest" title="Share on Pinterest"><i class="fab fa-pinterest-p"></i></a>
+            </div>
+        </div>
+        
+
+        <div class="chapter-nav">
+            <select>
+                <option>Chapter 258 - 87 Dragon Turtle (5)</option>
+                <option>Chapter 257 - 86 Dragon Turtle (4)</option>
+                <option>Chapter 256 - 85 Dragon Turtle (3)</option>
+            </select>
+            <button class="report-btn"><i class="fas fa-flag"></i> Report</button>
+            <div class="nav-buttons">
+                <button class="prev-btn">Prev</button>
+                <button class="next-btn">Next</button>
+            </div>
+        </div>
+
+        <div class="chapter-content">
+            <img src="https://gg.asuracomic.net/storage/media/285384/conversions/01-optimized.webp" alt="Nano Machine Chapter 258 Page 1">
+            <img src="https://gg.asuracomic.net/storage/media/285395/conversions/12-optimized.webp" alt="Nano Machine Chapter 258 Page 2">
+        </div>
+
+        <!-- New End Chapter Navigation -->
+        <div class="end-chapter-nav">
+            <select>
+                <option>Chapter 258 - 87 Dragon Turtle (5)</option>
+                <option>Chapter 257 - 86 Dragon Turtle (4)</option>
+                <option>Chapter 256 - 85 Dragon Turtle (3)</option>
+            </select>
+            <div class="nav-buttons">
+                <button class="prev-btn">Prev</button>
+                <button class="next-btn">Next</button>
+            </div>
+        </div>
+
+
+        <!-- truyện liên quan -->
+        <div class="related-comics-section">
+            <h2>Related Series</h2>
+            <hr>
+            <div class="related-comics-list">
+                <div class="related-comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" alt="Solo Max-Level Newbie">
+                    <span class="status">Ongoing</span>
+                    <a href="#">Solo Max-Level Newbie</a>
+                    <div class="chapter">Chapter 204</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>9.9</span>
+                    </div>
+                </div>
+                <div class="related-comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Wandering Warrior of Wudang">
+                    <span class="status">Ongoing</span>
+                    <a href="#">Wandering Warrior of Wudang</a>
+                    <div class="chapter">Chapter 148</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>9.8</span>
+                    </div>
+                </div>
+                <div class="related-comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Regressor Instruction Manual">
+                    <span class="status">Ongoing</span>
+                    <a href="#">Regressor Instruction Manual</a>
+                    <div class="chapter">Chapter 134</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>10</span>
+                    </div>
+                </div>
+                <div class="related-comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="I Am the Fated Villain">
+                    <span class="status">Ongoing</span>
+                    <a href="#">I Am the Fated Villain</a>
+                    <div class="chapter">Chapter 246</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>9.9</span>
+                    </div>
+                </div>
+                <div class="related-comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="The Hero Returns">
+                    <span class="status">Ongoing</span>
+                    <a href="#">The Hero Returns</a>
+                    <div class="chapter">Chapter 122</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>9.9</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- HTML: Phần bình luận -->
+        <div class="comments-container">
+            <div class="login-prompt">
+                <span>Comments</span>
+                <span>Log in to join the conversation <a href="#">Log in</a></span>
+            </div>
+        
+            <div class="comment-input">
+                <textarea placeholder="Join the discussion…" disabled></textarea>
+                <div class="comment-toolbar">
+                    <button disabled>Comment</button>
+                </div>
+            </div>
+        
+            <ul class="comment-list">
+                <li class="comment-item">
+                    <div class="user-info">
+                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                        <span class="username">perkys</span>
+                        <span class="tag asura">ASURA+</span>
+                        <span class="timestamp">9 days ago</span>
+                    </div>
+                    <div class="comment-text">Def read this! The Arm Collector</div>
+                    <div class="comment-actions">
+                        <span>👍 19</span>
+                        <span>💬 0</span>
+                        <span class="reply">Reply</span>
+                        <span class="menu">…</span>
+                    </div>
+                </li>
+        
+                <li class="comment-item">
+                    <div class="user-info">
+                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                        <span class="username">Dankreader</span>
+                        <span class="tag asura">ASURA+</span>
+                        <span class="timestamp">9 days ago</span>
+                    </div>
+                    <div class="comment-text">Currently the best one on this site. 10/10</div>
+                    <div class="comment-actions">
+                        <span>👍 14</span>
+                        <span>💬 0</span>
+                        <span class="reply">Reply</span>
+                        <span class="menu">…</span>
+                    </div>
+        
+                    <ul class="nested-comments">
+                        <li>
+                            <div class="user-info">
+                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                                <span class="username">Sweetos</span>
+                                <span class="timestamp">7 days ago</span>
+                            </div>
+                            <div class="comment-text">Lies</div>
+                            <div class="comment-actions">
+                                <span>👍 5</span>
+                                <span>💬 11</span>
+                                <span class="menu">…</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="user-info">
+                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                                <span class="username">Devil Da Vinci</span>
+                                <span class="timestamp">7 days ago</span>
+                            </div>
+                            <div class="comment-text">
+                                How does it lie? It may not be the best, but surely one of the best. It's also my first manhwa tbh
+                            </div>
+                            <div class="comment-actions">
+                                <span>👍 4</span>
+                                <span>💬 0</span>
+                                <span class="menu">…</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="user-info">
+                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                                <span class="username">Vanithas</span>
+                                <span class="timestamp">5 days ago</span>
+                            </div>
+                            <div class="comment-text">
+                                One of the top 5 for sure yea, even top 3 for me!<br>
+                                I enjoyed this!
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="pagination">
+                <button class="prev-btn" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <button class="next-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Digital Millennium Copyright Act</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="footer-logo">
+            <img src="https://asuracomic.net/images/logo.webp" alt="Footer Logo">
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
