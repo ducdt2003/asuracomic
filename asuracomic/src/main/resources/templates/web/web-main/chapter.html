@@ -856,7 +856,7 @@
                         <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
-                        
+
                     </ul>
                 </div>
                 <div class="navbar-right">
@@ -1003,116 +1003,11 @@
 
 
         <!-- HTML: Phần bình luận -->
-        <div class="comments-container">
-            <div class="login-prompt">
-                <span>Comments</span>
-                <span>Log in to join the conversation <a href="#">Log in</a></span>
-            </div>
-        
-            <div class="comment-input">
-                <textarea placeholder="Join the discussion…" disabled></textarea>
-                <div class="comment-toolbar">
-                    <button disabled>Comment</button>
-                </div>
-            </div>
-        
-            <ul class="comment-list">
-                <li class="comment-item">
-                    <div class="user-info">
-                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                        <span class="username">perkys</span>
-                        <span class="tag asura">ASURA+</span>
-                        <span class="timestamp">9 days ago</span>
-                    </div>
-                    <div class="comment-text">Def read this! The Arm Collector</div>
-                    <div class="comment-actions">
-                        <span>👍 19</span>
-                        <span>💬 0</span>
-                        <span class="reply">Reply</span>
-                        <span class="menu">…</span>
-                    </div>
-                </li>
-        
-                <li class="comment-item">
-                    <div class="user-info">
-                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                        <span class="username">Dankreader</span>
-                        <span class="tag asura">ASURA+</span>
-                        <span class="timestamp">9 days ago</span>
-                    </div>
-                    <div class="comment-text">Currently the best one on this site. 10/10</div>
-                    <div class="comment-actions">
-                        <span>👍 14</span>
-                        <span>💬 0</span>
-                        <span class="reply">Reply</span>
-                        <span class="menu">…</span>
-                    </div>
-        
-                    <ul class="nested-comments">
-                        <li>
-                            <div class="user-info">
-                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                                <span class="username">Sweetos</span>
-                                <span class="timestamp">7 days ago</span>
-                            </div>
-                            <div class="comment-text">Lies</div>
-                            <div class="comment-actions">
-                                <span>👍 5</span>
-                                <span>💬 11</span>
-                                <span class="menu">…</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="user-info">
-                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                                <span class="username">Devil Da Vinci</span>
-                                <span class="timestamp">7 days ago</span>
-                            </div>
-                            <div class="comment-text">
-                                How does it lie? It may not be the best, but surely one of the best. It's also my first manhwa tbh
-                            </div>
-                            <div class="comment-actions">
-                                <span>👍 4</span>
-                                <span>💬 0</span>
-                                <span class="menu">…</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="user-info">
-                                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                                <span class="username">Vanithas</span>
-                                <span class="timestamp">5 days ago</span>
-                            </div>
-                            <div class="comment-text">
-                                One of the top 5 for sure yea, even top 3 for me!<br>
-                                I enjoyed this!
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="pagination">
-                <button class="prev-btn" disabled>
-                    <i class="fas fa-chevron-left"></i> Previous
-                </button>
-                <button class="next-btn">
-                    Next <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
+        <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>
     </main>
 
     <!-- Footer Section -->
-    <footer>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Digital Millennium Copyright Act</a>
-            <a href="#">Terms of Service</a>
-        </div>
-        <div class="footer-logo">
-            <img src="https://asuracomic.net/images/logo.webp" alt="Footer Logo">
-        </div>
-    </footer>
+    <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

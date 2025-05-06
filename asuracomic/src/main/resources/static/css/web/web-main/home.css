@@ -146,7 +146,6 @@
             color: white;
             padding: 2rem;
             border-radius: 10px;
-            border: 2px solid #949090;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -232,7 +231,7 @@
             overflow: hidden;
             background-color: #343435;
             border-radius: 10px;
-            border: 2px solid #949090;
+
         }
         .popular-today h2 {
             color: #fff;
@@ -304,9 +303,9 @@
         .latest-updates {
             background-color: #343435;
             padding: 20px;
-            border: 2px solid #483d8b;
+
             border-radius: 10px;
-            border: 2px solid #949090;
+
             overflow: hidden;
         }
         .latest-updates h2 {
@@ -449,7 +448,6 @@
             background: #1a1a1a; /* Gradient nền từ tím đậm đến tím nhạt */
             padding: 20px; /* Khoảng cách bên trong */
             border-radius: 10px;
-            border: 2px solid #949090;
             height: 1220px; /* Chiều cao full */
             overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung dài */
         }
@@ -528,8 +526,7 @@
             text-align: center; /* Căn giữa theo chiều ngang */
             flex-shrink: 0; /* Không co lại */
             background: #1a1a2e; /* Màu nền xanh đậm */
-            border: 2px solid #f1c40f; /* Viền vàng */
-            border-radius: 6px; /* Bo góc */
+            border-radius: 10px; /* Bo góc */
             box-shadow: 0 0 5px rgba(241, 196, 15, 0.3); /* Hiệu ứng bóng */
         }
 

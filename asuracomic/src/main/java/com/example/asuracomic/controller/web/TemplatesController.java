@@ -21,4 +21,9 @@ public class TemplatesController {
     public String report(){
         return "web/web-templates/report";
     }
+
+    @GetMapping("/author")
+    public String author(){
+        return "web/web-templates/author-template";
+    }
 }

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author/Artist Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .profile-hero {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+        .profile-hero img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .profile-hero img:hover {
+            transform: scale(1.05);
+        }
+        .profile-info h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0 0 10px;
+        }
+        .profile-info p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            opacity: 0.9;
+        }
+        .comics-list {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .comics-list h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        .comic-item {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+        .comic-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .comic-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .comic-item .badges {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .comic-item .badge {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            text-transform: uppercase;
+        }
+        .badge-status {
+            background-color: #1e90ff;
+        }
+        .badge-type {
+            background-color: #ff4500;
+        }
+        .comic-item .info {
+            padding: 10px;
+        }
+        .comic-item a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+        .comic-item a:hover {
+            color: #4f46e5;
+        }
+        .comic-item .chapter {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .comic-item .rating {
+            font-size: 12px;
+            color: #666;
+        }
+        .comic-item .rating .stars {
+            color: #ffd700;
+            margin-right: 5px;
+        }
+        .pagination {
+            margin-top: 20px;
+            justify-content: center;
+        }
+        @media (max-width: 768px) {
+            .profile-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .profile-hero img {
+                width: 80px;
+                height: 80px;
+            }
+            .profile-info h1 {
+                font-size: 24px;
+            }
+            .profile-info p {
+                font-size: 14px;
+            }
+            .comic-item img {
+                height: 220px;
+            }
+            .comic-item a {
+                font-size: 12px;
+            }
+            .comic-item .chapter, .comic-item .rating {
+                font-size: 10px;
+            }
+            .comic-item .badge {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Phần hero tác giả/họa sĩ -->
+    <div class="profile-hero">
+        <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Author/Artist Avatar">
+        <div class="profile-info">
+            <h1>Author One</h1>
+            <p>A renowned author known for crafting immersive fantasy and adventure stories that captivate readers worldwide.</p>
+        </div>
+    </div>
+    <!-- Phần danh sách truyện -->
+    <div class="comics-list">
+        <h2>All Comics by Author One</h2>
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 1">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-one">The Fox-Eyed Villain of the Demon Academy...</a>
+                        <div class="chapter">Chapter 22</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.7
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 2">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-two">Absolute Regression</a>
+                        <div class="chapter">Chapter 45</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.9
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 3">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-three">Revenge of the Iron-Blooded Sword Hound</a>
+                        <div class="chapter">Chapter 45</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.9
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 4">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-four">Absolute Regression</a>
+                        <div class="chapter">Chapter 45</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.9
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 5">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-five">The Regressed Mercenary's Resolution</a>
+                        <div class="chapter">Chapter 45</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.9
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 6">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-six">Comic Six</a>
+                        <div class="chapter">Chapter 30</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.5
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 7">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-seven">Comic Seven</a>
+                        <div class="chapter">Chapter 25</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.6
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 8">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-eight">Comic Eight</a>
+                        <div class="chapter">Chapter 40</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.8
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 9">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-nine">Comic Nine</a>
+                        <div class="chapter">Chapter 35</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.7
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 10">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-ten">Comic Ten</a>
+                        <div class="chapter">Chapter 20</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.4
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 11">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-eleven">Comic Eleven</a>
+                        <div class="chapter">Chapter 15</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.3
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="comic-item">
+                    <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Comic 12">
+                    <div class="badges">
+                        <span class="badge badge-status">ONGOING</span>
+                        <span class="badge badge-type">MANHWA</span>
+                    </div>
+                    <div class="info">
+                        <a href="/comic/comic-twelve">Comic Twelve</a>
+                        <div class="chapter">Chapter 10</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span> 9.2
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Phân trang -->
+        <nav aria-label="Comic pagination">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

@@ -7,10 +7,7 @@ body {
             flex-direction: column;
             min-height: 100vh;
         }
-        /* Header Section */
-        header {
-            width: 100%;
-        }
+
 
         .navbar {
             background: linear-gradient(to bottom, #4b0082, #2c1e3d);

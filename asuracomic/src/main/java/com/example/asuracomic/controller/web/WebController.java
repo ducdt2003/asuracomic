@@ -20,7 +20,7 @@ public class WebController {
     }
 
     // trang chapter
-    @GetMapping("/series/{comicId}/chapter/{chapterId}")
+    @GetMapping("/comic/{comicId}/chapter/{chapterId}")
     public String chapter() {
         return "web/web-main/chapter";
     }
