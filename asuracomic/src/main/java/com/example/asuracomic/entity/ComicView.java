@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ComicView {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

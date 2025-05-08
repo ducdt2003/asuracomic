@@ -9,46 +9,104 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/web/web-coin/membership.css">
-
 </head>
 <body>
-<!-- fragments cho header -->
+<!-- Header Fragment -->
 <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
-    <!-- Main Body Section -->
-    <main>
-        <div class="main-container">
-            <!-- Hero Section -->
-            <div class="hero-section">
-                <h1 class="hero-title">Unleash Epic Adventures!</h1>
-                <p class="hero-subtitle">Choose the plan that works for you</p>
-                <a href="#" class="membership-btn">MEMBERSHIP</a>
-            </div>
+<!-- Main Body Section -->
+<main>
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Unleash Epic Adventures!</h1>
+            <p class="hero-subtitle">Choose the plan that works for you</p>
+            <a href="#" class="membership-btn">MEMBERSHIP</a>
+        </div>
 
-            <!-- Membership Package -->
-            <div class="membership-package">
-                <div class="membership-title">
-                    <i class="fas fa-lock"></i> Adblock Membership
+        <!-- Membership Packages -->
+        <div class="membership-packages">
+            <div class="row">
+                <!-- Monthly VIP Package -->
+                <div class="col-md-4">
+                    <div class="membership-package">
+                        <div class="membership-title">
+                            <i class="fas fa-lock"></i> Monthly VIP
+                        </div>
+                        <div class="membership-description">
+                            Enjoy an ad-free reading experience for 30 days
+                        </div>
+                        <ul class="membership-benefits">
+                            <li><i class="fas fa-check-circle"></i> Ad-free reading experience</li>
+                            <li><i class="fas fa-check-circle"></i> Faster page loading</li>
+                            <li><i class="fas fa-check-circle"></i> Support the platform</li>
+                            <li><i class="fas fa-check-circle"></i> Enhanced user experience</li>
+                        </ul>
+                        <div class="membership-price">822 Coins (30 days)</div>
+                        <div class="membership-balance">Your balance: 0 Coins</div>
+                        <button class="purchase-btn" data-package="monthly-vip">Purchase</button>
+                    </div>
                 </div>
-                <div class="membership-description">
-                    Remove all ads from the site and enjoy an uninterrupted reading experience
+
+                <!-- Quarterly VIP Package -->
+                <div class="col-md-4">
+                    <div class="membership-package">
+                        <div class="membership-title">
+                            <i class="fas fa-lock"></i> Quarterly VIP
+                        </div>
+                        <div class="membership-description">
+                            Enjoy an ad-free reading experience for 90 days
+                        </div>
+                        <ul class="membership-benefits">
+                            <li><i class="fas fa-check-circle"></i> Ad-free reading experience</li>
+                            <li><i class="fas fa-check-circle"></i> Faster page loading</li>
+                            <li><i class="fas fa-check-circle"></i> Support the platform</li>
+                            <li><i class="fas fa-check-circle"></i> Enhanced user experience</li>
+                        </ul>
+                        <div class="membership-price">801 Coins (90 days)</div>
+                        <div class="membership-balance">Your balance: 0 Coins</div>
+                        <button class="purchase-btn" data-package="quarterly-vip">Purchase</button>
+                    </div>
                 </div>
-                <ul class="membership-benefits">
-                    <li><i class="fas fa-check-circle"></i> Ad-free reading experience</li>
-                    <li><i class="fas fa-check-circle"></i> Faster page loading</li>
-                    <li><i class="fas fa-check-circle"></i> Support the platform</li>
-                    <li><i class="fas fa-check-circle"></i> Enhanced user experience</li>
-                </ul>
-                <div class="membership-price">500 Coins/year</div>
-                <div class="membership-balance">Your balance: 0 Coins</div>
-                <button class="purchase-btn">Purchase</button>
+
+                <!-- Yearly VIP Package -->
+                <div class="col-md-4">
+                    <div class="membership-package">
+                        <div class="membership-title">
+                            <i class="fas fa-lock"></i> Yearly VIP
+                        </div>
+                        <div class="membership-description">
+                            Enjoy an ad-free reading experience for 365 days
+                        </div>
+                        <ul class="membership-benefits">
+                            <li><i class="fas fa-check-circle"></i> Ad-free reading experience</li>
+                            <li><i class="fas fa-check-circle"></i> Faster page loading</li>
+                            <li><i class="fas fa-check-circle"></i> Support the platform</li>
+                            <li><i class="fas fa-check-circle"></i> Enhanced user experience</li>
+                        </ul>
+                        <div class="membership-price">327 Coins (365 days)</div>
+                        <div class="membership-balance">Your balance: 0 Coins</div>
+                        <button class="purchase-btn" data-package="yearly-vip">Purchase</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-<!-- Footer Section -->
+<!-- Footer Fragment -->
 <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.purchase-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const packageSlug = button.getAttribute('data-package');
+            alert(`Purchasing ${packageSlug} package! Please ensure you have enough coins.`);
+            // Thêm logic mua hàng (VD: gọi API) tại đây
+        });
+    });
+</script>
 </body>
 </html>

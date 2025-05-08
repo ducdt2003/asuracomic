@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

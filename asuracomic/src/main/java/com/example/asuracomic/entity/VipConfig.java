@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class VipConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +25,6 @@ public class VipConfig {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal coinPrice; // Giá coin để mua gói VIP, hiển thị tùy chọn thanh toán
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal moneyPrice; // Giá tiền thật để mua gói VIP, hiển thị tùy chọn thanh toán
 
     @Column(nullable = false)
     private Integer durationDays; // Số ngày hiệu lực (VD: 30, 90), dùng để tính vip_expiry_date trong bảng users

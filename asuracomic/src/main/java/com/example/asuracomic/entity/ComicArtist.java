@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ComicArtist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
