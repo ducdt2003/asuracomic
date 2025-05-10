@@ -1,6 +1,9 @@
 package com.example.asuracomic.controller.web;
 
+import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.service.ComicService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +14,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/asura")
+@RequiredArgsConstructor
 public class WebController {
+    private final ComicService comicService;
     // trang chủ
     @GetMapping
     public String homeLogin(Model model) {
+        List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
+        model.addAttribute("hotComics", hotComics);
         return "web/web-main/home";
     }
 

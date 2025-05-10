@@ -23,104 +23,35 @@
                 <!-- Hot Comics Carousel -->
                 <div class="carousel-container">
                     <div id="carouselSlides">
-                        <div class="carousel-slide" data-id="1">
-                            <div class="comic-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span>
-                                    <span>9.7</span>
+                        <th:block th:each="comic : ${hotComics}">
+                            <div class="carousel-slide" th:attr="data-id=${comic.id}">
+                                <div class="comic-info">
+                                    <div class="rating">
+                                        <span class="star">⭐</span>
+                                        <span th:text="${comic.averageRating}"></span>
+                                    </div>
+                                    <h1 th:text="${comic.title}">Comic Title</h1>
+                                    <h3 th:text="${comic.type}">MANHWA</h3>
+                                    <p th:text="${comic.genres}">Genres</p>
+                                    <h4>SUMMARY</h4>
+                                    <p th:text="${comic.summary}">Summary here...</p>
+                                    <p><strong>Status:</strong> <span th:text="${comic.status}"></span></p>
+                                    <p><strong>Author:</strong> <span th:text="${comic.author}">Author Name</span></p>
                                 </div>
-                                <h1>THE FOX-EYED VILLAIN OF T...</h1>
-                                <h3>MANHWA</h3>
-                                <p>Action, Adventure, Crazy MC, Fantasy, Martial Arts, Mystery</p>
-                                <h4>SUMMARY</h4>
-                                <p>The very last moment before the novel was about the end...The strongest villain met a pitiful fate. But that wa...</p>
-                                <p><strong>Status:</strong> ONGOING</p>
-                                <p><strong>Author:</strong> Author A</p>
-                            </div>
-                            <div class="comic-cover">
-                                <img src="https://gg.asuracomic.net/storage/media/288219/conversions/01JS1YGRKZ41DGMR2DF4Y75H9W-thumb-small.webp" alt="THE FOX-EYED VILLAIN OF T..." />
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-id="2">
-                            <div class="comic-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span>
-                                    <span>9.5</span>
+                                <div class="comic-cover">
+                                    <img th:src="${comic.coverImage}" th:alt="${comic.title}" />
                                 </div>
-                                <h1>SHADOW OF THE MOON</h1>
-                                <h3>MANGA</h3>
-                                <p>Fantasy, Adventure, Romance</p>
-                                <h4>SUMMARY</h4>
-                                <p>A young warrior discovers a hidden realm beneath the moon's shadow...</p>
-                                <p><strong>Status:</strong> ONGOING</p>
-                                <p><strong>Author:</strong> Author B</p>
                             </div>
-                            <div class="comic-cover">
-                                <img src="https://gg.asuracomic.net/storage/media/264278/conversions/01JHFRXV8CDGN0X2G6XQP14X46-thumb-small.webp" alt="SHADOW OF THE MOON" />
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-id="3">
-                            <div class="comic-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span>
-                                    <span>9.3</span>
-                                </div>
-                                <h1>DRAGON'S WRATH</h1>
-                                <h3>MANHUA</h3>
-                                <p>Action, Fantasy, Martial Arts</p>
-                                <h4>SUMMARY</h4>
-                                <p>An ancient dragon awakens to seek revenge on those who wronged him...</p>
-                                <p><strong>Status:</strong> COMPLETED</p>
-                                <p><strong>Author:</strong> Author C</p>
-                            </div>
-                            <div class="comic-cover">
-                                <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" alt="DRAGON'S WRATH" />
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-id="4">
-                            <div class="comic-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span>
-                                    <span>9.1</span>
-                                </div>
-                                <h1>SWORD OF ETERNITY</h1>
-                                <h3>MANHWA</h3>
-                                <p>Action, Adventure, Fantasy</p>
-                                <h4>SUMMARY</h4>
-                                <p>A legendary sword holds the key to eternal life, but at what cost...</p>
-                                <p><strong>Status:</strong> ONGOING</p>
-                                <p><strong>Author:</strong> Author D</p>
-                            </div>
-                            <div class="comic-cover">
-                                <img src="https://gg.asuracomic.net/storage/media/287989/conversions/01JS08KRNK477X0DMWAK0SHGWH-thumb-small.webp" alt="SWORD OF ETERNITY" />
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-id="5">
-                            <div class="comic-info">
-                                <div class="rating">
-                                    <span class="star">⭐</span>
-                                    <span>9.0</span>
-                                </div>
-                                <h1>MYSTIC RUNE HUNTER</h1>
-                                <h3>MANGA</h3>
-                                <p>Fantasy, Mystery, Adventure</p>
-                                <h4>SUMMARY</h4>
-                                <p>A rune hunter uncovers ancient secrets that could change the world...</p>
-                                <p><strong>Status:</strong> ONGOING</p>
-                                <p><strong>Author:</strong> Author E</p>
-                            </div>
-                            <div class="comic-cover">
-                                <img src="https://gg.asuracomic.net/storage/media/79/1be5e62f.webp" alt="MYSTIC RUNE HUNTER" />
-                            </div>
-                        </div>
+                        </th:block>
                     </div>
                     <div class="carousel-dots" id="carouselDots"></div>
                 </div>
 
+
                 <!-- Popular Today Section -->
                 <section class="popular-today">
                     <div class="container">
-                        <h2 class="mb-4">Popular Today</h2>
+                        <h2 class="mb-4">Popular Views</h2>
                         <div class="comic-container">
                             <div class="card">
                                 <img src="https://gg.asuracomic.net/storage/media/79/1be5e62f.webp" class="card-img-top" alt="Nano Machine" />
