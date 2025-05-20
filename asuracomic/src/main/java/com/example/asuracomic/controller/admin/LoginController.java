@@ -1,4 +1,4 @@
-package com.example.asuracomic.controller.web;
+package com.example.asuracomic.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ComicDTO {
+public class ComicRankingDto {
     private Long id;
     private String title;
     private String coverImage;

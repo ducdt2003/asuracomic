@@ -27,12 +27,26 @@ public class WebController {
         List<Comic> popularToday = comicService.getTopViewedComicsToday(5);
         model.addAttribute("popularToday", popularToday);
         // bảng xếp hạng
+        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<Comic> top10All = comicService.getTop10CombinedAll();
+
+        model.addAttribute("top10Weekly", top10Weekly);
+        model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("top10All", top10All);
         return "web/web-main/home";
     }
 
     // trang chi tiết
     @GetMapping("/comic")
-    public String detail() {
+    public String detail(Model model) {
+        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<Comic> top10All = comicService.getTop10CombinedAll();
+
+        model.addAttribute("top10Weekly", top10Weekly);
+        model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("top10All", top10All);
         return "web/web-main/detail";
     }
 
@@ -45,12 +59,26 @@ public class WebController {
 
     // template
     @GetMapping("/series")
-    public String series(){
+    public String series(Model model){
+        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<Comic> top10All = comicService.getTop10CombinedAll();
+
+        model.addAttribute("top10Weekly", top10Weekly);
+        model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("top10All", top10All);
         return "web/web-templates/series";
     }
 
     @GetMapping("/bookmarks")
-    public String bookmarks(){
+    public String bookmarks(Model model){
+        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<Comic> top10All = comicService.getTop10CombinedAll();
+
+        model.addAttribute("top10Weekly", top10Weekly);
+        model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("top10All", top10All);
         return "web/web-templates/bookmarks";
     }
 

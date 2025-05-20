@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,11 @@ public class ComicService {
     private final ComicRepository comicRepository;
     private final ComicViewRepository comicViewRepository;
     private final ComicGenreRepository comicGenreRepository;
+
+    public Comic getComicById(Long id) {
+        return comicRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy truyện với ID: " + id));
+    }
 
     // xữ lý lấy 5 truyện hot đánh giá cao nhất
     public List<ComicCarouselDTO> getHotComicsForCarousel() {
@@ -56,6 +62,42 @@ public class ComicService {
     }
 
 
+    // Tính điểm kết hợp: 70% viewCount + 30% averageRating
+    private double calculateCombinedScore(Comic comic) {
+        double maxViews = comicRepository.findAllPublished().stream()
+                .mapToLong(Comic::getViewCount)
+                .max().orElse(1000); // Giả định max view là 1000 nếu không có dữ liệu
+        double maxRating = 5.0; // Điểm đánh giá tối đa là 5
+
+        double normalizedViews = (comic.getViewCount() / maxViews) * 100; // Chuẩn hóa về thang 0-100
+        double normalizedRating = (comic.getAverageRating().doubleValue() / maxRating) * 100; // Chuẩn hóa về thang 0-100
+
+        // Trọng số: 70% views, 30% rating
+        return (0.7 * normalizedViews) + (0.3 * normalizedRating);
+    }
+
+    public List<Comic> getTop10CombinedWeekly() {
+        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
+        return comicRepository.findPublishedByDate(startDate).stream()
+                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public List<Comic> getTop10CombinedMonthly() {
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
+        return comicRepository.findPublishedByDate(startDate).stream()
+                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public List<Comic> getTop10CombinedAll() {
+        return comicRepository.findAllPublished().stream()
+                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
 
 }
-

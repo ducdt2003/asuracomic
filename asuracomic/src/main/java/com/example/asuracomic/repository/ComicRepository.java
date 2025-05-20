@@ -16,6 +16,11 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     List<Comic> findTop5ByIsPublishedTrueOrderByAverageRatingDesc();
 
 
+    @Query("SELECT c FROM Comic c WHERE c.isPublished = true")
+    List<Comic> findAllPublished();
+
+    @Query("SELECT c FROM Comic c WHERE c.isPublished = true AND c.updatedAt >= :startDate")
+    List<Comic> findPublishedByDate(LocalDateTime startDate);
 
 
 
