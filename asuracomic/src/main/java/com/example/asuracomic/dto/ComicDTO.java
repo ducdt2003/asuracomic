@@ -1,22 +1,17 @@
 package com.example.asuracomic.dto;
 
-import com.example.asuracomic.model.enums.ComicType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Builder
 public class ComicDTO {
+    private Long id;
     private String title;
-    private String slug;
     private String coverImage;
-    private ComicType type;
-    private Integer latestChapterNumber;
+    private List<String> genres;
     private BigDecimal averageRating;
 }

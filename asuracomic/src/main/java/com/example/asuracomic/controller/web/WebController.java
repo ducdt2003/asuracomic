@@ -20,10 +20,13 @@ public class WebController {
     // trang chủ
     @GetMapping
     public String homeLogin(Model model) {
+        // top comics rating
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
+        // top comics views today
         List<Comic> popularToday = comicService.getTopViewedComicsToday(5);
         model.addAttribute("popularToday", popularToday);
+        // bảng xếp hạng
         return "web/web-main/home";
     }
 
@@ -40,5 +43,43 @@ public class WebController {
     }
 
 
+    // template
+    @GetMapping("/series")
+    public String series(){
+        return "web/web-templates/series";
+    }
+
+    @GetMapping("/bookmarks")
+    public String bookmarks(){
+        return "web/web-templates/bookmarks";
+    }
+
+    @GetMapping("/report")
+    public String report(){
+        return "web/web-templates/report";
+    }
+
+    @GetMapping("/author")
+    public String author(){
+        return "web/web-templates/author-template";
+    }
+
+
+
+    // chân trang
+    @GetMapping("/privacy-policy")
+    public String privacyPolicy(){
+        return "web/web-footer/privacy-policy";
+    }
+
+    @GetMapping("/dmcs-notice")
+    public String dmcsNotice(){
+        return "web/web-footer/dmcs-notice";
+    }
+
+    @GetMapping("/terms-of-service")
+    public String termsOfService(){
+        return "web/web-footer/terms-of-service";
+    }
 
 }

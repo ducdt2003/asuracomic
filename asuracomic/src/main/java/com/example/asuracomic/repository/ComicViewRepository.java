@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ComicViewRepository extends JpaRepository<ComicView, Long> {
+    // top comic view trong ngay
     @Query("""
         SELECT cv.comic, COUNT(cv.id) as views 
         FROM ComicView cv 

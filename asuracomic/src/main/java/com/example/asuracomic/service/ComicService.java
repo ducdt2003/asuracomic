@@ -1,7 +1,9 @@
 package com.example.asuracomic.service;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
+
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.repository.ComicGenreRepository;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.ComicViewRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class ComicService {
     private final ComicRepository comicRepository;
     private final ComicViewRepository comicViewRepository;
+    private final ComicGenreRepository comicGenreRepository;
 
     // xữ lý lấy 5 truyện hot đánh giá cao nhất
     public List<ComicCarouselDTO> getHotComicsForCarousel() {
@@ -51,6 +54,8 @@ public class ComicService {
                 .map(r -> (Comic) r[0])
                 .toList();
     }
+
+
 
 }
 
