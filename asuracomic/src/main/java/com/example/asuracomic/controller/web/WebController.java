@@ -22,6 +22,8 @@ public class WebController {
     public String homeLogin(Model model) {
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
+        List<Comic> popularToday = comicService.getTopViewedComicsToday(5);
+        model.addAttribute("popularToday", popularToday);
         return "web/web-main/home";
     }
 

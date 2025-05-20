@@ -146,8 +146,6 @@ class AsuraComicApplicationTests {
 		}
 	}
 
-
-
 	@Test
 	void save_comics() {
 		List<Author> authors = authorRepository.findAll();
@@ -155,7 +153,7 @@ class AsuraComicApplicationTests {
 		List<Genre> genres = genreRepository.findAll();
 
 		int createdCount = 0;
-		int targetCount = 300;
+		int targetCount = 50; // Thay đổi từ 300 thành 50
 		Set<String> usedSlugs = new HashSet<>(comicRepository.findAll().stream()
 				.map(Comic::getSlug)
 				.toList());

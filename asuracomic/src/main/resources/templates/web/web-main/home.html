@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,69 +53,28 @@
                     <div class="container">
                         <h2 class="mb-4">Popular Views</h2>
                         <div class="comic-container">
-                            <div class="card">
-                                <img src="https://gg.asuracomic.net/storage/media/79/1be5e62f.webp" class="card-img-top" alt="Nano Machine" />
-                                <span class="comic-type">MANHWA</span>
+                            <div th:each="comic : ${popularToday}" class="card">
+                                <img th:src="@{${comic.coverImage}}" class="card-img-top" th:alt="${comic.title}" />
+                                <span class="comic-type" th:text="${comic.type}"></span>
                                 <div class="card-body">
-                                    <a href="#" class="card-title">Nano Machine</a>
-                                    <p class="card-text">Chapter 257</p>
-                                    <p class="card-rating">
-                                        <span class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        9.9
+                                    <a th:href="@{'/comic/' + ${comic.slug}}" class="card-title" th:text="${comic.title}"></a>
+                                    <p class="card-text">
+                                        Chapter
+                                        <span th:text="${#lists.isEmpty(comic.chapters) ? '??' : comic.chapters[comic.chapters.size() - 1].chapterNumber}"></span>
                                     </p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="https://gg.asuracomic.net/storage/media/155/conversions/e43c72fb-thumb-small.webp" class="card-img-top" alt="Eternally Regressing Knight" />
-                                <span class="comic-type">MANHWA</span>
-                                <div class="card-body">
-                                    <a href="#" class="card-title">Eternally Regressing Knight</a>
-                                    <p class="card-text">Chapter 54</p>
                                     <p class="card-rating">
-                                        <span class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        9.9
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="https://gg.asuracomic.net/storage/media/267698/conversions/01JJST2HQ54CXEV2YQN2621FTB-thumb-small.webp" class="card-img-top" alt="Terminally-Ill Genius Dark Knight" />
-                                <span class="comic-type">MANHWA</span>
-                                <div class="card-body">
-                                    <a href="#" class="card-title">Terminally-Ill Genius Dark Knight</a>
-                                    <p class="card-text">Chapter 91</p>
-                                    <p class="card-rating">
-                                        <span class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        9.7
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" class="card-img-top" alt="Pick Me Up, Infinite Gacha" />
-                                <span class="comic-type">MANHWA</span>
-                                <div class="card-body">
-                                    <a href="#" class="card-title">Pick Me Up, Infinite Gacha</a>
-                                    <p class="card-text">Chapter 145</p>
-                                    <p class="card-rating">
-                                        <span class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        10
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" class="card-img-top" alt="Absolute Regression" />
-                                <span class="comic-type">MANHWA</span>
-                                <div class="card-body">
-                                    <a href="#" class="card-title">Absolute Regression</a>
-                                    <p class="card-text">Chapter 46</p>
-                                    <p class="card-rating">
-                                        <span class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        9.9
+                        <span class="star-rating">
+                            <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, comic.averageRating.intValue())}"></i>
+                        </span>
+                                        <span th:text="${comic.averageRating}"></span>
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+
 
                 <!-- Latest Updates Section -->
                 <section class="latest-updates">
