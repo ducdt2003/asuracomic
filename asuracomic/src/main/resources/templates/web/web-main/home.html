@@ -39,7 +39,9 @@
                                     <p><strong>Author:</strong> <span th:text="${comic.author}">Author Name</span></p>
                                 </div>
                                 <div class="comic-cover">
-                                    <img  th:src="${comic.coverImage}" th:alt="${comic.title}" />
+                                    <a th:href="@{/asura/comic(id=${comic.id})}">
+                                        <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                                    </a>
                                 </div>
                             </div>
                         </th:block>
