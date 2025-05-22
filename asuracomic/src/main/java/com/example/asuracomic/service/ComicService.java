@@ -8,6 +8,7 @@ import com.example.asuracomic.repository.ComicGenreRepository;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.ComicViewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -167,4 +168,8 @@ public class ComicService {
     }
 
 
+    public List<Comic> getLatestComics(int page, int size) {
+        Page<Comic> comicPage = comicRepository.findLatestPublishedComics(PageRequest.of(page, size));
+        return comicPage.getContent();
+    }
 }

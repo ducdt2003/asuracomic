@@ -82,251 +82,37 @@
                 <section class="latest-updates">
                     <div class="container">
                         <h2 class="mb-4">
-                            <span class="new-label">NEW</span> Latest Updates
+                            <span class="new-label">NEW</span> Cập Nhật Mới Nhất
                         </h2>
                         <div class="comic-grid" id="comicGrid">
-                            <div class="comic-item" data-id="1">
-                                <img src="https://gg.asuracomic.net/storage/media/261340/conversions/01JGBYSXQG2X42HGAHQ33MDHCQ-thumb-small.webp" class="comic-image" alt="Extra of a Crazy World With a Very Long Title That Should Be Truncated">
+                            <div class="comic-item" th:each="comic : ${comics}" th:attr="data-id=${comic.id}">
+                                <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
                                 <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Extra of a Crazy World With a Very Long Title That Should Be Truncated">Extra of a Crazy World With a Very Long Title That Should Be Truncated</a>
+                                    <a th:href="@{'/comic/' + ${comic.slug}}" class="comic-title" th:text="${comic.title}" th:title="${comic.title}"></a>
                                     <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
+                        <span class="rating" th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)} + ' '">
+                            <i class="fas fa-star"></i>
+                        </span>
+                                        <span class="status" th:text="${comic.status}"></span>
                                     </div>
                                     <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="22" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 22</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="21" data-created-at="2025-04-15 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 21</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="2">
-                                <img src="https://gg.asuracomic.net/storage/media/279987/conversions/01JP56DAW10PQ08Y5XJZAA5V9W-thumb-small.webp" class="comic-image" alt="Wind Breaker">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Wind Breaker">Wind Breaker</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="544" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 544</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="543" data-created-at="2025-04-13 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 543</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="3">
-                                <img src="https://gg.asuracomic.net/storage/media/257968/conversions/01JF6DD6P4PAVNG43QP7XN9676-thumb-small.webp" class="comic-image" alt="The Crazy Genius Composer Returns With a Long Title Here">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="The Crazy Genius Composer Returns With a Long Title Here">The Crazy Genius Composer Returns With a Long Title Here</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="62" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 62</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="61" data-created-at="2025-04-08 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 61</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="4">
-                                <img src="https://gg.asuracomic.net/storage/media/266867/conversions/01JJGM5K45NBQ2156PKB12KXEN-thumb-small.webp" class="comic-image" alt="Dao of the Bizarre Immortal">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Dao of the Bizarre Immortal">Dao of the Bizarre Immortal</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="32" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 32</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="31" data-created-at="2025-04-16 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 31</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="5">
-                                <img src="https://gg.asuracomic.net/storage/media/263608/conversions/01JH5TBN2T87D48PVY7BD1TTNH-thumb-small.webp" class="comic-image" alt="Spooky Yokai">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Spooky Yokai">Spooky Yokai</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="10" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 10</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="9" data-created-at="2025-04-11 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 9</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="6">
-                                <img src="https://gg.asuracomic.net/storage/media/257722/conversions/01JF3DFZHDVHCNHVKXCGTD16KM-thumb-small.webp" class="comic-image" alt="Emperor of Solo Play With a Very Long Title That Needs to Be Shortened">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Emperor of Solo Play With a Very Long Title That Needs to Be Shortened">Emperor of Solo Play With a Very Long Title That Needs to Be Shortened</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="7" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 7</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="6" data-created-at="2025-04-22 09:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 6</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="7">
-                                <img src="https://gg.asuracomic.net/storage/media/261340/conversions/01JGBYSXQG2X42HGAHQ33MDHCQ-thumb-small.webp" class="comic-image" alt="Mercenary Enrollment">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Mercenary Enrollment">Mercenary Enrollment</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="234" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 234</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="233" data-created-at="2025-04-12 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 233</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="8">
-                                <img src="https://gg.asuracomic.net/storage/media/279987/conversions/01JP56DAW10PQ08Y5XJZAA5V9W-thumb-small.webp" class="comic-image" alt="The Legendary Hero is an Academy Honors Student">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="The Legendary Hero is an Academy Honors Student">The Legendary Hero is an Academy Honors Student</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="36" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 36</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="35" data-created-at="2025-04-12 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 35</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="9">
-                                <img src="https://gg.asuracomic.net/storage/media/79/1be5e62f.webp" class="comic-image" alt="Nano Machine">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Nano Machine">Nano Machine</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">9.9 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="257" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 257</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="256" data-created-at="2025-04-10 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 256</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="10">
-                                <img src="https://gg.asuracomic.net/storage/media/155/conversions/e43c72fb-thumb-small.webp" class="comic-image" alt="Eternally Regressing Knight">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Eternally Regressing Knight">Eternally Regressing Knight</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">9.9 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="54" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 54</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="53" data-created-at="2025-04-09 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 53</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="11">
-                                <img src="https://gg.asuracomic.net/storage/media/267698/conversions/01JJST2HQ54CXEV2YQN2621FTB-thumb-small.webp" class="comic-image" alt="Terminally-Ill Genius Dark Knight">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Terminally-Ill Genius Dark Knight">Terminally-Ill Genius Dark Knight</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">9.7 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="91" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 91</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="90" data-created-at="2025-04-07 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 90</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="comic-item" data-id="12">
-                                <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" class="comic-image" alt="Pick Me Up, Infinite Gacha">
-                                <div class="comic-info">
-                                    <a href="#" class="comic-title" title="Pick Me Up, Infinite Gacha">Pick Me Up, Infinite Gacha</a>
-                                    <div class="comic-meta">
-                                        <span class="rating">10 <i class="fas fa-star"></i></span>
-                                        <span class="status">ONGOING</span>
-                                    </div>
-                                    <ul class="chapter-list">
-                                        <li class="chapter-item" data-chapter="145" data-created-at="2025-04-22 10:00:00" data-is-free="false">
-                                            <span class="chapter-number">Chapter 145</span>
-                                            <span class="chapter-time"></span>
-                                        </li>
-                                        <li class="chapter-item" data-chapter="144" data-created-at="2025-04-05 10:00:00" data-is-free="true">
-                                            <span class="chapter-number">Chapter 144</span>
-                                            <span class="chapter-time"></span>
+                                        <li class="chapter-item" th:each="chapter, iterStat : ${comic.chapters}"
+                                            th:if="${iterStat.index < 2}"
+                                            th:attr="data-chapter=${chapter.chapterNumber},data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},data-is-free=${chapter.isFree}">
+                                            <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                            <span class="chapter-time" th:attr="data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="pagination" id="pagination"></div>
+                        <div class="pagination" id="pagination">
+                            <a th:if="${currentPage > 0}" th:href="@{'/?page=' + ${currentPage - 1}}">Trước</a>
+                            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{'/?page=' + ${i}}" th:class="${i == currentPage} ? 'active' : ''" th:text="${i + 1}"></a>
+            </span>
+                            <a th:if="${currentPage < totalPages - 1}" th:href="@{'/?page=' + ${currentPage + 1}}">Sau</a>
+                        </div>
                     </div>
                 </section>
             </div>
