@@ -19,7 +19,6 @@
             <div class="tabs">
                 <span class="tab" data-tab="weekly">Weekly</span>
                 <span class="tab active" data-tab="monthly">Monthly</span>
-                <span class="tab" data-tab="all">All</span>
             </div>
 
             <!-- Weekly Comic List -->
@@ -31,17 +30,17 @@
                         <a th:href="@{/asura/comic(id=${comic.id})}" class="comic-title" th:title="${comic.title}" th:text="${comic.title}"></a>
                         <div class="comic-meta">
                             <span class="genre-label">Genres:</span>
-                            <span th:text="${comic.comicGenres != null} ? ${#strings.listJoin(comic.comicGenres.![genre.name], ', ')} : 'Unknown'"></span>
+                            <span th:text="${comic.genres != null} ? ${comic.genres} : 'Unknown'"></span>
                         </div>
                         <div class="comic-rating">
                             <span class="stars">
-                                <i th:class="${comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'"></i>
                             </span>
-                            <span th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)}"></span>
+                            <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'"></span>
                         </div>
                     </div>
                 </div>
@@ -56,46 +55,23 @@
                         <a th:href="@{/asura/comic(id=${comic.id})}" class="comic-title" th:title="${comic.title}" th:text="${comic.title}"></a>
                         <div class="comic-meta">
                             <span class="genre-label">Genres:</span>
-                            <span th:text="${comic.comicGenres != null} ? ${#strings.listJoin(comic.comicGenres.![genre.name], ', ')} : 'Unknown'"></span>
+                            <span th:text="${comic.genres != null} ? ${comic.genres} : 'Unknown'"></span>
                         </div>
                         <div class="comic-rating">
                             <span class="stars">
-                                <i th:class="${comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'"></i>
                             </span>
-                            <span th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)}"></span>
+                            <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'"></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- All Comic List -->
-            <div class="comic-list" id="allList">
-                <div th:each="comic, iterStat : ${top10All}" class="comic-item" th:attr="data-id=${comic.id}">
-                    <span class="comic-rank" th:text="${iterStat.count}"></span>
-                    <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
-                    <div class="comic-info">
-                        <a th:href="@{/asura/comic(id=${comic.id})}" class="comic-title" th:title="${comic.title}" th:text="${comic.title}"></a>
-                        <div class="comic-meta">
-                            <span class="genre-label">Genres:</span>
-                            <span th:text="${comic.comicGenres != null} ? ${#strings.listJoin(comic.comicGenres.![genre.name], ', ')} : 'Unknown'"></span>
-                        </div>
-                        <div class="comic-rating">
-                            <span class="stars">
-                                <i th:class="${comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'"></i>
-                                <i th:class="${comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'"></i>
-                            </span>
-                            <span th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)}"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </section>
 </div>

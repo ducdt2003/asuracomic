@@ -30,7 +30,7 @@
                                         <span class="star">⭐</span>
                                         <span th:text="${comic.averageRating}"></span>
                                     </div>
-                                    <h1 th:text="${comic.title}">Comic Title</h1>
+                                    <h1><a th:href="@{/asura/comic(id=${comic.id})}" class="card-title" th:text="${comic.title}"></a></h1>
                                     <h3 th:text="${comic.type}">MANHWA</h3>
                                     <p th:text="${comic.genres}">Genres</p>
                                     <h4>SUMMARY</h4>
@@ -39,7 +39,7 @@
                                     <p><strong>Author:</strong> <span th:text="${comic.author}">Author Name</span></p>
                                 </div>
                                 <div class="comic-cover">
-                                    <img th:src="${comic.coverImage}" th:alt="${comic.title}" />
+                                    <img  th:src="${comic.coverImage}" th:alt="${comic.title}" />
                                 </div>
                             </div>
                         </th:block>
@@ -57,7 +57,7 @@
                                 <img th:src="@{${comic.coverImage}}" class="card-img-top" th:alt="${comic.title}" />
                                 <span class="comic-type" th:text="${comic.type}"></span>
                                 <div class="card-body">
-                                    <a th:href="@{'/comic/' + ${comic.slug}}" class="card-title" th:text="${comic.title}"></a>
+                                    <a th:href="@{/asura/comic(id=${comic.id})}" class="card-title" th:text="${comic.title}"></a>
                                     <p class="card-text">
                                         Chapter
                                         <span th:text="${#lists.isEmpty(comic.chapters) ? '??' : comic.chapters[comic.chapters.size() - 1].chapterNumber}"></span>

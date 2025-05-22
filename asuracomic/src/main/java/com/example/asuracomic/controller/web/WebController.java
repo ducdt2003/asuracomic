@@ -1,6 +1,7 @@
 package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
+import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.service.ComicService;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,12 @@ public class WebController {
         List<Comic> popularToday = comicService.getTopViewedComicsToday(5);
         model.addAttribute("popularToday", popularToday);
         // bảng xếp hạng
-        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
-        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<Comic> top10All = comicService.getTop10CombinedAll();
+        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
 
+        // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("top10All", top10All);
@@ -40,10 +43,12 @@ public class WebController {
     // trang chi tiết
     @GetMapping("/comic")
     public String detail(Model model) {
-        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
-        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<Comic> top10All = comicService.getTop10CombinedAll();
+        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
 
+        // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("top10All", top10All);
@@ -60,10 +65,12 @@ public class WebController {
     // template
     @GetMapping("/series")
     public String series(Model model){
-        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
-        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<Comic> top10All = comicService.getTop10CombinedAll();
+        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
 
+        // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("top10All", top10All);
@@ -72,10 +79,12 @@ public class WebController {
 
     @GetMapping("/bookmarks")
     public String bookmarks(Model model){
-        List<Comic> top10Weekly = comicService.getTop10CombinedWeekly();
-        List<Comic> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<Comic> top10All = comicService.getTop10CombinedAll();
+        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
 
+        // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("top10All", top10All);

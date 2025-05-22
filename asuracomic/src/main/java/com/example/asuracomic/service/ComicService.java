@@ -2,6 +2,7 @@ package com.example.asuracomic.service;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
 
+import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.repository.ComicGenreRepository;
 import com.example.asuracomic.repository.ComicRepository;
@@ -63,7 +64,7 @@ public class ComicService {
 
 
     // Tính điểm kết hợp: 70% viewCount + 30% averageRating
-    private double calculateCombinedScore(Comic comic) {
+    /*private double calculateCombinedScore(Comic comic) {
         double maxViews = comicRepository.findAllPublished().stream()
                 .mapToLong(Comic::getViewCount)
                 .max().orElse(1000); // Giả định max view là 1000 nếu không có dữ liệu
@@ -96,6 +97,72 @@ public class ComicService {
         return comicRepository.findAllPublished().stream()
                 .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
                 .limit(10)
+                .collect(Collectors.toList());
+    }*/
+
+    // Lấy top 10 truyện tuần
+    /*public List<ComicTopDTO> getTop10CombinedWeekly() {
+        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
+        return comicRepository.findTop10Weekly(startDate)
+                .stream()
+                .map(row -> new ComicTopDTO(
+                        ((Number) row[0]).longValue(), // id
+                        (String) row[1],               // title
+                        (String) row[2],               // cover_image
+                        ((Number) row[3]).doubleValue(), // average_rating
+                        ((Number) row[4]).longValue(), // view_count
+                        (String) row[5],               // genres
+                        ((Number) row[6]).doubleValue() // combined_score
+                ))
+                .collect(Collectors.toList());
+    }*/
+    public List<ComicTopDTO> getTop10CombinedWeekly() {
+        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
+        List<Object[]> result = comicRepository.findTop10Weekly(startDate);
+        System.out.println("Raw result: " + result);
+        return result.stream()
+                .map(row -> new ComicTopDTO(
+                        ((Number) row[0]).longValue(),
+                        (String) row[1],
+                        (String) row[2],
+                        ((Number) row[3]).doubleValue(),
+                        ((Number) row[4]).longValue(),
+                        (String) row[5],
+                        ((Number) row[6]).doubleValue()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // Lấy top 10 truyện tháng
+    public List<ComicTopDTO> getTop10CombinedMonthly() {
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
+        return comicRepository.findTop10Monthly(startDate)
+                .stream()
+                .map(row -> new ComicTopDTO(
+                        ((Number) row[0]).longValue(),
+                        (String) row[1],
+                        (String) row[2],
+                        ((Number) row[3]).doubleValue(),
+                        ((Number) row[4]).longValue(),
+                        (String) row[5],
+                        ((Number) row[6]).doubleValue()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // Lấy top 10 truyện tất cả thời gian
+    public List<ComicTopDTO> getTop10CombinedAll() {
+        return comicRepository.findTop10All()
+                .stream()
+                .map(row -> new ComicTopDTO(
+                        ((Number) row[0]).longValue(),
+                        (String) row[1],
+                        (String) row[2],
+                        ((Number) row[3]).doubleValue(),
+                        ((Number) row[4]).longValue(),
+                        (String) row[5],
+                        ((Number) row[6]).doubleValue()
+                ))
                 .collect(Collectors.toList());
     }
 
