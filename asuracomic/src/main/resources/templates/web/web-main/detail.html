@@ -24,10 +24,20 @@
                     <!-- HTML: Breadcrumb điều hướng -->
                     <div class="comic-path">
                         <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Asura Scans</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Nano Machine</li>
+                            <ol class="breadcrumb" style="font-size: 16px; padding: 10px 0;">
+                                <li class="breadcrumb-item" style="margin-right: 12px;">
+                                    <a th:href="@{'/asura'}" style="text-decoration: none; font-weight: bold;">Asura Scans &gt;</a>
+                                </li>
+                                <li style="margin-left: 4px;">
+                                    <a th:href="@{'/asura/comic/' + ${comic.slug}}"
+                                       class="card-title"
+                                       style="text-decoration: none; font-weight: bold;"
+                                       th:text="${comic.slug}">
+                                    </a>
+                                </li>
                             </ol>
+
+
                         </nav>
                     </div>
 

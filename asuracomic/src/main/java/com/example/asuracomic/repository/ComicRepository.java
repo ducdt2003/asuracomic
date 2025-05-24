@@ -135,7 +135,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
 
 
 
-    Optional<Comic> findBySlugAndIsPublishedTrue(String slug);
+    Optional<Comic> findBySlug(String slug);
 
 
 }

@@ -62,6 +62,7 @@ public class WebController {
         Comic comic = comicService.getComicDetailsBySlug(slug);
         model.addAttribute("comic", comic);
 
+
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
