@@ -216,7 +216,16 @@ public class ComicService {
         }).collect(Collectors.toList());
     }
 
-
+    // New method to resolve the error
+    public Chapter getChapterBySlug(Comic comic, String chapterSlug) {
+        if (comic == null || chapterSlug == null) {
+            return null;
+        }
+        return comic.getChapters().stream()
+                .filter(chapter -> chapterSlug.equals(chapter.getSlug()))
+                .findFirst()
+                .orElse(null);
+    }
 
 
 

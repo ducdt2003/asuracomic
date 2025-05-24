@@ -97,7 +97,27 @@ public class WebController {
 
     // trang chapter
     @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
-    public String chapter() {
+    public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug, Model model) {
+        // Lấy chi tiết truyện theo comicSlug
+        Comic comic = comicService.getComicDetailsBySlug(comicSlug);
+        if (comic == null) {
+            return "redirect:/error";
+        }
+
+        // Lấy chương theo chapterSlug
+        Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
+        if (chapter == null) {
+            return "redirect:/error";
+        }
+
+        // Lấy danh sách truyện liên quan
+        List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("comic", comic);
+        model.addAttribute("chapter", chapter);
+        model.addAttribute("relatedComics", relatedComics);
+
         return "web/web-main/chapter";
     }
 
