@@ -873,15 +873,26 @@
     <!-- Main Body Section -->
     <main>
         <div class="chapter-info">
-            <h1 class="chapter-title"><span>Nano Machine</span> Chapter 258 - 87 Dragon Turtle (5)</h1>
+            <!-- Tiêu đề chương -->
+            <h1 class="chapter-title">
+                <span th:text="${comic.title}">Nano Machine</span> <span th:text="${chapter.title}">Chapter 258 - 87 Dragon Turtle (5)</span>
+            </h1>
+
+            <!-- Breadcrumb -->
             <div class="breadcrumb">
-                <a href="#">Asura Scans</a> <span>></span>
-                <a href="#">Nano Machine</a> <span>></span>
-                <a href="#">Nano Machine Chapter 258 - 87 Dragon Turtle (5)</a>
+                <a href="/asura" th:href="@{/asura}">Asura Scans</a> <span>></span>
+                <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${comic.title}">Nano Machine</a> <span>></span>
+                <a th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chapter.slug})}"
+                   th:text="${chapter.title}">Nano Machine Chapter 258 - 87 Dragon Turtle (5)</a>
             </div>
+
+            <!-- Liên kết đến tất cả chương -->
             <div class="chapter-link">
-                <a href="#">All chapters are in Nano Machine</a>
+                <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}"
+                   th:text="'All chapters are in ' + ${comic.title}">All chapters are in Nano Machine</a>
             </div>
+
+            <!-- Social share -->
             <div class="social-share">
                 <a href="#" class="facebook" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="twitter" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
@@ -889,39 +900,91 @@
                 <a href="#" class="pinterest" title="Share on Pinterest"><i class="fab fa-pinterest-p"></i></a>
             </div>
         </div>
-        
+
 
         <div class="chapter-nav">
-            <select>
-                <option>Chapter 258 - 87 Dragon Turtle (5)</option>
-                <option>Chapter 257 - 86 Dragon Turtle (4)</option>
-                <option>Chapter 256 - 85 Dragon Turtle (3)</option>
+            <!-- Dropdown danh sách chương -->
+            <select onchange="if (this.value) window.location.href = this.value;">
+                <option th:each="chap : ${sortedChapters}"
+                        th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
+                        th:text="${chap.title}"
+                        th:selected="${chap.id == chapter.id}">Chapter Title</option>
             </select>
-            <button class="report-btn"><i class="fas fa-flag"></i> Report</button>
+
+            <!-- Nút Report -->
+            <button class="report-btn">
+                <a th:href="@{/asura/report?contentType=CHAPTER&contentId=${chapter.id}}"
+                   style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-flag"></i> Report
+                </a>
+            </button>
+
+            <!-- Nút điều hướng Prev/Next -->
             <div class="nav-buttons">
-                <button class="prev-btn">Prev</button>
-                <button class="next-btn">Next</button>
+                <button class="prev-btn"
+                        th:disabled="${previousChapter == null}"
+                        th:classappend="${previousChapter == null} ? 'disabled' : ''">
+                    <a th:if="${previousChapter != null}"
+                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})}"
+                       style="text-decoration: none; color: inherit;">
+                        Prev
+                    </a>
+                    <span th:if="${previousChapter == null}">Prev</span>
+                </button>
+                <button class="next-btn"
+                        th:disabled="${nextChapter == null}"
+                        th:classappend="${nextChapter == null} ? 'disabled' : ''">
+                    <a th:if="${nextChapter != null}"
+                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})}"
+                       style="text-decoration: none; color: inherit;">
+                        Next
+                    </a>
+                    <span th:if="${nextChapter == null}">Next</span>
+                </button>
             </div>
         </div>
 
         <div class="chapter-content">
-            <img src="https://gg.asuracomic.net/storage/media/285384/conversions/01-optimized.webp" alt="Nano Machine Chapter 258 Page 1">
-            <img src="https://gg.asuracomic.net/storage/media/285395/conversions/12-optimized.webp" alt="Nano Machine Chapter 258 Page 2">
+            <img th:each="image, iterStat : ${chapter.chapterImages}"
+                 th:src="${image.imageUrl}"
+                 th:alt="${chapter.title} + ' Page ' + ${iterStat.count}"
+                 style="max-width: 100%; display: block; margin: 0 auto;">
         </div>
 
         <!-- New End Chapter Navigation -->
+
         <div class="end-chapter-nav">
-            <select>
-                <option>Chapter 258 - 87 Dragon Turtle (5)</option>
-                <option>Chapter 257 - 86 Dragon Turtle (4)</option>
-                <option>Chapter 256 - 85 Dragon Turtle (3)</option>
+            <!-- Dropdown danh sách chương -->
+            <select onchange="if (this.value) window.location.href = this.value;">
+                <option th:each="chap : ${sortedChapters}"
+                        th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
+                        th:text="${chap.title}"
+                        th:selected="${chap.id == chapter.id}">Chapter Title</option>
             </select>
+            <!-- Nút điều hướng Prev/Next -->
             <div class="nav-buttons">
-                <button class="prev-btn">Prev</button>
-                <button class="next-btn">Next</button>
+                <button class="prev-btn"
+                        th:disabled="${previousChapter == null}"
+                        th:classappend="${previousChapter == null} ? 'disabled' : ''">
+                    <a th:if="${previousChapter != null}"
+                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})}"
+                       style="text-decoration: none; color: inherit;">
+                        Prev
+                    </a>
+                    <span th:if="${previousChapter == null}">Prev</span>
+                </button>
+                <button class="next-btn"
+                        th:disabled="${nextChapter == null}"
+                        th:classappend="${nextChapter == null} ? 'disabled' : ''">
+                    <a th:if="${nextChapter != null}"
+                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})}"
+                       style="text-decoration: none; color: inherit;">
+                        Next
+                    </a>
+                    <span th:if="${nextChapter == null}">Next</span>
+                </button>
             </div>
         </div>
-
 
         <!-- truyện liên quan -->
         <div class="related-comics-section">

@@ -5,7 +5,9 @@ import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.entity.Genre;
 import com.example.asuracomic.repository.ComicRepository;
+import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.service.ComicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,14 +19,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/asura")
 @RequiredArgsConstructor
 public class WebController {
     private final ComicService comicService;
-    private final ComicRepository comicRepository;
+    private final GenreRepository genreRepository;
     // trang chủ
     @GetMapping
     public String homeLogin(  @RequestParam(defaultValue = "0") int page,
@@ -113,10 +118,36 @@ public class WebController {
         // Lấy danh sách truyện liên quan
         List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
 
+        // Sắp xếp danh sách chương theo chapterNumber (tăng dần)
+        List<Chapter> sortedChapters = comic.getChapters().stream()
+                .filter(ch -> ch.isPublished()) // Chỉ lấy các chương đã xuất bản
+                .sorted(Comparator.comparingInt(Chapter::getChapterNumber))
+                .collect(Collectors.toList());
+
+        // Tìm chương trước và chương sau
+        Chapter previousChapter = null;
+        Chapter nextChapter = null;
+        for (int i = 0; i < sortedChapters.size(); i++) {
+            Chapter current = sortedChapters.get(i);
+            if (current.getId().equals(chapter.getId())) {
+                if (i > 0) {
+                    previousChapter = sortedChapters.get(i - 1); // Chương trước
+                }
+                if (i < sortedChapters.size() - 1) {
+                    nextChapter = sortedChapters.get(i + 1); // Chương sau
+                }
+                break;
+            }
+        }
+
         // Thêm dữ liệu vào model
         model.addAttribute("comic", comic);
         model.addAttribute("chapter", chapter);
         model.addAttribute("relatedComics", relatedComics);
+        model.addAttribute("sortedChapters", sortedChapters);
+        model.addAttribute("previousChapter", previousChapter);
+        model.addAttribute("nextChapter", nextChapter);
+        model.addAttribute("chapter", chapter);
 
         return "web/web-main/chapter";
     }
@@ -139,15 +170,24 @@ public class WebController {
     }
 
     @GetMapping("/bookmarks")
-    public String bookmarks(Model model){
-        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+    public String bookmarks(Model model) {
+        // Lấy danh sách top 10 cho tuần và tháng
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
 
+        // Lấy danh sách thể loại
+        List<Genre> genres = genreRepository.findAll();
+
+        // Lấy danh sách ComicStatus và ComicType từ enum
+        List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
+        List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("genres", genres);
+        model.addAttribute("statuses", statuses);
+        model.addAttribute("types", types);
 
         return "web/web-templates/bookmarks";
     }
