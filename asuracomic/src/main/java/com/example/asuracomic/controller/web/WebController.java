@@ -2,6 +2,7 @@ package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
+import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.repository.ComicRepository;
@@ -60,12 +61,15 @@ public class WebController {
     // trang chi tiết
     @GetMapping("/comic/{slug}")
     public String detail(@PathVariable String slug, Model model) {
-
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
-        model.addAttribute("comic", comicDetail); // sử dụng 1 biến đại diện
+        if (comicDetail == null) {
+            // Xử lý trường hợp truyện không tồn tại
+            return "redirect:/error"; // Hoặc chuyển hướng đến trang lỗi
+        }
+        model.addAttribute("comic", comicDetail);
 
-
+        // Lấy danh sách chương
         List<Chapter> chapters = comicService.getChaptersByComic(comicDetail);
         Chapter firstChapter = comicService.getFirstChapter(comicDetail);
         Chapter latestChapter = comicService.getLatestChapter(comicDetail);
@@ -73,6 +77,12 @@ public class WebController {
         model.addAttribute("chapters", chapters);
         model.addAttribute("firstChapter", firstChapter);
         model.addAttribute("latestChapter", latestChapter);
+
+        // Lấy danh sách truyện liên quan
+        //cung thể loại, cùng tác giả , cùng từ khóa
+        List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comicDetail.getId(), 5);
+        model.addAttribute("relatedComics", relatedComics);
+
 
         // Lấy danh sách top 10 cho tuần và tháng
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();

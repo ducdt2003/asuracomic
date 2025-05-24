@@ -179,79 +179,21 @@
                 <!-- HTML: Phần bình luận -->
                 <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>
 
-                <!-- HTML: Phần truyện liên quan -->
+                <!-- Phần truyện liên quan -->
                 <div class="related-comics-section">
                     <h2>Related Series</h2>
                     <hr>
                     <div class="related-comics-list">
-                        <div class="related-comic-item">
-                            <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" alt="Solo Max-Level Newbie">
-                            <span class="status">Ongoing</span>
-                            <a href="#">Solo Max-Level Newbie</a>
-                            <div class="chapter">Chapter 204</div>
+                        <div class="related-comic-item" th:each="comic : ${relatedComics}">
+                            <img th:src="${comic.coverImage}" th:alt="${comic.title}">
+                            <span class="status" th:text="${comic.status}">Ongoing</span>
+                            <a th:href="@{/web/web-main/detail/{id}(id=${comic.id})}" th:text="${comic.title}">Comic Title</a>
+                            <div class="chapter" th:text="'Chapter ' + ${comic.latestChapterNumber}">Chapter 0</div>
                             <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="related-comic-item">
-                            <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Wandering Warrior of Wudang">
-                            <span class="status">Ongoing</span>
-                            <a href="#">Wandering Warrior of Wudang</a>
-                            <div class="chapter">Chapter 148</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.8</span>
-                            </div>
-                        </div>
-                        <div class="related-comic-item">
-                            <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Regressor Instruction Manual">
-                            <span class="status">Ongoing</span>
-                            <a href="#">Regressor Instruction Manual</a>
-                            <div class="chapter">Chapter 134</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>10</span>
-                            </div>
-                        </div>
-                        <div class="related-comic-item">
-                            <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="I Am the Fated Villain">
-                            <span class="status">Ongoing</span>
-                            <a href="#">I Am the Fated Villain</a>
-                            <div class="chapter">Chapter 246</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="related-comic-item">
-                            <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="The Hero Returns">
-                            <span class="status">Ongoing</span>
-                            <a href="#">The Hero Returns</a>
-                            <div class="chapter">Chapter 122</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
+                                <!-- Hiển thị sao dựa trên averageRating -->
+                                <i th:each="i : ${#numbers.sequence(1, 5)}"
+                                   th:class="${i <= comic.averageRating.intValue()} ? 'fas fa-star' : 'far fa-star'"></i>
+                                <span th:text="${comic.averageRating}">0.0</span>
                             </div>
                         </div>
                     </div>

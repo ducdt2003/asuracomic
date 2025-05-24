@@ -3,6 +3,7 @@ package com.example.asuracomic.service;
 import com.example.asuracomic.dto.ComicCarouselDTO;
 
 import com.example.asuracomic.dto.ComicTopDTO;
+import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.entity.Comment;
@@ -190,6 +191,29 @@ public class ComicService {
     public Chapter getLatestChapter(Comic comic) {
         return chapterRepository.findTopByComicOrderByChapterNumberDesc(comic)
                 .orElseThrow(() -> new RuntimeException("No chapter found"));
+    }
+
+
+
+    // truyện liên quna
+    public List<RelatedComicDTO> getRelatedComics(Long comicId, int limit) {
+        List<Comic> comics = comicRepository.findRelatedComics(comicId, PageRequest.of(0, limit));
+        return comics.stream().map(comic -> {
+            RelatedComicDTO dto = new RelatedComicDTO();
+            dto.setId(comic.getId());
+            dto.setTitle(comic.getTitle());
+            dto.setSlug(comic.getSlug());
+            dto.setCoverImage(comic.getCoverImage());
+            dto.setStatus(comic.getStatus());
+            dto.setAverageRating(comic.getAverageRating());
+            Integer latestChapterNumber = comic.getChapters().stream()
+                    .filter(Chapter::isPublished)
+                    .map(Chapter::getChapterNumber)
+                    .max(Integer::compareTo)
+                    .orElse(0);
+            dto.setLatestChapterNumber(latestChapterNumber);
+            return dto;
+        }).collect(Collectors.toList());
     }
 
 

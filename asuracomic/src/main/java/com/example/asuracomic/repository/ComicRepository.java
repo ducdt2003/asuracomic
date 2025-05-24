@@ -132,10 +132,20 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     // Không cần @Query, chỉ cần dùng method name
     Page<Comic> findAllByOrderByUpdatedAtDesc(Pageable pageable);
 
-
-
-
+    // chi tieets truyện và chapter
     Optional<Comic> findBySlug(String slug);
+
+
+
+    // truyện liên quna
+    @Query("SELECT DISTINCT c FROM Comic c " +
+            "JOIN c.comicGenres cg " +
+            "WHERE cg.genre.id IN (SELECT cg2.genre.id FROM ComicGenre cg2 WHERE cg2.comic.id = :comicId) " +
+            "AND c.id != :comicId " +
+            "AND c.isPublished = true " +
+            "ORDER BY c.viewCount DESC, c.averageRating DESC")
+    List<Comic> findRelatedComics(Long comicId, org.springframework.data.domain.Pageable pageable);
+
 
 
 }
