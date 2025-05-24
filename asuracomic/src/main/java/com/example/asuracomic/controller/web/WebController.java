@@ -2,6 +2,7 @@ package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
+import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.service.ComicService;
@@ -59,28 +60,37 @@ public class WebController {
     // trang chi tiết
     @GetMapping("/comic/{slug}")
     public String detail(@PathVariable String slug, Model model) {
-        Comic comic = comicService.getComicDetailsBySlug(slug);
-        model.addAttribute("comic", comic);
+
+        // Lấy chi tiết truyện theo slug
+        Comic comicDetail = comicService.getComicDetailsBySlug(slug);
+        model.addAttribute("comic", comicDetail); // sử dụng 1 biến đại diện
 
 
-        // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
+        List<Chapter> chapters = comicService.getChaptersByComic(comicDetail);
+        Chapter firstChapter = comicService.getFirstChapter(comicDetail);
+        Chapter latestChapter = comicService.getLatestChapter(comicDetail);
+
+        model.addAttribute("chapters", chapters);
+        model.addAttribute("firstChapter", firstChapter);
+        model.addAttribute("latestChapter", latestChapter);
+
+        // Lấy danh sách top 10 cho tuần và tháng
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
 
-
-        // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-
 
         return "web/web-main/detail";
     }
 
+
     // trang chapter
-    @GetMapping("/comic/{comicId}/chapter/{chapterId}")
+    @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
     public String chapter() {
         return "web/web-main/chapter";
     }
+
 
 
     // template

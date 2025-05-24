@@ -3,7 +3,11 @@ package com.example.asuracomic.service;
 import com.example.asuracomic.dto.ComicCarouselDTO;
 
 import com.example.asuracomic.dto.ComicTopDTO;
+import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.entity.Comment;
+import com.example.asuracomic.model.enums.CommentStatus;
+import com.example.asuracomic.repository.ChapterRepository;
 import com.example.asuracomic.repository.ComicGenreRepository;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.ComicViewRepository;
@@ -22,7 +26,7 @@ import java.util.stream.Collectors;
 public class ComicService {
     private final ComicRepository comicRepository;
     private final ComicViewRepository comicViewRepository;
-    private final ComicGenreRepository comicGenreRepository;
+    private final ChapterRepository chapterRepository;
 
     public Comic getComicById(Long id) {
         return comicRepository.findById(id)
@@ -158,10 +162,37 @@ public class ComicService {
 
 
 
+    // chi tiết truyện
     public Comic getComicDetailsBySlug(String slug) {
         return comicRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Comic not found"));
     }
+
+
+
+
+    // chapter
+    public Comic getComicBySlug(String slug) {
+        return comicRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Comic not found"));
+    }
+
+    public List<Chapter> getChaptersByComic(Comic comic) {
+        return chapterRepository.findByComicOrderByChapterNumberDesc(comic);
+    }
+
+    public Chapter getFirstChapter(Comic comic) {
+        return chapterRepository.findTopByComicOrderByChapterNumberAsc(comic)
+                .orElseThrow(() -> new RuntimeException("No chapter found"));
+    }
+
+
+    public Chapter getLatestChapter(Comic comic) {
+        return chapterRepository.findTopByComicOrderByChapterNumberDesc(comic)
+                .orElseThrow(() -> new RuntimeException("No chapter found"));
+    }
+
+
 
 
 

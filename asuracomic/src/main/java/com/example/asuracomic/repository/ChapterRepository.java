@@ -1,10 +1,12 @@
 package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Chapter;
+import com.example.asuracomic.entity.Comic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 // Định nghĩa interface ChapterRepository, mở rộng JpaRepository để cung cấp các phương thức thao tác với thực thể Chapter
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
@@ -20,5 +22,9 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     // Được sử dụng để lấy chương dựa trên số thứ tự, hữu ích khi điều hướng giữa các chương
     Chapter findByComicIdAndChapterNumber(Long comicId, Integer chapterNumber);
 
+
+    List<Chapter> findByComicOrderByChapterNumberDesc(Comic comic);
+    Optional<Chapter> findTopByComicOrderByChapterNumberAsc(Comic comic); // Chapter đầu tiên
+    Optional<Chapter> findTopByComicOrderByChapterNumberDesc(Comic comic); // Chapter mới nhất
 
 }

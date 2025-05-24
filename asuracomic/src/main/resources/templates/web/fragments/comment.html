@@ -1,108 +1,83 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/web/web-main/detail.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simple Comments</title>
+    <link rel="stylesheet" href="/css/web/web-main/detail.css" />
 </head>
 <body>
-<!-- HTML: Phần bình luận -->
 <div class="comments-container">
+    <h2>Comments</h2>
+
+    <!-- Thông báo đăng nhập -->
     <div class="login-prompt">
-        <span>Comments</span>
-        <span>Log in to join the conversation <a href="#">Log in</a></span>
+        <p>Log in to join the conversation <a href="#">Log in</a></p>
     </div>
 
+    <!-- Ô nhập bình luận -->
     <div class="comment-input">
-        <textarea placeholder="Join the discussion…" disabled></textarea>
+        <textarea placeholder="Write a comment…" disabled></textarea>
         <div class="comment-toolbar">
-            <button disabled>Comment</button>
+            <button disabled>Post Comment</button>
         </div>
     </div>
 
+    <!-- Danh sách bình luận -->
     <ul class="comment-list">
         <li class="comment-item">
             <div class="user-info">
                 <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <span class="username">perkys</span>
-                <span class="tag asura">ASURA+</span>
-                <span class="timestamp">9 days ago</span>
+                <strong class="username">perkys</strong> - <span class="timestamp">9 days ago</span>
             </div>
             <div class="comment-text">Def read this! The Arm Collector</div>
-            <div class="comment-actions">
-                <span>👍 19</span>
-                <span>💬 0</span>
-                <span class="reply">Reply</span>
-                <span class="menu">…</span>
-            </div>
         </li>
 
         <li class="comment-item">
             <div class="user-info">
                 <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <span class="username">Dankreader</span>
-                <span class="tag asura">ASURA+</span>
-                <span class="timestamp">9 days ago</span>
+                <strong class="username">Dankreader</strong> - <span class="timestamp">9 days ago</span>
             </div>
             <div class="comment-text">Currently the best one on this site. 10/10</div>
-            <div class="comment-actions">
-                <span>👍 14</span>
-                <span>💬 0</span>
-                <span class="reply">Reply</span>
-                <span class="menu">…</span>
-            </div>
+        </li>
 
-            <ul class="nested-comments">
-                <li>
-                    <div class="user-info">
-                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                        <span class="username">Sweetos</span>
-                        <span class="timestamp">7 days ago</span>
-                    </div>
-                    <div class="comment-text">Lies</div>
-                    <div class="comment-actions">
-                        <span>👍 5</span>
-                        <span>💬 11</span>
-                        <span class="menu">…</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-info">
-                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                        <span class="username">Devil Da Vinci</span>
-                        <span class="timestamp">7 days ago</span>
-                    </div>
-                    <div class="comment-text">
-                        How does it lie? It may not be the best, but surely one of the best. It's also my first manhwa tbh
-                    </div>
-                    <div class="comment-actions">
-                        <span>👍 4</span>
-                        <span>💬 0</span>
-                        <span class="menu">…</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-info">
-                        <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                        <span class="username">Vanithas</span>
-                        <span class="timestamp">5 days ago</span>
-                    </div>
-                    <div class="comment-text">
-                        One of the top 5 for sure yea, even top 3 for me!<br>
-                        I enjoyed this!
-                    </div>
-                </li>
-            </ul>
+        <li class="comment-item">
+            <div class="user-info">
+                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                <strong class="username">Sweetos</strong> - <span class="timestamp">7 days ago</span>
+            </div>
+            <div class="comment-text">Lies</div>
+        </li>
+
+        <li class="comment-item">
+            <div class="user-info">
+                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                <strong class="username">Vanithas</strong> - <span class="timestamp">5 days ago</span>
+            </div>
+            <div class="comment-text">One of the top 5 for sure yea, even top 3 for me! I enjoyed this!</div>
+        </li>
+
+        <li class="comment-item">
+            <div class="user-info">
+                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                <strong class="username">MoonReader</strong> - <span class="timestamp">2 days ago</span>
+            </div>
+            <div class="comment-text">Art is insane. Can’t wait for next chapter!</div>
+        </li>
+
+        <li class="comment-item">
+            <div class="user-info">
+                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
+                <strong class="username">SoloFan</strong> - <span class="timestamp">1 day ago</span>
+            </div>
+            <div class="comment-text">Love the MC's development!</div>
         </li>
     </ul>
+
+    <!-- Phân trang -->
     <div class="pagination">
-        <button class="prev-btn" disabled>
-            <i class="fas fa-chevron-left"></i> Previous
-        </button>
-        <button class="next-btn">
-            Next <i class="fas fa-chevron-right"></i>
-        </button>
+        <button class="prev-btn" disabled>Previous</button>
+        <button class="next-btn">Next</button>
     </div>
 </div>
 </body>

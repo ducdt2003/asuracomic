@@ -12,272 +12,277 @@
 </head>
 <body>
 
+<!--
+<input type="text" class="chapter-search-bar" placeholder="Search Chapter. EXAMPLE: 25 or 178">
+-->
 <!-- fragments cho header -->
 <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
-    <!-- HTML: Phần nội dung chính -->
-    <main>
-        <div class="main-container">
-            <div class="row">
-                <!-- HTML: Nội dung chính (chi tiết truyện, chapter, bình luận, truyện liên quan) -->
-                <div class="col-lg-8">
-                    <!-- HTML: Breadcrumb điều hướng -->
-                    <div class="comic-path">
-                        <nav class="breadcrumb-nav" aria-label="breadcrumb">
-                            <ol class="breadcrumb" style="font-size: 16px; padding: 10px 0;">
-                                <li class="breadcrumb-item" style="margin-right: 12px;">
-                                    <a th:href="@{'/asura'}" style="text-decoration: none; font-weight: bold;">Asura Scans &gt;</a>
-                                </li>
-                                <li style="margin-left: 4px;">
-                                    <a th:href="@{'/asura/comic/' + ${comic.slug}}"
-                                       class="card-title"
-                                       style="text-decoration: none; font-weight: bold;"
-                                       th:text="${comic.slug}">
-                                    </a>
-                                </li>
-                            </ol>
+<!-- HTML: Phần nội dung chính -->
+<main>
+    <div class="main-container">
+        <div class="row">
+            <!-- HTML: Nội dung chính (chi tiết truyện, chapter, bình luận, truyện liên quan) -->
+            <div class="col-lg-8">
+                <!-- HTML: Breadcrumb điều hướng -->
+                <div class="comic-path">
+                    <nav class="breadcrumb-nav" aria-label="breadcrumb">
+                        <ol class="breadcrumb" style="font-size: 16px; padding: 10px 0;">
+                            <li class="breadcrumb-item" style="margin-right: 12px;">
+                                <a th:href="@{'/asura'}" style="text-decoration: none; font-weight: bold;">Asura Scans ></a>
+                            </li>
+                            <li style="margin-left: 4px;">
+                                <a th:href="@{'/asura/comic/' + ${comic.slug}}"
+                                   class="card-title"
+                                   style="text-decoration: none; font-weight: bold;"
+                                   th:text="${comic.slug}">Comic Slug</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
 
+                <!-- HTML: Phần chi tiết truyện -->
+                <div class="comic-details">
+                    <!-- Left column: Cover image, bookmark button, stats -->
+                    <div class="left-column">
+                        <img th:src="${comic.coverImage}" class="comic-cover" th:alt="${comic.title} + ' Cover'">
+                        <button class="bookmark-btn"><i class="fas fa-bookmark"></i> Bookmark</button>
 
-                        </nav>
-                    </div>
+                        <div class="stats">
+                                <span>
+                                    <strong>Followed by:</strong>
+                                    <span th:text="${comic.followCount} + ' people'">0 people</span>
+                                </span>
 
-
-
-                    <!-- HTML: Phần chi tiết truyện -->
-                    <div class="comic-details">
-                        <!-- Left column: Cover image, bookmark button, stats -->
-                        <div class="left-column">
-                            <img th:src="${comic.coverImage}" class="comic-cover" th:alt="${comic.title} + ' Cover'">
-                            <button class="bookmark-btn"><i class="fas fa-bookmark"></i> Bookmark</button>
-
-                            <div class="stats">
-            <span>
-                <strong>Followed by:</strong>
-                <span th:text="${comic.followCount} + ' people'">0 people</span>
-            </span>
-
-                                <div class="rating-row">
-                                    <div class="rating-stars">
-                                        <strong>Rating:</strong>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="rating-value">9.9</span>
-                                    </div>
-                                    <button class="rate-btn">Rate</button>
+                            <div class="rating-row">
+                                <div class="rating-stars">
+                                    <strong>Rating:</strong>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span class="rating-value" th:text="${comic.averageRating != null} ? ${comic.averageRating} : 'N/A'">9.9</span>
                                 </div>
-
-                                <span>
-                <strong>Status:</strong>
-                <span th:text="${comic.status}">Unknown</span>
-            </span>
-
-                                <span>
-                <strong>Type:</strong>
-                <span th:text="${comic.type}">Unknown</span>
-            </span>
-                            </div>
-                        </div>
-
-                        <!-- Right column: Title, social icons, synopsis, meta info, genres -->
-                        <div class="right-column">
-                            <h1 class="comic-title" th:text="${comic.title}">Comic Title</h1>
-
-                            <div class="social-icons">
-                                <a href="#" class="facebook">Facebook</a>
-                                <a href="#" class="twitter">Twitter</a>
-                                <a href="#" class="whatsapp">WhatsApp</a>
-                                <a href="#" class="pinterest">Pinterest</a>
+                                <button class="rate-btn">Rate</button>
                             </div>
 
-                            <p class="synopsis">
-                                <strong th:text="'Synopsis ' + ${comic.title} + ':'">Synopsis:</strong>
-                                <span th:utext="${comic.description}">No description available.</span>
-                            </p>
+                            <span>
+                                    <strong>Status:</strong>
+                                    <span th:text="${comic.status != null} ? ${comic.status} : 'Unknown'">Unknown</span>
+                                </span>
 
-                            <div class="meta-info">
-            <span>
-                <strong>Serialization:</strong>
-                <span th:text="${comic.serialization != null} ? ${comic.serialization} : '-'">-</span>
-            </span>
-
-                                <span>
-                <strong>Author:</strong>
-                <span th:each="comicAuthor, iterStat : ${comic.comicAuthors}">
-                    <a th:href="'/asura/authors/' + ${comicAuthor.author.slug}" style="text-decoration: none;" th:text="${comicAuthor.author.name}">Author Name</a>
-                    <span th:if="${!iterStat.last}">/</span>
-                </span>
-                <span th:if="${comic.comicAuthors.isEmpty()}">-</span>
-            </span>
-
-                                <span>
-                <strong>Artist:</strong>
-                <span th:each="comicArtist, iterStat : ${comic.comicArtists}">
-                    <a th:href="'/artists/' + ${comicArtist.artist.slug}" style="text-decoration: none;" th:text="${comicArtist.artist.name}">Artist Name</a>
-                    <span th:if="${!iterStat.last}">/</span>
-                </span>
-                <span th:if="${comic.comicArtists.isEmpty()}">-</span>
-            </span>
-
-                                <span>
-                <strong>Updated On:</strong>
-                <span th:text="${#temporals.format(comic.updatedAt, 'MMMM d yyyy')}">Unknown</span>
-            </span>
-                            </div>
-
-                            <div class="genres">
-                                <span><strong>Genres:</strong></span>
-                                <span th:each="comicGenre : ${comic.comicGenres}">
-                <a th:href="'/genres/' + ${comicGenre.genre.slug}" class="genre-tag" th:text="${comicGenre.genre.name}">Genre</a>
-            </span>
-                                <span th:if="${comic.comicGenres.isEmpty()}">No genres available</span>
-                            </div>
+                            <span>
+                                    <strong>Type:</strong>
+                                    <span th:text="${comic.type != null} ? ${comic.type} : 'Unknown'">Unknown</span>
+                                </span>
                         </div>
                     </div>
 
+                    <!-- Right column: Title, social icons, synopsis, meta info, genres -->
+                    <div class="right-column">
+                        <h1 class="comic-title" th:text="${comic.title}">Comic Title</h1>
 
-                    <!-- HTML: Phần danh sách chapter (đã chỉnh sửa để có thể cuộn) -->
-                    <div class="chapter-section">
-                        <!-- HTML: Tiêu đề danh sách chapter -->
-                        <h2>Chapter Nano Machine</h2>
-                        <!-- HTML: Các nút điều hướng đến chapter đầu và mới nhất -->
-                        <div class="chapter-buttons">
-                            <button>First Chapter<br>Chapter 1</button>
-                            <button>87. Dragon Turtle (5)<br>Chapter 258</button>
+                        <div class="social-icons">
+                            <a href="#" class="facebook">Facebook</a>
+                            <a href="#" class="twitter">Twitter</a>
+                            <a href="#" class="whatsapp">WhatsApp</a>
+                            <a href="#" class="pinterest">Pinterest</a>
                         </div>
-                        <!-- HTML: Thanh tìm kiếm chapter -->
-                        <input type="text" class="chapter-search-bar" placeholder="Search Chapter. EXAMPLE: 25 or 178">
-                        <!-- HTML: Container cho danh sách chapter với thanh cuộn -->
-                        <div class="chapter-list-container">
-                            <ul class="chapter-list">
-                                <!-- HTML: Các mục chapter (mở rộng danh sách để kiểm tra thanh cuộn) -->
-                                <li><a href="#">Chapter 258 87. Dragon Turtle (5)</a><span>April 30th 2025</span></li>
-                                <li><a href="#">Chapter 257 87. Dragon Turtle (4)</a><span>April 23rd 2025</span></li>
-                                <li><a href="#">Chapter 256 87. Dragon Turtle (3)</a><span>April 23rd 2025</span></li>
-                                <li><a href="#">Chapter 255 87. Dragon Turtle (2)</a><span>April 16th 2025</span></li>
-                                <li><a href="#">Chapter 254 87. Dragon Turtle (1)</a><span>April 9th 2025</span></li>
-                                <li><a href="#">Chapter 253</a><span>April 2nd 2025</span></li>
-                                <li><a href="#">Chapter 252</a><span>March 26th 2025</span></li>
-                                <li><a href="#">Chapter 251</a><span>March 19th 2025</span></li>
-                                <li><a href="#">Chapter 250</a><span>March 12th 2025</span></li>
-                                <li><a href="#">Chapter 249</a><span>March 5th 2025</span></li>
-                                <li><a href="#">Chapter 248</a><span>February 26th 2025</span></li>
-                                <li><a href="#">Chapter 247</a><span>February 19th 2025</span></li>
-                            </ul>
+
+                        <p class="synopsis">
+                            <strong th:text="'Synopsis ' + ${comic.title} + ':'">Synopsis:</strong>
+                            <span th:utext="${comic.description != null} ? ${comic.description} : 'No description available.'">No description available.</span>
+                        </p>
+
+                        <div class="meta-info">
+                                <span>
+                                    <strong>Serialization:</strong>
+                                    <span th:text="${comic.serialization != null} ? ${comic.serialization} : '-'">-</span>
+                                </span>
+
+                            <span>
+                                    <strong>Author:</strong>
+                                    <span th:each="comicAuthor, iterStat : ${comic.comicAuthors}">
+                                        <a th:href="@{'/asura/authors/' + ${comicAuthor.author.slug}}"
+                                           style="text-decoration: none;"
+                                           th:text="${comicAuthor.author.name}">Author Name</a>
+                                        <span th:if="${!iterStat.last}">/</span>
+                                    </span>
+                                    <span th:if="${#lists.isEmpty(comic.comicAuthors)}">-</span>
+                                </span>
+
+                            <span>
+                                    <strong>Artist:</strong>
+                                    <span th:each="comicArtist, iterStat : ${comic.comicArtists}">
+                                        <a th:href="@{'/artists/' + ${comicArtist.artist.slug}}"
+                                           style="text-decoration: none;"
+                                           th:text="${comicArtist.artist.name}">Artist Name</a>
+                                        <span th:if="${!iterStat.last}">/</span>
+                                    </span>
+                                    <span th:if="${#lists.isEmpty(comic.comicArtists)}">-</span>
+                                </span>
+
+                            <span>
+                                    <strong>Updated On:</strong>
+                                    <span th:text="${#temporals.format(comic.updatedAt, 'MMMM dd, yyyy')}">Unknown</span>
+                                </span>
                         </div>
-                    </div>
 
-                    <!-- HTML: Phần bình luận -->
-                    <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>
-
-
-
-                    <!-- HTML: Phần truyện liên quan -->
-                    <div class="related-comics-section">
-                        <h2>Related Series</h2>
-                        <hr>
-                        <div class="related-comics-list">
-                            <div class="related-comic-item">
-                                <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" alt="Solo Max-Level Newbie">
-                                <span class="status">Ongoing</span>
-                                <a href="#">Solo Max-Level Newbie</a>
-                                <div class="chapter">Chapter 204</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="related-comic-item">
-                                <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Wandering Warrior of Wudang">
-                                <span class="status">Ongoing</span>
-                                <a href="#">Wandering Warrior of Wudang</a>
-                                <div class="chapter">Chapter 148</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.8</span>
-                                </div>
-                            </div>
-                            <div class="related-comic-item">
-                                <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Regressor Instruction Manual">
-                                <span class="status">Ongoing</span>
-                                <a href="#">Regressor Instruction Manual</a>
-                                <div class="chapter">Chapter 134</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>10</span>
-                                </div>
-                            </div>
-                            <div class="related-comic-item">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="I Am the Fated Villain">
-                                <span class="status">Ongoing</span>
-                                <a href="#">I Am the Fated Villain</a>
-                                <div class="chapter">Chapter 246</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="related-comic-item">
-                                <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="The Hero Returns">
-                                <span class="status">Ongoing</span>
-                                <a href="#">The Hero Returns</a>
-                                <div class="chapter">Chapter 122</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
+                        <div class="genres">
+                            <span><strong>Genres:</strong></span>
+                            <span th:each="comicGenre : ${comic.comicGenres}">
+                                    <a th:href="@{'/genres/' + ${comicGenre.genre.slug}}"
+                                       class="genre-tag"
+                                       th:text="${comicGenre.genre.name}">Genre</a>
+                                </span>
+                            <span th:if="${#lists.isEmpty(comic.comicGenres)}">No genres available</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- HTML: Sidebar (phần truyện phổ biến) -->
-                <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
+                <!-- HTML: Phần danh sách chapter-->
+                <div class="chapter-section">
+                    <!-- HTML: Tiêu đề danh sách chapter -->
+                    <h2 th:text="'Chapter: ' + ${comic.title}">Chapter Nano Machine</h2>
+                    <!-- HTML: Các nút điều hướng đến chapter đầu và mới nhất -->
+                    <div class="chapter-buttons">
+                        <button th:if="${firstChapter != null}"
+                                th:onclick="'location.href=\'' + @{/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} + '\''">
+                            <span>First Chapter</span><br>
+                            <span th:text="'Chapter ' + ${firstChapter.chapterNumber}">Chapter 1</span>
+                        </button>
 
+                        <button th:if="${latestChapter != null}"
+                                th:onclick="'location.href=\'' + @{/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} + '\''">
+                            <span>New Chapter</span><br>
+                            <span th:text="${latestChapter.title != null and !latestChapter.title.isEmpty()} ? ${latestChapter.title} : 'New Chapter'">New Chapter</span>
+                        </button>
+                    </div>
+
+                    <!-- HTML: Thanh tìm kiếm chapter -->
+                    <input type="text" class="chapter-search-bar" placeholder="Search Chapter. EXAMPLE: 25 or 178">
+
+                    <!-- HTML: Container cho danh sách chapter với thanh cuộn -->
+                    <div class="chapter-list-container">
+                        <ul class="chapter-list">
+                            <li th:each="chapter : ${chapters}">
+                                <a th:href="@{/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})}"
+                                   th:text="'Chapter ' + ${chapter.chapterNumber}">Chapter title</a>
+                                <span th:text="${#temporals.format(chapter.updatedAt, 'MMMM dd, yyyy')}">Unknown</span>
+                            </li>
+                            <li th:if="${#lists.isEmpty(chapters)}">No chapters available</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- HTML: Phần bình luận -->
+                <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>
+
+                <!-- HTML: Phần truyện liên quan -->
+                <div class="related-comics-section">
+                    <h2>Related Series</h2>
+                    <hr>
+                    <div class="related-comics-list">
+                        <div class="related-comic-item">
+                            <img src="https://gg.asuracomic.net/storage/media/243337/conversions/01J9AHYZQ90WM6831SZ98MGN55-thumb-small.webp" alt="Solo Max-Level Newbie">
+                            <span class="status">Ongoing</span>
+                            <a href="#">Solo Max-Level Newbie</a>
+                            <div class="chapter">Chapter 204</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>9.9</span>
+                            </div>
+                        </div>
+                        <div class="related-comic-item">
+                            <img src="https://gg.asuracomic.net/storage/media/290486/conversions/01JSW8XZYKX9DMQDW4TGP54557-thumb-small.webp" alt="Wandering Warrior of Wudang">
+                            <span class="status">Ongoing</span>
+                            <a href="#">Wandering Warrior of Wudang</a>
+                            <div class="chapter">Chapter 148</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>9.8</span>
+                            </div>
+                        </div>
+                        <div class="related-comic-item">
+                            <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Regressor Instruction Manual">
+                            <span class="status">Ongoing</span>
+                            <a href="#">Regressor Instruction Manual</a>
+                            <div class="chapter">Chapter 134</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>10</span>
+                            </div>
+                        </div>
+                        <div class="related-comic-item">
+                            <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="I Am the Fated Villain">
+                            <span class="status">Ongoing</span>
+                            <a href="#">I Am the Fated Villain</a>
+                            <div class="chapter">Chapter 246</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>9.9</span>
+                            </div>
+                        </div>
+                        <div class="related-comic-item">
+                            <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="The Hero Returns">
+                            <span class="status">Ongoing</span>
+                            <a href="#">The Hero Returns</a>
+                            <div class="chapter">Chapter 122</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>9.9</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- HTML: Sidebar (phần truyện phổ biến) -->
+            <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
+
         </div>
-    </main>
+    </div>
+</main>
 
 <!-- Footer Section -->
 <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
-    <!-- JavaScript: Xử lý chuyển đổi tab -->
-    <script>
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
+<!-- JavaScript: Xử lý chuyển đổi tab -->
+<script>
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
 
-                tab.classList.add('active');
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById(`${tabName}List`).classList.add('active');
-            });
+            tab.classList.add('active');
+            const tabName = tab.getAttribute('data-tab');
+            document.getElementById(`${tabName}List`).classList.add('active');
         });
-    </script>
+    });
+</script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
