@@ -48,6 +48,7 @@ public class ComicService {
                                 .map(author -> author.getAuthor().getName()) // assuming Author has getName()
                                 .findFirst()
                                 .orElse("Unknown"))
+                        .slug(comic.getSlug())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -102,34 +103,20 @@ public class ComicService {
     }*/
 
     // Lấy top 10 truyện tuần
-    /*public List<ComicTopDTO> getTop10CombinedWeekly() {
-        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
-        return comicRepository.findTop10Weekly(startDate)
-                .stream()
-                .map(row -> new ComicTopDTO(
-                        ((Number) row[0]).longValue(), // id
-                        (String) row[1],               // title
-                        (String) row[2],               // cover_image
-                        ((Number) row[3]).doubleValue(), // average_rating
-                        ((Number) row[4]).longValue(), // view_count
-                        (String) row[5],               // genres
-                        ((Number) row[6]).doubleValue() // combined_score
-                ))
-                .collect(Collectors.toList());
-    }*/
     public List<ComicTopDTO> getTop10CombinedWeekly() {
         LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
         List<Object[]> result = comicRepository.findTop10Weekly(startDate);
         System.out.println("Raw result: " + result);
         return result.stream()
                 .map(row -> new ComicTopDTO(
-                        ((Number) row[0]).longValue(),
-                        (String) row[1],
-                        (String) row[2],
-                        ((Number) row[3]).doubleValue(),
-                        ((Number) row[4]).longValue(),
-                        (String) row[5],
-                        ((Number) row[6]).doubleValue()
+                        ((Number) row[0]).longValue(), // id
+                        (String) row[1],               // title
+                        (String) row[2],               // coverImage
+                        ((Number) row[3]).doubleValue(), // averageRating
+                        ((Number) row[4]).longValue(), // viewCount
+                        (String) row[5],               // genres
+                        ((Number) row[6]).doubleValue(), // combinedScore
+                        (String) row[7]                // slug
                 ))
                 .collect(Collectors.toList());
     }
@@ -140,36 +127,34 @@ public class ComicService {
         return comicRepository.findTop10Monthly(startDate)
                 .stream()
                 .map(row -> new ComicTopDTO(
-                        ((Number) row[0]).longValue(),
-                        (String) row[1],
-                        (String) row[2],
-                        ((Number) row[3]).doubleValue(),
-                        ((Number) row[4]).longValue(),
-                        (String) row[5],
-                        ((Number) row[6]).doubleValue()
-                ))
-                .collect(Collectors.toList());
-    }
-
-    // Lấy top 10 truyện tất cả thời gian
-    public List<ComicTopDTO> getTop10CombinedAll() {
-        return comicRepository.findTop10All()
-                .stream()
-                .map(row -> new ComicTopDTO(
-                        ((Number) row[0]).longValue(),
-                        (String) row[1],
-                        (String) row[2],
-                        ((Number) row[3]).doubleValue(),
-                        ((Number) row[4]).longValue(),
-                        (String) row[5],
-                        ((Number) row[6]).doubleValue()
+                        ((Number) row[0]).longValue(), // id
+                        (String) row[1],               // title
+                        (String) row[2],               // coverImage
+                        ((Number) row[3]).doubleValue(), // averageRating
+                        ((Number) row[4]).longValue(), // viewCount
+                        (String) row[5],               // genres
+                        ((Number) row[6]).doubleValue(), // combinedScore
+                        (String) row[7]                // slug
                 ))
                 .collect(Collectors.toList());
     }
 
 
-    public List<Comic> getLatestComics(int page, int size) {
+
+   /* public List<Comic> getLatestComics(int page, int size) {
         Page<Comic> comicPage = comicRepository.findLatestPublishedComics(PageRequest.of(page, size));
         return comicPage.getContent();
+    }*/
+
+   /* public List<Comic> getAllComics(int page, int size) {
+        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
+        return comicPage.getContent();
+    }*/
+
+    // lấy all truyện trên database
+    public Page<Comic> getComicPage(int page, int size) {
+        return comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
     }
+
+
 }

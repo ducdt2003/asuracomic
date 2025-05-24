@@ -306,7 +306,10 @@ main {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+
 }
+
+
 
 .popular-today .card-title:hover {
     color: #ff8c00;

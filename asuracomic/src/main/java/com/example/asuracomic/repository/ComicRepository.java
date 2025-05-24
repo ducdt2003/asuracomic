@@ -29,6 +29,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
 
     // Top 10 truyện phổ biến trong 7 ngày qua
     // Top 10 weekly
+    // Top 10 truyện phổ biến trong 7 ngày qua
     @Query(value = """
         WITH ViewCounts AS (
             SELECT 
@@ -37,7 +38,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
                 c.cover_image, 
                 COALESCE(c.average_rating, 0) AS average_rating, 
                 COUNT(cv.id) AS view_count,
-                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres
+                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres,
+                c.slug
             FROM 
                 comics c
                 LEFT JOIN comic_views cv ON c.id = cv.comic_id 
@@ -47,7 +49,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
             WHERE 
                 c.is_published = TRUE
             GROUP BY 
-                c.id, c.title, c.cover_image, c.average_rating
+                c.id, c.title, c.cover_image, c.average_rating, c.slug
         ),
         MaxViews AS (
             SELECT COALESCE(MAX(view_count), 1) AS max_views
@@ -63,7 +65,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
             CASE 
                 WHEN vc.view_count = 0 THEN (0.3 * (vc.average_rating / 5.0) * 100)
                 ELSE (0.7 * (vc.view_count / NULLIF(mv.max_views, 0)) * 100) + (0.3 * (vc.average_rating / 5.0) * 100)
-            END AS combined_score
+            END AS combined_score,
+            vc.slug
         FROM 
             ViewCounts vc
             CROSS JOIN MaxViews mv
@@ -73,7 +76,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     """, nativeQuery = true)
     List<Object[]> findTop10Weekly(@Param("startDate") LocalDateTime startDate);
 
-    // Top 10 monthly
+    // Top 10 truyện tháng
     @Query(value = """
         WITH ViewCounts AS (
             SELECT 
@@ -82,7 +85,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
                 c.cover_image, 
                 COALESCE(c.average_rating, 0) AS average_rating, 
                 COUNT(cv.id) AS view_count,
-                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres
+                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres,
+                c.slug
             FROM 
                 comics c
                 LEFT JOIN comic_views cv ON c.id = cv.comic_id 
@@ -92,10 +96,10 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
             WHERE 
                 c.is_published = TRUE
             GROUP BY 
-                c.id, c.title, c.cover_image, c.average_rating
+                c.id, c.title, c.cover_image, c.average_rating, c.slug
         ),
         MaxViews AS (
-            SELECT MAX(view_count) as max_views
+            SELECT COALESCE(MAX(view_count), 1) AS max_views
             FROM ViewCounts
         )
         SELECT 
@@ -106,7 +110,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
             vc.view_count,
             vc.genres,
             (0.7 * (vc.view_count / NULLIF(mv.max_views, 0)) * 100) + 
-            (0.3 * (vc.average_rating / 5.0) * 100) as combined_score
+            (0.3 * (vc.average_rating / 5.0) * 100) AS combined_score,
+            vc.slug
         FROM 
             ViewCounts vc
             CROSS JOIN MaxViews mv
@@ -116,51 +121,17 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     """, nativeQuery = true)
     List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);
 
-    // Top 10 all time
-    @Query(value = """
-        WITH ViewCounts AS (
-            SELECT 
-                c.id, 
-                c.title, 
-                c.cover_image, 
-                COALESCE(c.average_rating, 0) AS average_rating, 
-                COALESCE(c.view_count, 0) AS view_count,
-                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres
-            FROM 
-                comics c
-                LEFT JOIN comic_genres cg ON c.id = cg.comic_id
-                LEFT JOIN genres g ON cg.genre_id = g.id
-            WHERE 
-                c.is_published = TRUE
-            GROUP BY 
-                c.id, c.title, c.cover_image, c.average_rating, c.view_count
-        ),
-        MaxViews AS (
-            SELECT MAX(view_count) as max_views
-            FROM ViewCounts
-        )
-        SELECT 
-            vc.id,
-            vc.title,
-            vc.cover_image,
-            vc.average_rating,
-            vc.view_count,
-            vc.genres,
-            (0.7 * (vc.view_count / NULLIF(mv.max_views, 0)) * 100) + 
-            (0.3 * (vc.average_rating / 5.0) * 100) as combined_score
-        FROM 
-            ViewCounts vc
-            CROSS JOIN MaxViews mv
-        ORDER BY 
-            combined_score DESC
-        LIMIT 10
-    """, nativeQuery = true)
-    List<Object[]> findTop10All();
 
 
 
-    @Query("SELECT c FROM Comic c WHERE c.isPublished = true ORDER BY c.updatedAt DESC")
-    Page<Comic> findLatestPublishedComics(Pageable pageable);
+    /*@Query("SELECT c FROM Comic c WHERE c.isPublished = true ORDER BY c.updatedAt DESC")
+    Page<Comic> findLatestPublishedComics(Pageable pageable);*/
+
+
+    // Không cần @Query, chỉ cần dùng method name
+    Page<Comic> findAllByOrderByUpdatedAtDesc(Pageable pageable);
+
+
 
 
 

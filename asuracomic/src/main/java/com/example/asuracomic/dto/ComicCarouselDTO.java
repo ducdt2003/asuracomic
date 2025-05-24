@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class ComicCarouselDTO {
     private Long id;
     private String title;
@@ -23,4 +24,5 @@ public class ComicCarouselDTO {
     private ComicStatus status;
     private String coverImage;
     private String author;
+    private String slug;
 }

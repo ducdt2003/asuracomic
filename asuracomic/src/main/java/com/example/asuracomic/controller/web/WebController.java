@@ -24,7 +24,9 @@ public class WebController {
     private final ComicRepository comicRepository;
     // trang chủ
     @GetMapping
-    public String homeLogin(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String homeLogin(  @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "50") int size,
+                              Model model) {
         // top comics rating
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
@@ -35,17 +37,16 @@ public class WebController {
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("top10All", top10All);
 
 
 
-        int pageSize = 12;
-        Page<Comic> comicPage = comicRepository.findLatestPublishedComics(PageRequest.of(page, pageSize));
+
+
+        Page<Comic> comicPage = comicService.getComicPage(page, size);
         model.addAttribute("comics", comicPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", comicPage.getTotalPages());
@@ -60,12 +61,12 @@ public class WebController {
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
+
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("top10All", top10All);
+
         return "web/web-main/detail";
     }
 
@@ -82,12 +83,12 @@ public class WebController {
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
+
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("top10All", top10All);
+
         return "web/web-templates/series";
     }
 
@@ -96,12 +97,12 @@ public class WebController {
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
-        List<ComicTopDTO> top10All = comicService.getTop10CombinedAll();
+
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("top10All", top10All);
+
         return "web/web-templates/bookmarks";
     }
 

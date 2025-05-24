@@ -11,8 +11,9 @@ public class ComicTopDTO {
     private Long viewCount;
     private String genres;
     private Double combinedScore;
+    private String slug;
 
-    public ComicTopDTO(Long id, String title, String coverImage, Double averageRating, Long viewCount, String genres, Double combinedScore) {
+    public ComicTopDTO(Long id, String title, String coverImage, Double averageRating, Long viewCount, String genres, Double combinedScore, String slug) {
         this.id = id;
         this.title = title;
         this.coverImage = coverImage;
@@ -20,5 +21,6 @@ public class ComicTopDTO {
         this.viewCount = viewCount;
         this.genres = genres;
         this.combinedScore = combinedScore;
+        this.slug = slug;
     }
 }
