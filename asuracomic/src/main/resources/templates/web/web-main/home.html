@@ -86,9 +86,11 @@
                         </h2>
                         <div class="comic-grid" id="comicGrid">
                             <div class="comic-item" th:each="comic : ${comics}" th:attr="data-id=${comic.id}">
-                                <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                                <a th:href="@{'/asura/comic/' + ${comic.slug}}">
+                                    <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                                </a>
                                 <div class="comic-info">
-                                    <a th:href="@{'/comic/' + ${comic.slug}}" class="comic-title" th:text="${comic.title}" th:title="${comic.title}"></a>
+                                    <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="comic-title" th:text="${comic.title}" th:title="${comic.title}"></a>
                                     <div class="comic-meta">
                         <span class="rating" th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)} + ' '">
                             <i class="fas fa-star"></i>
