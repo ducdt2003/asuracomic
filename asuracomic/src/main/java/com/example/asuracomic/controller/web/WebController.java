@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,7 +58,10 @@ public class WebController {
 
     // trang chi tiết
     @GetMapping("/comic/{slug}")
-    public String detail(Model model) {
+    public String detail(@PathVariable String slug, Model model) {
+        Comic comic = comicService.getComicDetailsBySlug(slug);
+        model.addAttribute("comic", comic);
+
         // Lấy danh sách top 10 cho tuần, tháng, và tất cả thời gian
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
@@ -66,6 +70,7 @@ public class WebController {
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
+
 
         return "web/web-main/detail";
     }
@@ -111,7 +116,7 @@ public class WebController {
         return "web/web-templates/report";
     }
 
-    @GetMapping("/author")
+    @GetMapping("/authors")
     public String author(){
         return "web/web-templates/author-template";
     }

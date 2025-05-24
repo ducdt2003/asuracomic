@@ -157,4 +157,13 @@ public class ComicService {
     }
 
 
+
+    public Comic getComicDetailsBySlug(String slug) {
+        return comicRepository.findBySlugAndIsPublishedTrue(slug)
+                .orElseThrow(() -> new RuntimeException("Comic not found or not published"));
+    }
+
+
+
+
 }

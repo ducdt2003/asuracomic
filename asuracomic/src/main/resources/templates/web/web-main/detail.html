@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,14 +31,21 @@
                         </nav>
                     </div>
 
+
+
                     <!-- HTML: Phần chi tiết truyện -->
                     <div class="comic-details">
-                        <!-- HTML: Cột trái (ảnh bìa, nút bookmark, thông tin) -->
+                        <!-- Left column: Cover image, bookmark button, stats -->
                         <div class="left-column">
-                            <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-optimized.webp" class="comic-cover" alt="Nano Machine Cover">
+                            <img th:src="${comic.coverImage}" class="comic-cover" th:alt="${comic.title} + ' Cover'">
                             <button class="bookmark-btn"><i class="fas fa-bookmark"></i> Bookmark</button>
+
                             <div class="stats">
-                                <span><strong>Followed by:</strong> 46994 people</span>
+            <span>
+                <strong>Followed by:</strong>
+                <span th:text="${comic.followCount} + ' people'">0 people</span>
+            </span>
+
                                 <div class="rating-row">
                                     <div class="rating-stars">
                                         <strong>Rating:</strong>
@@ -51,39 +58,75 @@
                                     </div>
                                     <button class="rate-btn">Rate</button>
                                 </div>
-                                <span><strong>Status:</strong> Ongoing</span>
-                                <span><strong>Type:</strong> Manhwa</span>
+
+                                <span>
+                <strong>Status:</strong>
+                <span th:text="${comic.status}">Unknown</span>
+            </span>
+
+                                <span>
+                <strong>Type:</strong>
+                <span th:text="${comic.type}">Unknown</span>
+            </span>
                             </div>
                         </div>
-                        <!-- HTML: Cột phải (tiêu đề, thông tin, thể loại) -->
+
+                        <!-- Right column: Title, social icons, synopsis, meta info, genres -->
                         <div class="right-column">
-                            <h1 class="comic-title">Nano Machine</h1>
+                            <h1 class="comic-title" th:text="${comic.title}">Comic Title</h1>
+
                             <div class="social-icons">
                                 <a href="#" class="facebook">Facebook</a>
                                 <a href="#" class="twitter">Twitter</a>
                                 <a href="#" class="whatsapp">WhatsApp</a>
                                 <a href="#" class="pinterest">Pinterest</a>
                             </div>
+
                             <p class="synopsis">
-                                <strong>Synopsis Nano Machine:</strong> Nanotechnology meets martial arts at the Mashin Academy. Yeo-un's mother may not be one of the High Priest's six official wives, but his father's blood still qualifies him for a chance at the position of Minor Priest. Will a mysterious nanomachine injection from a future descendant help Yeo-un in this fierce competition against his powerful half-siblings?
+                                <strong th:text="'Synopsis ' + ${comic.title} + ':'">Synopsis:</strong>
+                                <span th:utext="${comic.description}">No description available.</span>
                             </p>
+
                             <div class="meta-info">
-                                <span><strong>Serialization:</strong> -</span>
-                                <span><strong>Author:</strong> Hanjoong Wolya / Hyun Jeolmu</span>
-                                <span><strong>Artist:</strong> Redice Studio / Indestructible</span>
-                                <span><strong>Updated On:</strong> May 1st 2025</span>
+            <span>
+                <strong>Serialization:</strong>
+                <span th:text="${comic.serialization != null} ? ${comic.serialization} : '-'">-</span>
+            </span>
+
+                                <span>
+                <strong>Author:</strong>
+                <span th:each="comicAuthor, iterStat : ${comic.comicAuthors}">
+                    <a th:href="'/asura/authors/' + ${comicAuthor.author.slug}" style="text-decoration: none;" th:text="${comicAuthor.author.name}">Author Name</a>
+                    <span th:if="${!iterStat.last}">/</span>
+                </span>
+                <span th:if="${comic.comicAuthors.isEmpty()}">-</span>
+            </span>
+
+                                <span>
+                <strong>Artist:</strong>
+                <span th:each="comicArtist, iterStat : ${comic.comicArtists}">
+                    <a th:href="'/artists/' + ${comicArtist.artist.slug}" style="text-decoration: none;" th:text="${comicArtist.artist.name}">Artist Name</a>
+                    <span th:if="${!iterStat.last}">/</span>
+                </span>
+                <span th:if="${comic.comicArtists.isEmpty()}">-</span>
+            </span>
+
+                                <span>
+                <strong>Updated On:</strong>
+                <span th:text="${#temporals.format(comic.updatedAt, 'MMMM d yyyy')}">Unknown</span>
+            </span>
                             </div>
+
                             <div class="genres">
                                 <span><strong>Genres:</strong></span>
-                                <a href="#" class="genre-tag">Action</a>
-                                <a href="#" class="genre-tag">Adventure</a>
-                                <a href="#" class="genre-tag">Fantasy</a>
-                                <a href="#" class="genre-tag">Martial Arts</a>
-                                <a href="#" class="genre-tag">Murim</a>
-                                <a href="#" class="genre-tag">System</a>
+                                <span th:each="comicGenre : ${comic.comicGenres}">
+                <a th:href="'/genres/' + ${comicGenre.genre.slug}" class="genre-tag" th:text="${comicGenre.genre.name}">Genre</a>
+            </span>
+                                <span th:if="${comic.comicGenres.isEmpty()}">No genres available</span>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- HTML: Phần danh sách chapter (đã chỉnh sửa để có thể cuộn) -->
                     <div class="chapter-section">

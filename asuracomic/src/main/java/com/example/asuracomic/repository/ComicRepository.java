@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface ComicRepository extends JpaRepository<Comic, Long> {
 
 
+
     // 5 truyện có đánh giá cao nhất
     List<Comic> findTop5ByIsPublishedTrueOrderByAverageRatingDesc();
 
@@ -134,6 +135,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
 
 
 
+    Optional<Comic> findBySlugAndIsPublishedTrue(String slug);
 
 
 }
