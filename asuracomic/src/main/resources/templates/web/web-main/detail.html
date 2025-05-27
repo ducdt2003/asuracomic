@@ -171,8 +171,11 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center"
                                 th:each="chapter : ${chapters}">
                                 <a th:href="@{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})}"
-                                   th:text="'Chapter ' + ${chapter.chapterNumber}"
-                                   class="text-decoration-none">Chapter title</a>
+                                   class="text-decoration-none">
+                                    <span th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                    <!-- Thêm icon khóa nếu chương không miễn phí -->
+                                    <span th:if="${!chapter.isFree}" style="color: red; margin-left: 5px;">&#128274;</span>
+                                </a>
                                 <span th:text="${#temporals.format(chapter.updatedAt, 'MMMM dd, yyyy')} ?: 'Unknown'">Unknown</span>
                             </li>
                             <li class="list-group-item" th:if="${#lists.isEmpty(chapters)}">No chapters available</li>

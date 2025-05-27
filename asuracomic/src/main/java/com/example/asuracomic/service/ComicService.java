@@ -7,17 +7,20 @@ import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.entity.Comment;
+import com.example.asuracomic.entity.Genre;
+import com.example.asuracomic.model.enums.ComicStatus;
+import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.CommentStatus;
-import com.example.asuracomic.repository.ChapterRepository;
-import com.example.asuracomic.repository.ComicGenreRepository;
-import com.example.asuracomic.repository.ComicRepository;
-import com.example.asuracomic.repository.ComicViewRepository;
+import com.example.asuracomic.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +31,7 @@ public class ComicService {
     private final ComicRepository comicRepository;
     private final ComicViewRepository comicViewRepository;
     private final ChapterRepository chapterRepository;
-
+    private final GenreRepository genreRepository;
     public Comic getComicById(Long id) {
         return comicRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy truyện với ID: " + id));
@@ -158,8 +161,22 @@ public class ComicService {
 
     // lấy all truyện trên database
     public Page<Comic> getComicPage(int page, int size) {
-        return comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
+        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
+
+        comicPage.getContent().forEach(comic -> {
+            List<Chapter> filteredChapters = comic.getChapters().stream()
+                    .filter(Chapter::isPublished)  // chỉ lấy chương đã xuất bản
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed()) // sắp xếp giảm dần
+                    .limit(3)  // lấy 3 chương mới nhất
+                    .collect(Collectors.toList());
+
+            comic.setChapters(filteredChapters);
+        });
+
+        return comicPage;
     }
+
+
 
 
 
@@ -226,6 +243,7 @@ public class ComicService {
                 .findFirst()
                 .orElse(null);
     }
+
 
 
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,9 +9,9 @@
 <body>
 <footer>
     <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Digital Millennium Copyright Act</a>
-        <a href="#">Terms of Service</a>
+        <a th:href="@{'/asura/privacy-policy'}">Privacy Policy</a>
+        <a th:href="@{'/asura/dmcs-notice'}">Digital Millennium Copyright Act</a>
+        <a th:href="@{'/asura/terms-of-service'}">Terms of Service</a>
     </div>
     <div class="footer-logo">
         <img src="https://reaperscans.com/wetried_only.png" alt="Footer Logo">

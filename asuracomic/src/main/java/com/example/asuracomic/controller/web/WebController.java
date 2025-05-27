@@ -33,7 +33,7 @@ public class WebController {
     // trang chủ
     @GetMapping
     public String homeLogin(  @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "50") int size,
+                              @RequestParam(defaultValue = "30") int size,
                               Model model) {
         // top comics rating
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
@@ -161,10 +161,20 @@ public class WebController {
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
 
+        // Lấy danh sách thể loại
+        List<Genre> genres = genreRepository.findAll();
+
+        // Lấy danh sách ComicStatus và ComicType từ enum
+        List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
+        List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
+
 
         // Thêm vào model để hiển thị trên view
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("genres", genres);
+        model.addAttribute("statuses", statuses);
+        model.addAttribute("types", types);
 
         return "web/web-templates/series";
     }

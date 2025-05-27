@@ -1,6 +1,7 @@
 package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.model.enums.ComicType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -145,6 +146,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
             "AND c.isPublished = true " +
             "ORDER BY c.viewCount DESC, c.averageRating DESC")
     List<Comic> findRelatedComics(Long comicId, org.springframework.data.domain.Pageable pageable);
+
 
 
 

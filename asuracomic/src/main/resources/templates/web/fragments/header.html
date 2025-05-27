@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,14 +11,13 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <div class="navbar-left">
-                    <a class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
+                    <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
                     <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
-
+                        <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
                     </ul>
                 </div>
                 <div class="navbar-right">
@@ -26,7 +25,7 @@
                         <input type="text" placeholder="Search">
                         <button><i class="fas fa-search"></i></button>
                     </div>
-                    <button class="btn btn-login">Login</button>
+                    <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
                 </div>
             </div>
         </nav>

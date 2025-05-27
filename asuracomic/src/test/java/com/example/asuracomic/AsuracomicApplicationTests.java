@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -65,6 +66,9 @@ class AsuraComicApplicationTests {
 	@Autowired // Tiêm dependency cho repository của VipConfig
 	private VipConfigRepository vipConfigRepository;
 
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 	private final Faker faker = new Faker(); // Khởi tạo đối tượng Faker để tạo dữ liệu giả
 	private final Slugify slugify = Slugify.builder().build(); // Khởi tạo đối tượng Slugify để tạo chuỗi thân thiện với URL
 	private final Random random = new Random(); // Khởi tạo đối tượng Random để tạo số ngẫu nhiên
@@ -88,6 +92,17 @@ class AsuraComicApplicationTests {
 					.lastLogin(LocalDateTime.now().minusDays(faker.number().numberBetween(0, 30))) // Gán thời điểm đăng nhập cuối ngẫu nhiên trong 30 ngày qua
 					.build();
 			userRepository.save(user); // Lưu người dùng vào cơ sở dữ liệu
+		}
+	}
+
+	@Test
+	void update_user_password() {
+		List<User> users = userRepository.findAll();
+		for (User user : users) {
+			String password = user.getPassword();
+			String newPassword = passwordEncoder.encode(password);
+			user.setPassword(newPassword);
+			userRepository.save(user);
 		}
 	}
 
@@ -153,7 +168,7 @@ class AsuraComicApplicationTests {
 		List<Genre> genres = genreRepository.findAll();
 
 		int createdCount = 0;
-		int targetCount = 50; // Thay đổi từ 300 thành 50
+		int targetCount = 30; // Thay đổi từ 300 thành 50
 		Set<String> usedSlugs = new HashSet<>(comicRepository.findAll().stream()
 				.map(Comic::getSlug)
 				.toList());

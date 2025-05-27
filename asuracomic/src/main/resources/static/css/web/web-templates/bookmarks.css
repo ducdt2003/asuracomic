@@ -172,56 +172,92 @@
             margin-bottom: 20px;
         }
 
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+       .filters {
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           margin-bottom: 20px;
+       }
 
-        .filters select {
-            background-color: #2a2a2a;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 16px;
-            padding-right: 30px;
-        }
+       .filters form {
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           flex-wrap: nowrap; /* Ngăn xuống dòng để giữ tất cả phần tử trên một hàng */
+           width: 100%; /* Đảm bảo form chiếm toàn bộ chiều rộng của container */
+       }
 
-        .filters select:focus {
-            outline: none;
-            border-color: #666;
-            background-color: #333;
-        }
+       .filters select {
+           background-color: #2a2a2a;
+           color: #fff;
+           border: 1px solid #444;
+           padding: 8px 12px;
+           border-radius: 4px;
+           font-size: 14px;
+           cursor: pointer;
+           appearance: none;
+           -webkit-appearance: none;
+           -moz-appearance: none;
+           background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+           background-repeat: no-repeat;
+           background-position: right 8px center;
+           background-size: 16px;
+           padding-right: 30px;
+           flex: 1; /* Cho phép dropdown chia sẻ không gian trống đồng đều */
+           min-width: 120px; /* Đảm bảo dropdown không thu nhỏ quá nhiều */
+       }
 
-        .filters .search-btn {
-            background-color: #8a4af3;
-            color: #fff;
-            border: 1px solid #a060ff;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-left: 120px;
-        }
+       .filters select:focus {
+           outline: none;
+           border-color: #666;
+           background-color: #333;
+       }
 
-        .filters .search-btn:hover {
-            background-color: #a060ff;
-            border-color: #c084fc;
-        }
+       .filters .search-btn {
+           background-color: #8a4af3;
+           color: #fff;
+           border: 1px solid #a060ff;
+           padding: 8px 16px;
+           border-radius: 4px;
+           font-size: 14px;
+           cursor: pointer;
+           display: flex;
+           align-items: center;
+           gap: 5px;
+           white-space: nowrap; /* Ngăn văn bản trong nút xuống dòng */
+       }
+
+       .filters .search-btn:hover {
+           background-color: #a060ff;
+           border-color: #c084fc;
+       }
+
+       /* Điều chỉnh cho màn hình nhỏ hơn */
+       @media (max-width: 768px) {
+           .filters select {
+               min-width: 100px; /* Giảm chiều rộng tối thiểu cho màn hình nhỏ */
+               font-size: 12px; /* Giảm kích thước chữ */
+               padding: 6px 10px; /* Điều chỉnh padding */
+           }
+
+           .filters .search-btn {
+               font-size: 12px; /* Giảm kích thước chữ */
+               padding: 6px 12px; /* Điều chỉnh padding */
+           }
+       }
+
+       @media (max-width: 480px) {
+           .filters select {
+               min-width: 80px; /* Giảm thêm chiều rộng tối thiểu */
+               font-size: 11px; /* Giảm kích thước chữ */
+               padding: 5px 8px; /* Giảm padding */
+           }
+
+           .filters .search-btn {
+               font-size: 11px; /* Giảm kích thước chữ */
+               padding: 5px 10px; /* Giảm padding */
+           }
+       }
 
         .bookmarks-list {
             display: grid;

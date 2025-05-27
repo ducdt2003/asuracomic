@@ -15,17 +15,23 @@
     <header>
         <nav class="navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
-                </ul>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                    <button><i class="fas fa-search"></i></button>
+                <div class="navbar-left">
+                    <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
+                    <ul class="navbar-nav d-flex flex-row">
+                        <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                    </ul>
                 </div>
-                <button class="btn btn-login">Login</button>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="btn btn-login">Login</button>
+                </div>
             </div>
         </nav>
     </header>
@@ -60,7 +66,7 @@
                 <button class="register-btn">REGISTER</button>
             </form>
             <div class="login-link">
-                Already have Account? <a href="#">Login</a>
+                Already have Account? <a th:href="@{/asura/login}">Login</a>
             </div>
             <div class="or-divider">Or continue with</div>
             <button class="google-btn">

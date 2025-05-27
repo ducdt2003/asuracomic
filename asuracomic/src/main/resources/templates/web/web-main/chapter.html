@@ -907,9 +907,12 @@
             <select onchange="if (this.value) window.location.href = this.value;">
                 <option th:each="chap : ${sortedChapters}"
                         th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
-                        th:text="${chap.title}"
-                        th:selected="${chap.id == chapter.id}">Chapter Title</option>
+                        th:text="${chap.title + (chap.isFree ? '' : ' 🔒')}"
+                        th:selected="${chap.id == chapter.id}">
+                    Chapter Title
+                </option>
             </select>
+
 
             <!-- Nút Report -->
             <button class="report-btn">

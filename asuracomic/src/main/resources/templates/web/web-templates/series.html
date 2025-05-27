@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +14,24 @@
 <!-- Header Section -->
 <header>
     <nav class="navbar">
-        <div class="container-fluid main-container">
-            <a class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
-            <ul class="navbar-nav d-flex flex-row">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
-            </ul>
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
+        <div class="container-fluid">
+            <div class="navbar-left">
+                <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                </ul>
             </div>
-            <button class="btn btn-login">Login</button>
+            <div class="navbar-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <button class="btn btn-login">Login</button>
+            </div>
         </div>
     </nav>
 </header>
@@ -42,30 +46,41 @@
                     <h2>Series list</h2>
                     <hr>
                     <div class="filters">
-                        <select>
-                            <option>Genre All</option>
-                            <option>Action</option>
-                            <option>Fantasy</option>
-                            <option>Drama</option>
-                        </select>
-                        <select>
-                            <option>Status All</option>
-                            <option>Ongoing</option>
-                            <option>Completed</option>
-                        </select>
-                        <select>
-                            <option>Type All</option>
-                            <option>Manhwa</option>
-                            <option>Manhua</option>
-                        </select>
-                        <select>
-                            <option>Order By Last Up...</option>
-                            <option>Order By Rating</option>
-                            <option>Order By Name</option>
-                        </select>
-                        <button class="search-btn">
-                            <i class="fas fa-search"></i> Search
-                        </button>
+                        <form th:action="@{/asura/bookmarks}" method="get">
+                            <!-- Dropdown Genre -->
+                            <select name="genre">
+                                <option value="">Genre All</option>
+                                <option th:each="genre : ${genres}"
+                                        th:value="${genre.slug}"
+                                        th:text="${genre.name}">Genre</option>
+                            </select>
+
+                            <!-- Dropdown Status -->
+                            <select name="status">
+                                <option th:each="status : ${statuses}"
+                                        th:value="${status}"
+                                        th:text="${status == 'ALL' ? 'Status All' : status}">Status</option>
+                            </select>
+
+                            <!-- Dropdown Type -->
+                            <select name="type">
+                                <option th:each="type : ${types}"
+                                        th:value="${type}"
+                                        th:text="${type == 'ALL' ? 'Type All' : type}">Type</option>
+                            </select>
+
+                            <!-- Dropdown Order By -->
+                            <select name="orderBy">
+                                <option value="lastUpdated" selected>Order By Last Up...</option>
+                                <option value="rating">Order By Rating</option>
+                                <option value="name">Order By Name</option>
+                            </select>
+
+                            <!-- Search Button -->
+                            <button type="submit" class="search-btn">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </form>
                     </div>
                     <div class="bookmarks-list">
                         <div class="bookmark-item">

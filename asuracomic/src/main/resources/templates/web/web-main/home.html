@@ -86,39 +86,71 @@
                         <h2 class="mb-4">
                             <span class="new-label">NEW</span> Latest Updates
                         </h2>
+
                         <div class="comic-grid" id="comicGrid">
                             <div class="comic-item" th:each="comic : ${comics}" th:attr="data-id=${comic.id}">
                                 <a th:href="@{'/asura/comic/' + ${comic.slug}}">
                                     <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
                                 </a>
+
                                 <div class="comic-info">
-                                    <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="comic-title" th:text="${comic.title}" th:title="${comic.title}"></a>
+                                    <a th:href="@{'/asura/comic/' + ${comic.slug}}"
+                                       class="comic-title"
+                                       th:text="${comic.title}"
+                                       th:title="${comic.title}"></a>
+
                                     <div class="comic-meta">
                         <span class="rating" th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)} + ' '">
                             <i class="fas fa-star"></i>
                         </span>
                                         <span class="status" th:text="${comic.status}"></span>
                                     </div>
+
                                     <ul class="chapter-list">
-                                        <li class="chapter-item" th:each="chapter, iterStat : ${comic.chapters}"
-                                            th:if="${iterStat.index < 2}"
-                                            th:attr="data-chapter=${chapter.chapterNumber},data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},data-is-free=${chapter.isFree}">
-                                            <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                        <li class="chapter-item"
+                                            th:each="chapter : ${comic.chapters}"
+                                            th:attr="data-chapter=${chapter.chapterNumber},
+               data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},
+               data-is-free=${chapter.isFree}">
+                                            <a th:href="@{'/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug}}" style="text-decoration: none;">
+                                                <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                                <!-- icon khóa nếu có -->
+                                            </a>
                                             <span class="chapter-time" th:attr="data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                         </li>
                                     </ul>
+
+
+
                                 </div>
                             </div>
                         </div>
-                        <div class="pagination" id="pagination">
-                            <a th:if="${currentPage > 0}" th:href="@{'/?page=' + ${currentPage - 1}}">Trước</a>
+
+                        <!-- PHÂN TRANG -->
+                        <div class="pagination" id="pagination" th:if="${totalPages > 0}">
+                            <!-- Trang trước -->
+                            <a th:if="${currentPage > 0}"
+                               th:href="@{'/asura?page=' + ${currentPage - 1}}">Trước</a>
+
+                            <!-- Danh sách trang -->
                             <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                <a th:href="@{'/?page=' + ${i}}" th:class="${i == currentPage} ? 'active' : ''" th:text="${i + 1}"></a>
+                <a th:href="@{'/asura?page=' + ${i}}"
+                   th:classappend="${i == currentPage} ? 'active' : ''"
+                   th:text="${i + 1}"></a>
             </span>
-                            <a th:if="${currentPage < totalPages - 1}" th:href="@{'/?page=' + ${currentPage + 1}}">Sau</a>
+
+                            <!-- Trang sau -->
+                            <a th:if="${currentPage < totalPages - 1}"
+                               th:href="@{'/asura?page=' + ${currentPage + 1}}">Sau</a>
+                        </div>
+
+                        <!-- Nếu không có truyện nào -->
+                        <div th:if="${totalPages == 0}">
+                            <p>Không có truyện để hiển thị.</p>
                         </div>
                     </div>
                 </section>
+
             </div>
             <!-- HTML: Sidebar (phần truyện phổ biến) -->
             <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
@@ -191,7 +223,7 @@
             const timeElement = chapter.querySelector(".chapter-time");
             timeElement.innerHTML = `
                 ${timeStatus === "New" ? `<span class="new-tag">New</span>` : timeStatus}
-                ${isFree ? "" : '<i class="fas fa-lock lock-icon"></i>'}
+                ${isFree ? "" : '<i class="fas fa-lock lock-icon" title="Chapter trả phí" style="color: red; margin-left: 5px;"></i>'}
             `;
         });
     });
