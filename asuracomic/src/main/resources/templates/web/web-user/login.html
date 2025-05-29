@@ -1,80 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANG LOGIN</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/web/web-user/login.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="navbar-left">
-                    <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://reaperscans.com/wetried_only.png" alt="Logo"></a>
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
-                    </ul>
-                </div>
-                <div class="navbar-right">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn btn-login">Login</button>
-                </div>
+<!-- Header Section -->
+<header>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-left">
+                <a th:href="@{'/asura'}" class="navbar-brand">
+                    <img src="https://reaperscans.com/wetried_only.png" alt="Logo">
+                </a>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                </ul>
             </div>
-        </nav>
-    </header>
+            <div class="navbar-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <a href="/asura/login" class="btn btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+</header>
 
-    <!-- Main Body Section -->
-    <main>
-        <div class="main-container">
-            <div class="row">
-                <div class="login-section">
-                    <img src="https://asuracomic.net/images/logo.webp" alt="" srcset="">
-                    <div class="logo">Asura Scans</div>
-                    <h3>Login to your Account</h3>
-                    <input type="email" placeholder="Enter your Email" />
-                    <input type="password" placeholder="Password" />
-                    <div class="options">
-                        <label>
-                            <input type="checkbox" /> Remember me
-                        </label>
-                        <a href="#">Forget Password?</a>
-                    </div>
-                    <button type="submit">Login</button>
-                    <div class="signup-link">
+<!-- Main Body Section -->
+<main>
+    <div class="main-container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-section text-center">
+                    <img src="https://asuracomic.net/images/logo.webp" alt="Logo" class="img-fluid mb-3">
+                    <div class="logo mb-2">Asura Scans</div>
+                    <h3 class="mb-4">Login to your Account</h3>
+
+                    <!-- Hiển thị lỗi nếu có -->
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <!-- Form đăng nhập -->
+                    <form th:action="@{/asura/login}" method="post">
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Enter your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+
+                    <div class="signup-link mt-3">
                         Not a member? <a th:href="@{/asura/register}">Create New Account</a>
                     </div>
-
-                    <div class="divider">Or continue with</div>
-                    <button class="google-btn">
-                        <img src="https://www.google.com/favicon.ico" alt="Google Icon" />
-                        Continue with Google
-                    </button>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- Footer Section -->
-    <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+<!-- Footer Section -->
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
-
-
-
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
