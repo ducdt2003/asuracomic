@@ -109,7 +109,7 @@ class AsuraComicApplicationTests {
 	@Test
 	void save_authors() {
 		// Tạo 20 tác giả ngẫu nhiên
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 30; i++) {
 			String name = faker.book().author(); // Tạo tên tác giả ngẫu nhiên
 			Author author = Author.builder() // Sử dụng builder pattern để tạo đối tượng Author
 					.name(name) // Gán tên tác giả

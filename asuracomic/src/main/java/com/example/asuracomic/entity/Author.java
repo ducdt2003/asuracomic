@@ -26,6 +26,12 @@ public class Author {
     @Column(nullable = false)
     private LocalDateTime createdAt; // Thời điểm thêm tác giả, dùng để quản lý hoặc theo dõi
 
+    @Column(length = 255)
+    private String avatar; // Thêm trường avatar
+
+    @Column(columnDefinition = "TEXT")
+    private String description; // Thêm trường description
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<ComicAuthor> comicAuthors; // Danh sách truyện của tác giả, hiển thị trên trang tác giả
 }

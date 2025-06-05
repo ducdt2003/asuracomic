@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${author.name} + ' - Hồ sơ tác giả'">Hồ sơ tác giả</title>
+    <title th:text="${artist.name} + ' - Hồ sơ họa sĩ'">Hồ sơ họa sĩ</title>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Google Fonts: Poppins -->
@@ -337,18 +337,18 @@
 
 <!-- Main Content -->
 <div class="container">
-    <!-- Phần hero tác giả -->
+    <!-- Phần hero họa sĩ -->
     <div class="profile-hero">
         <img src="https://asuracomic.net/images/logo.webp"
-             th:alt="${author.name} + ' Avatar'" />
+             th:alt="${artist.name} + ' Avatar'" />
         <div class="profile-info">
-            <h1 th:text="${author.name}">Tên tác giả</h1>
-            <p>Một tác giả nổi tiếng với những câu chuyện hấp dẫn và lôi cuốn.</p>
+            <h1 th:text="${artist.name}">Tên họa sĩ</h1>
+            <p>Một họa sĩ nổi tiếng với những tác phẩm hấp dẫn và lôi cuốn.</p>
         </div>
     </div>
     <!-- Phần danh sách truyện -->
     <div class="comics-list">
-        <h2 th:text="'Tất cả truyện của ' + ${author.name}">Tất cả truyện của Tác giả</h2>
+        <h2 th:text="'Tất cả truyện của ' + ${artist.name}">Tất cả truyện của Họa sĩ</h2>
         <div class="row row-cols-1 row-cols-md-5 g-4">
             <th:block th:each="comic : ${comics}">
                 <div class="col">
@@ -362,23 +362,19 @@
                         </div>
                         <div class="info">
                             <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="card-title" th:text="${comic.title}"></a>
-                            <p class="card-text">
+                            <p class="chapter">
                                 Chapter
                                 <span th:text="${#lists.isEmpty(comic.chapters) ? '??' : comic.chapters[comic.chapters.size() - 1].chapterNumber}"></span>
                             </p>
-                            <p class="card-rating">
-    <span class="star-rating">
-        <div class="comic-rating">
-            <span class="stars">
-                <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
-                <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
-                <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
-                <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
-                <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
-            </span>
-            <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'"></span>
-        </div>
-    </span>
+                            <p class="rating">
+                                <span class="stars">
+                                    <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                    <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                    <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                    <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                    <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                </span>
+                                <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'"></span>
                             </p>
                         </div>
                     </div>
@@ -394,17 +390,17 @@
         <nav aria-label="Comic pagination" th:if="${totalPages > 1}">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/authors/{slug}/page/{page}(slug=${author.slug}, page=${currentPage - 1})}" aria-label="Previous">
+                    <a class="page-link" th:href="@{/artist/{slug}/page/{page}(slug=${artist.slug}, page=${currentPage - 1})}" aria-label="Previous">
                         <span aria-hidden="true">«</span>
                     </a>
                 </li>
                 <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
                     <li class="page-item" th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/authors/{slug}/page/{page}(slug=${author.slug}, page=${i})}" th:text="${i + 1}">1</a>
+                        <a class="page-link" th:href="@{/artist/{slug}/page/{page}(slug=${artist.slug}, page=${i})}" th:text="${i + 1}">1</a>
                     </li>
                 </th:block>
                 <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/authors/{slug}/page/{page}(slug=${author.slug}, page=${currentPage + 1})}" aria-label="Next">
+                    <a class="page-link" th:href="@{/artist/{slug}/page/{page}(slug=${artist.slug}, page=${currentPage + 1})}" aria-label="Next">
                         <span aria-hidden="true">»</span>
                     </a>
                 </li>

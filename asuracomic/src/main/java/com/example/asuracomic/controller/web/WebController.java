@@ -3,11 +3,11 @@ package com.example.asuracomic.controller.web;
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
-import com.example.asuracomic.entity.Chapter;
-import com.example.asuracomic.entity.Comic;
-import com.example.asuracomic.entity.Genre;
+import com.example.asuracomic.entity.*;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.GenreRepository;
+import com.example.asuracomic.service.ArtistService;
+import com.example.asuracomic.service.AuthorService;
 import com.example.asuracomic.service.ComicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 public class WebController {
     private final ComicService comicService;
     private final GenreRepository genreRepository;
+    private final AuthorService authorService;
+    private final ArtistService artistService;
     // trang chủ
     @GetMapping
     public String homeLogin(  @RequestParam(defaultValue = "0") int page,
@@ -65,13 +67,28 @@ public class WebController {
 
     // trang chi tiết
     @GetMapping("/comic/{slug}")
-    public String detail(@PathVariable String slug, Model model) {
+    public String detail(@PathVariable String slug,
+                         @RequestParam(required = false) String redirectToAuthor,
+                         Model model) {
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
         if (comicDetail == null) {
-            // Xử lý trường hợp truyện không tồn tại
             return "redirect:/error"; // Hoặc chuyển hướng đến trang lỗi
         }
+
+        // Check if redirect to author is requested
+        if (redirectToAuthor != null && !redirectToAuthor.isEmpty()) {
+            // Assuming the comic has a primary author, get the first author's slug
+            List<Author> authors = comicDetail.getComicAuthors().stream()
+                    .map(comicAuthor -> comicAuthor.getAuthor())
+                    .collect(Collectors.toList());
+            if (!authors.isEmpty()) {
+                String authorSlug = authors.get(0).getSlug(); // Get the first author's slug
+                return "redirect:/asura/authors/" + authorSlug;
+            }
+        }
+
+        // Existing logic for the detail page
         model.addAttribute("comic", comicDetail);
 
         // Lấy danh sách chương
@@ -84,10 +101,8 @@ public class WebController {
         model.addAttribute("latestChapter", latestChapter);
 
         // Lấy danh sách truyện liên quan
-        //cung thể loại, cùng tác giả , cùng từ khóa
         List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comicDetail.getId(), 5);
         model.addAttribute("relatedComics", relatedComics);
-
 
         // Lấy danh sách top 10 cho tuần và tháng
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
@@ -207,9 +222,52 @@ public class WebController {
         return "web/web-templates/report";
     }
 
-    @GetMapping("/authors")
-    public String author(){
+    @GetMapping("/authors/{slug}")
+    public String authorProfile(@PathVariable String slug,
+                                @RequestParam(defaultValue = "0") int page,
+                                Model model) {
+        // Lấy thông tin tác giả
+        Author author = authorService.getAuthorBySlug(slug);
+        if (author == null) {
+            return "error/404";
+        }
+
+        // Lấy danh sách truyện với phân trang
+        int pageSize = 10;
+        Page<Comic> comicPage = authorService.getComicsByAuthorSlug(slug, page, pageSize);
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("author", author);
+        model.addAttribute("comics", comicPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("totalItems", comicPage.getTotalElements());
+
         return "web/web-templates/author-template";
+    }
+
+    @GetMapping("/artist/{slug}")
+    public String artistProfile(@PathVariable String slug,
+                                @RequestParam(defaultValue = "0") int page,
+                                Model model) {
+        // Lấy thông tin họa sĩ
+        Artist artist = artistService.getArtistBySlug(slug);
+        if (artist == null) {
+            return "error/404";
+        }
+
+        // Lấy danh sách truyện với phân trang (dựa trên họa sĩ)
+        int pageSize = 10;
+        Page<Comic> comicPage = artistService.getComicsByArtistSlug(slug, page, pageSize);
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("artist", artist); // Sử dụng "artist" thay vì "author"
+        model.addAttribute("comics", comicPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("totalItems", comicPage.getTotalElements());
+
+        return "web/web-templates/artist"; // Có thể đổi tên template nếu cần (xem bước 4)
     }
 
 

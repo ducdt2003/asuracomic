@@ -49,10 +49,14 @@
                         <button class="bookmark-btn"><i class="fas fa-bookmark"></i> Bookmark</button>
 
                         <div class="stats">
-                                <span>
-                                    <strong>Followed by:</strong>
-                                    <span th:text="${comic.followCount} + ' people'">0 people</span>
-                                </span>
+            <span>
+                <strong>Followed by:</strong>
+                <span th:text="${comic.followCount} + ' people'">0 people</span>
+            </span>
+                            <span>
+                <strong>Views:</strong>
+                <span th:text="${comic.viewCount} + ' views'">0 views</span>
+            </span>
 
                             <div class="rating-row">
                                 <div class="rating-stars">
@@ -68,14 +72,14 @@
                             </div>
 
                             <span>
-                                    <strong>Status:</strong>
-                                    <span th:text="${comic.status != null} ? ${comic.status} : 'Unknown'">Unknown</span>
-                                </span>
+                <strong>Status:</strong>
+                <span th:text="${comic.status != null} ? ${comic.status} : 'Unknown'">Unknown</span>
+            </span>
 
                             <span>
-                                    <strong>Type:</strong>
-                                    <span th:text="${comic.type != null} ? ${comic.type} : 'Unknown'">Unknown</span>
-                                </span>
+                <strong>Type:</strong>
+                <span th:text="${comic.type != null} ? ${comic.type} : 'Unknown'">Unknown</span>
+            </span>
                         </div>
                     </div>
 
@@ -96,46 +100,46 @@
                         </p>
 
                         <div class="meta-info">
-                                <span>
-                                    <strong>Serialization:</strong>
-                                    <span th:text="${comic.serialization != null} ? ${comic.serialization} : '-'">-</span>
-                                </span>
+            <span>
+                <strong>Serialization:</strong>
+                <span th:text="${comic.serialization != null} ? ${comic.serialization} : '-'">-</span>
+            </span>
+
+            <span>
+                <strong>Author:</strong>
+                <span th:each="comicAuthor, iterStat : ${comic.comicAuthors}">
+                    <a th:href="@{'/asura/authors/' + ${comicAuthor.author.slug}}"
+                       style="text-decoration: none;"
+                       th:text="${comicAuthor.author.name}">Author Name</a>
+                    <span th:if="${!iterStat.last}">/</span>
+                </span>
+                <span th:if="${#lists.isEmpty(comic.comicAuthors)}">-</span>
+            </span>
+
+            <span>
+                <strong>Artist:</strong>
+                <span th:each="comicArtist, iterStat : ${comic.comicArtists}">
+                    <a th:href="@{'/asura/artist/' + ${comicArtist.artist.slug}}"
+                       style="text-decoration: none;"
+                       th:text="${comicArtist.artist.name}">Artist Name</a>
+                    <span th:if="${!iterStat.last}">/</span>
+                </span>
+                <span th:if="${#lists.isEmpty(comic.comicArtists)}">-</span>
+            </span>
 
                             <span>
-                                    <strong>Author:</strong>
-                                    <span th:each="comicAuthor, iterStat : ${comic.comicAuthors}">
-                                        <a th:href="@{'/asura/authors/' + ${comicAuthor.author.slug}}"
-                                           style="text-decoration: none;"
-                                           th:text="${comicAuthor.author.name}">Author Name</a>
-                                        <span th:if="${!iterStat.last}">/</span>
-                                    </span>
-                                    <span th:if="${#lists.isEmpty(comic.comicAuthors)}">-</span>
-                                </span>
-
-                            <span>
-                                    <strong>Artist:</strong>
-                                    <span th:each="comicArtist, iterStat : ${comic.comicArtists}">
-                                        <a th:href="@{'/artists/' + ${comicArtist.artist.slug}}"
-                                           style="text-decoration: none;"
-                                           th:text="${comicArtist.artist.name}">Artist Name</a>
-                                        <span th:if="${!iterStat.last}">/</span>
-                                    </span>
-                                    <span th:if="${#lists.isEmpty(comic.comicArtists)}">-</span>
-                                </span>
-
-                            <span>
-                                    <strong>Updated On:</strong>
-                                    <span th:text="${#temporals.format(comic.updatedAt, 'MMMM dd, yyyy')}">Unknown</span>
-                                </span>
+                <strong>Updated On:</strong>
+                <span th:text="${#temporals.format(comic.updatedAt, 'MMMM dd, yyyy')}">Unknown</span>
+            </span>
                         </div>
 
                         <div class="genres">
                             <span><strong>Genres:</strong></span>
                             <span th:each="comicGenre : ${comic.comicGenres}">
-                                    <a th:href="@{'/genres/' + ${comicGenre.genre.slug}}"
-                                       class="genre-tag"
-                                       th:text="${comicGenre.genre.name}">Genre</a>
-                                </span>
+                <a th:href="@{'/genres/' + ${comicGenre.genre.slug}}"
+                   class="genre-tag"
+                   th:text="${comicGenre.genre.name}">Genre</a>
+            </span>
                             <span th:if="${#lists.isEmpty(comic.comicGenres)}">No genres available</span>
                         </div>
                     </div>

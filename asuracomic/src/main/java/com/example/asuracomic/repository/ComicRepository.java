@@ -148,6 +148,11 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     List<Comic> findRelatedComics(Long comicId, org.springframework.data.domain.Pageable pageable);
 
 
+    // truyện của tác gỉa
+    @Query("SELECT c FROM Comic c JOIN c.comicAuthors ca WHERE ca.author.slug = :authorSlug")
+    Page<Comic> findByAuthorSlug(String authorSlug, Pageable pageable);
 
-
+    // truyện của họa sĩ
+    @Query("SELECT c FROM Comic c JOIN c.comicArtists ca WHERE ca.artist.slug = :artistSlug")
+    Page<Comic> findByArtistSlug(@Param("artistSlug") String artistSlug, Pageable pageable);
 }
