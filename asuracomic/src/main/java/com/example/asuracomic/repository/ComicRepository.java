@@ -1,6 +1,8 @@
 package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Comic;
+import com.example.asuracomic.entity.Genre;
+import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,24 +15,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-// Định nghĩa interface ComicRepository, mở rộng JpaRepository để cung cấp các phương thức thao tác với thực thể Comic
 @Repository
 public interface ComicRepository extends JpaRepository<Comic, Long> {
-
-
 
     // 5 truyện có đánh giá cao nhất
     List<Comic> findTop5ByIsPublishedTrueOrderByAverageRatingDesc();
 
-
-    /*@Query("SELECT c FROM Comic c WHERE c.isPublished = true")
-    List<Comic> findAllPublished();
-
-    @Query("SELECT c FROM Comic c WHERE c.isPublished = true AND c.updatedAt >= :startDate")
-    List<Comic> findPublishedByDate(LocalDateTime startDate);*/
-
-    // Top 10 truyện phổ biến trong 7 ngày qua
-    // Top 10 weekly
     // Top 10 truyện phổ biến trong 7 ngày qua
     @Query(value = """
         WITH ViewCounts AS (
@@ -123,36 +113,43 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     """, nativeQuery = true)
     List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);
 
-
-
-
-    /*@Query("SELECT c FROM Comic c WHERE c.isPublished = true ORDER BY c.updatedAt DESC")
-    Page<Comic> findLatestPublishedComics(Pageable pageable);*/
-
-
     // Không cần @Query, chỉ cần dùng method name
     Page<Comic> findAllByOrderByUpdatedAtDesc(Pageable pageable);
 
     // chi tieets truyện và chapter
     Optional<Comic> findBySlug(String slug);
 
-
-
-    // truyện liên quna
+    // truyện liên quan
     @Query("SELECT DISTINCT c FROM Comic c " +
             "JOIN c.comicGenres cg " +
             "WHERE cg.genre.id IN (SELECT cg2.genre.id FROM ComicGenre cg2 WHERE cg2.comic.id = :comicId) " +
             "AND c.id != :comicId " +
             "AND c.isPublished = true " +
             "ORDER BY c.viewCount DESC, c.averageRating DESC")
-    List<Comic> findRelatedComics(Long comicId, org.springframework.data.domain.Pageable pageable);
+    List<Comic> findRelatedComics(Long comicId, Pageable pageable);
 
-
-    // truyện của tác gỉa
+    // truyện của tác giả
     @Query("SELECT c FROM Comic c JOIN c.comicAuthors ca WHERE ca.author.slug = :authorSlug")
     Page<Comic> findByAuthorSlug(String authorSlug, Pageable pageable);
 
     // truyện của họa sĩ
     @Query("SELECT c FROM Comic c JOIN c.comicArtists ca WHERE ca.artist.slug = :artistSlug")
     Page<Comic> findByArtistSlug(@Param("artistSlug") String artistSlug, Pageable pageable);
+
+    // New method for filtering comics
+    @Query("SELECT DISTINCT c FROM Comic c " +
+            "LEFT JOIN c.comicGenres cg " +
+            "WHERE (:genre IS NULL OR cg.genre.slug = :genre) " +
+            "AND (:status IS NULL OR c.status = :status) " +
+            "AND (:type IS NULL OR c.type = :type) " +
+            "AND c.isPublished = true " +
+            "GROUP BY c.id")
+    Page<Comic> findComicsByFilters(@Param("genre") String genre,
+                                    @Param("status") ComicStatus status,
+                                    @Param("type") ComicType type,
+                                    Pageable pageable);
+
+    // Fetch distinct genres with published comics
+    @Query("SELECT DISTINCT g FROM Genre g JOIN g.comicGenres cg WHERE cg.comic.isPublished = true")
+    List<Genre> findGenresWithPublishedComics();
 }

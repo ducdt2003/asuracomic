@@ -1,7 +1,6 @@
 package com.example.asuracomic.service;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
-
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.Chapter;
@@ -32,6 +31,7 @@ public class ComicService {
     private final ComicViewRepository comicViewRepository;
     private final ChapterRepository chapterRepository;
     private final GenreRepository genreRepository;
+
     public Comic getComicById(Long id) {
         return comicRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy truyện với ID: " + id));
@@ -46,14 +46,14 @@ public class ComicService {
                         .title(comic.getTitle())
                         .type(comic.getType())
                         .genres(comic.getComicGenres().stream()
-                                .map(genre -> genre.getGenre().getName()) // assuming Genre has getName()
+                                .map(genre -> genre.getGenre().getName())
                                 .collect(Collectors.joining(", ")))
                         .averageRating(comic.getAverageRating())
                         .summary(comic.getDescription())
                         .status(comic.getStatus())
                         .coverImage(comic.getCoverImage())
                         .author(comic.getComicAuthors().stream()
-                                .map(author -> author.getAuthor().getName()) // assuming Author has getName()
+                                .map(author -> author.getAuthor().getName())
                                 .findFirst()
                                 .orElse("Unknown"))
                         .slug(comic.getSlug())
@@ -71,44 +71,6 @@ public class ComicService {
                 .map(r -> (Comic) r[0])
                 .toList();
     }
-
-
-    // Tính điểm kết hợp: 70% viewCount + 30% averageRating
-    /*private double calculateCombinedScore(Comic comic) {
-        double maxViews = comicRepository.findAllPublished().stream()
-                .mapToLong(Comic::getViewCount)
-                .max().orElse(1000); // Giả định max view là 1000 nếu không có dữ liệu
-        double maxRating = 5.0; // Điểm đánh giá tối đa là 5
-
-        double normalizedViews = (comic.getViewCount() / maxViews) * 100; // Chuẩn hóa về thang 0-100
-        double normalizedRating = (comic.getAverageRating().doubleValue() / maxRating) * 100; // Chuẩn hóa về thang 0-100
-
-        // Trọng số: 70% views, 30% rating
-        return (0.7 * normalizedViews) + (0.3 * normalizedRating);
-    }
-
-    public List<Comic> getTop10CombinedWeekly() {
-        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
-        return comicRepository.findPublishedByDate(startDate).stream()
-                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-    }
-
-    public List<Comic> getTop10CombinedMonthly() {
-        LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
-        return comicRepository.findPublishedByDate(startDate).stream()
-                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-    }
-
-    public List<Comic> getTop10CombinedAll() {
-        return comicRepository.findAllPublished().stream()
-                .sorted(Comparator.comparingDouble(this::calculateCombinedScore).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-    }*/
 
     // Lấy top 10 truyện tuần
     public List<ComicTopDTO> getTop10CombinedWeekly() {
@@ -147,27 +109,15 @@ public class ComicService {
                 .collect(Collectors.toList());
     }
 
-
-
-   /* public List<Comic> getLatestComics(int page, int size) {
-        Page<Comic> comicPage = comicRepository.findLatestPublishedComics(PageRequest.of(page, size));
-        return comicPage.getContent();
-    }*/
-
-   /* public List<Comic> getAllComics(int page, int size) {
-        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
-        return comicPage.getContent();
-    }*/
-
     // lấy all truyện trên database
     public Page<Comic> getComicPage(int page, int size) {
         Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
 
         comicPage.getContent().forEach(comic -> {
             List<Chapter> filteredChapters = comic.getChapters().stream()
-                    .filter(Chapter::isPublished)  // chỉ lấy chương đã xuất bản
-                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed()) // sắp xếp giảm dần
-                    .limit(3)  // lấy 3 chương mới nhất
+                    .filter(Chapter::isPublished)
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                    .limit(3)
                     .collect(Collectors.toList());
 
             comic.setChapters(filteredChapters);
@@ -176,18 +126,11 @@ public class ComicService {
         return comicPage;
     }
 
-
-
-
-
     // chi tiết truyện
     public Comic getComicDetailsBySlug(String slug) {
         return comicRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Comic not found"));
     }
-
-
-
 
     // chapter
     public Comic getComicBySlug(String slug) {
@@ -204,15 +147,12 @@ public class ComicService {
                 .orElseThrow(() -> new RuntimeException("No chapter found"));
     }
 
-
     public Chapter getLatestChapter(Comic comic) {
         return chapterRepository.findTopByComicOrderByChapterNumberDesc(comic)
                 .orElseThrow(() -> new RuntimeException("No chapter found"));
     }
 
-
-
-    // truyện liên quna
+    // truyện liên quan
     public List<RelatedComicDTO> getRelatedComics(Long comicId, int limit) {
         List<Comic> comics = comicRepository.findRelatedComics(comicId, PageRequest.of(0, limit));
         return comics.stream().map(comic -> {
@@ -244,9 +184,41 @@ public class ComicService {
                 .orElse(null);
     }
 
+    // New method for filtered comics
+    public Page<Comic> getComics(String genre, String status, String type, String orderBy, int page, int size) {
+        Sort sort = mapOrderByToSort(orderBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
+        ComicStatus comicStatus = status != null && !status.equals("ALL") ? ComicStatus.valueOf(status) : null;
+        ComicType comicType = type != null && !type.equals("ALL") ? ComicType.valueOf(type) : null;
+        String genreSlug = genre != null && !genre.isEmpty() ? genre : null;
 
+        Page<Comic> comicPage = comicRepository.findComicsByFilters(genreSlug, comicStatus, comicType, pageable);
 
+        comicPage.getContent().forEach(comic -> {
+            List<Chapter> filteredChapters = comic.getChapters().stream()
+                    .filter(Chapter::isPublished)
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                    .limit(1) // Only need the latest chapter for display
+                    .collect(Collectors.toList());
+            comic.setChapters(filteredChapters);
+        });
 
+        return comicPage;
+    }
 
+    public List<Genre> getAllGenres() {
+        return comicRepository.findGenresWithPublishedComics();
+    }
+
+    private Sort mapOrderByToSort(String orderBy) {
+        switch (orderBy != null ? orderBy : "lastUpdated") {
+            case "rating":
+                return Sort.by(Sort.Order.desc("averageRating"));
+            case "name":
+                return Sort.by(Sort.Order.asc("title"));
+            default:
+                return Sort.by(Sort.Order.desc("updatedAt"));
+        }
+    }
 }

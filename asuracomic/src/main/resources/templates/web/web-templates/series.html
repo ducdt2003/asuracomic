@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="/css/web/web-templates/series.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/web/web-templates/series.css}">
 </head>
 <body>
 <!-- Header Section -->
@@ -16,19 +16,19 @@
     <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-left">
-                <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                <a th:href="@{/asura}" class="navbar-brand"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
                 <ul class="navbar-nav d-flex flex-row">
-                    <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/series}">Comics</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/purchase}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura}">Membership</a></li>
                 </ul>
             </div>
             <div class="navbar-right">
                 <div class="search-bar">
                     <input type="text" placeholder="Search">
-                    <button><i class="fas fa-search"></i></button>
+                    <button type="submit"><i class="fas fa-search"></i></button>
                 </div>
                 <button class="btn btn-login">Login</button>
             </div>
@@ -42,38 +42,34 @@
         <div class="row">
             <!-- Main Content -->
             <div class="col-lg-8">
-                <div class="bookmarks-section">
-                    <h2>Series list</h2>
+                <div class="series-section">
+                    <h2>Series List</h2>
                     <hr>
                     <div class="filters">
-                        <form th:action="@{/asura/bookmarks}" method="get">
+                        <form th:action="@{/asura/series}" method="get">
                             <!-- Dropdown Genre -->
                             <select name="genre">
-                                <option value="">Genre All</option>
-                                <option th:each="genre : ${genres}"
-                                        th:value="${genre.slug}"
-                                        th:text="${genre.name}">Genre</option>
+                                <option value="" th:selected="${currentGenre == ''}">Genre All</option>
+                                <option th:each="genre : ${genres}" th:value="${genre.slug}" th:text="${genre.name}" th:selected="${currentGenre == genre.slug}"></option>
                             </select>
 
                             <!-- Dropdown Status -->
                             <select name="status">
-                                <option th:each="status : ${statuses}"
-                                        th:value="${status}"
-                                        th:text="${status == 'ALL' ? 'Status All' : status}">Status</option>
+                                <option value="" th:selected="${currentStatus == ''}">Status All</option>
+                                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}" th:selected="${currentStatus == status}"></option>
                             </select>
 
                             <!-- Dropdown Type -->
                             <select name="type">
-                                <option th:each="type : ${types}"
-                                        th:value="${type}"
-                                        th:text="${type == 'ALL' ? 'Type All' : type}">Type</option>
+                                <option value="" th:selected="${currentType == ''}">Type All</option>
+                                <option th:each="type : ${types}" th:value="${type}" th:text="${type}" th:selected="${currentType == type}"></option>
                             </select>
 
                             <!-- Dropdown Order By -->
                             <select name="orderBy">
-                                <option value="lastUpdated" selected>Order By Last Up...</option>
-                                <option value="rating">Order By Rating</option>
-                                <option value="name">Order By Name</option>
+                                <option value="lastUpdated" th:selected="${currentOrderBy == 'lastUpdated'}">Last Updated</option>
+                                <option value="rating" th:selected="${currentOrderBy == 'rating'}">Rating</option>
+                                <option value="name" th:selected="${currentOrderBy == 'name'}">Name</option>
                             </select>
 
                             <!-- Search Button -->
@@ -82,244 +78,22 @@
                             </button>
                         </form>
                     </div>
-                    <div class="bookmarks-list">
-                        <div class="bookmark-item">
+                    <div class="series-list">
+                        <div class="series-item" th:each="comic : ${comics}">
                             <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" alt="The Fox-Eyed Villain of the Demon Academy">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
+                                <img th:src="${comic.coverImage}" th:alt="${comic.title}">
+                                <span class="status" th:text="${comic.status}"></span>
+                                <span class="type" th:text="${comic.type}"></span>
                             </div>
-                            <a href="#">The Fox-Eyed Villain of the Demon Academy...</a>
-                            <div class="chapter">Chapter 22</div>
+                            <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${#strings.abbreviate(comic.title, 30)}"></a>
+                            <div class="chapter" th:if="${comic.chapters != null and !comic.chapters.isEmpty()}" th:text="'Chapter ' + ${comic.chapters[0].chapterNumber}"></div>
                             <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.7</span>
+                                <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                <span th:text="${comic.averageRating}"></span>
                             </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289385/conversions/01JSF8DMSKQKQB56YZ3TW7E5Y8-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/243966/conversions/01J9KCWWJBA7Z7P1XWYXX9MEZC-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div>
-                        <div class="bookmark-item">
-                            <div class="image-container">
-                                <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                <span class="status">Ongoing</span>
-                                <span class="type">Manhwa</span>
-                            </div>
-                            <a href="#">Absolute Regression</a>
-                            <div class="chapter">Chapter 45</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>9.9</span>
-                            </div>
-                        </div><div class="bookmark-item">
-                        <div class="image-container">
-                            <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                            <span class="status">Ongoing</span>
-                            <span class="type">Manhwa</span>
-                        </div>
-                        <a href="#">Absolute Regression</a>
-                        <div class="chapter">Chapter 45</div>
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>9.9</span>
-                        </div>
-                    </div><div class="bookmark-item">
-                        <div class="image-container">
-                            <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                            <span class="status">Ongoing</span>
-                            <span class="type">Manhwa</span>
-                        </div>
-                        <a href="#">Absolute Regression</a>
-                        <div class="chapter">Chapter 45</div>
-                        <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>9.9</span>
                         </div>
                     </div>
-                    </div>
+                    <!-- PHÂN TRANG -->
                     <div class="pagination">
                         <button class="prev-btn" disabled>
                             <i class="fas fa-chevron-left"></i> Previous
@@ -331,88 +105,85 @@
                 </div>
             </div>
 
-            <!-- HTML: Sidebar (phần truyện phổ biến) -->
-            <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
+            <!-- Sidebar (Popular Section) -->
+            <div class="col-lg-4">
+                <div class="popular-section">
+                    <div class="container">
+                        <h2>Popular</h2>
+                        <div class="tabs">
+                            <span class="tab active" data-tab="weekly">Weekly</span>
+                            <span class="tab" data-tab="monthly">Monthly</span>
+                        </div>
+                        <div class="comic-list active" id="weekly">
+                            <div class="comic-item" th:each="comic, iter : ${top10Weekly}">
+                                <span class="comic-rank" th:text="${iter.index + 1}"></span>
+                                <img class="comic-image" th:src="${comic.coverImage}" th:alt="${comic.title}">
+                                <div class="comic-info">
+                                    <a class="comic-title" th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${#strings.abbreviate(comic.title, 25)}"></a>
+                                    <div class="comic-meta">
+                                        <span class="genre-label">Genres:</span>
+                                        <span th:text="${comic.genres}"></span>
+                                    </div>
+                                    <div class="comic-rating">
+                                        <span class="stars">
+                                            <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                        </span>
+                                        <span th:text="${comic.averageRating}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comic-list" id="monthly">
+                            <div class="comic-item" th:each="comic, iter : ${top10Monthly}">
+                                <span class="comic-rank" th:text="${iter.index + 1}"></span>
+                                <img class="comic-image" th:src="${comic.coverImage}" th:alt="${comic.title}">
+                                <div class="comic-info">
+                                    <a class="comic-title" th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${#strings.abbreviate(comic.title, 25)}"></a>
+                                    <div class="comic-meta">
+                                        <span class="genre-label">Genres:</span>
+                                        <span th:text="${comic.genres}"></span>
+                                    </div>
+                                    <div class="comic-rating">
+                                        <span class="stars">
+                                            <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                        </span>
+                                        <span th:text="${comic.averageRating}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
 <!-- Footer Section -->
-<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+<footer>
+    <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+    <div class="footer-logo">
+        <img src="https://asuracomic.net/images/logo.webp" alt="Footer Logo">
+    </div>
+</footer>
 
-<!-- JavaScript for Hot Comics Carousel -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JavaScript for tab switching -->
 <script>
-    const slidesContainer = document.getElementById("carouselSlides");
-    const dotsContainer = document.getElementById("carouselDots");
-    const slides = slidesContainer.querySelectorAll(".carousel-slide");
-
-    slides.forEach((_, index) => {
-        const dot = document.createElement("span");
-        dot.className = `dot ${index === 0 ? "active" : ""}`;
-        dot.addEventListener("click", () => showSlide(index));
-        dotsContainer.appendChild(dot);
-    });
-
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        currentIndex = index;
-        const slides = document.querySelectorAll(".carousel-slide");
-        const dots = document.querySelectorAll(".dot");
-
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
-        });
-
-        dots.forEach((dot, i) => {
-            dot.classList.toggle("active", i === index);
-        });
-    }
-
-    showSlide(0);
-
-    setInterval(() => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-    }, 5000);
-</script>
-
-
-<!-- JavaScript for Popular Section Tabs -->
-<script>
-    const tabs = document.querySelectorAll(".popular-section .tab");
-    const comicList = document.getElementById("comicList");
-
-    tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            tabs.forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
-
-            const tabType = tab.getAttribute("data-tab");
-            console.log(`Switched to ${tabType} tab`);
-        });
-    });
-</script>
-
-<script>
-    // Tab switching functionality
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs and lists
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
-
-            // Add active class to the clicked tab
             tab.classList.add('active');
-
-            // Show the corresponding list
-            const tabName = tab.getAttribute('data-tab');
-            document.getElementById(`${tabName}List`).classList.add('active');
+            document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
         });
     });
 </script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
