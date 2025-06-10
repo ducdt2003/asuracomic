@@ -66,16 +66,21 @@
                                         Chapter
                                         <span th:text="${#lists.isEmpty(comic.chapters) ? '??' : comic.chapters[comic.chapters.size() - 1].chapterNumber}"></span>
                                     </p>
-                                    <p class="card-rating">
-                        <span class="star-rating">
-                            <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, comic.averageRating.intValue())}"></i>
-                        </span>
-                                        <span th:text="${comic.averageRating}"></span>
-                                    </p>
-                                </div>
+                                    <p   class="comic-rating">
+                                    <div class="comic-rating">
+            <span class="stars">
+                <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+            </span>
+                                    <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'" style="color: yellow;"></span>
+                                    </div>
+                                </div></p>
+                            </div>
                             </div>
                         </div>
-                    </div>
                 </section>
 
 
