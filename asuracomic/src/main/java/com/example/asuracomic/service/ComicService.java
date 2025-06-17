@@ -109,22 +109,7 @@ public class ComicService {
                 .collect(Collectors.toList());
     }
 
-    // lấy all truyện trên database
-    public Page<Comic> getComicPage(int page, int size) {
-        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
 
-        comicPage.getContent().forEach(comic -> {
-            List<Chapter> filteredChapters = comic.getChapters().stream()
-                    .filter(Chapter::isPublished)
-                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
-                    .limit(3)
-                    .collect(Collectors.toList());
-
-            comic.setChapters(filteredChapters);
-        });
-
-        return comicPage;
-    }
 
     // chi tiết truyện
     public Comic getComicDetailsBySlug(String slug) {
@@ -184,11 +169,46 @@ public class ComicService {
                 .orElse(null);
     }
 
+    // lấy all truyện trên database
+    public Page<Comic> getComicPage(int page, int size) {
+        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
+
+        comicPage.getContent().forEach(comic -> {
+            List<Chapter> filteredChapters = comic.getChapters().stream()
+                    .filter(Chapter::isPublished)
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                    .limit(3)
+                    .collect(Collectors.toList());
+
+            comic.setChapters(filteredChapters);
+        });
+
+        return comicPage;
+    }
     // New method for filtered comics
     public Page<Comic> getComics(String genre, String status, String type, String orderBy, int page, int size) {
         Sort sort = mapOrderByToSort(orderBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        // Kiểm tra nếu không có bộ lọc (tất cả giá trị là mặc định)
+        if ((genre == null || genre.isEmpty()) &&
+                (status == null || status.equals("ALL")) &&
+                (type == null || type.equals("ALL"))) {
+            Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(pageable);
+
+            comicPage.getContent().forEach(comic -> {
+                List<Chapter> filteredChapters = comic.getChapters().stream()
+                        .filter(Chapter::isPublished)
+                        .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                        .limit(1) // Chỉ lấy chương mới nhất
+                        .collect(Collectors.toList());
+                comic.setChapters(filteredChapters);
+            });
+
+            return comicPage;
+        }
+
+        // Xử lý khi có bộ lọc
         ComicStatus comicStatus = status != null && !status.equals("ALL") ? ComicStatus.valueOf(status) : null;
         ComicType comicType = type != null && !type.equals("ALL") ? ComicType.valueOf(type) : null;
         String genreSlug = genre != null && !genre.isEmpty() ? genre : null;
@@ -199,7 +219,7 @@ public class ComicService {
             List<Chapter> filteredChapters = comic.getChapters().stream()
                     .filter(Chapter::isPublished)
                     .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
-                    .limit(1) // Only need the latest chapter for display
+                    .limit(1) // Chỉ lấy chương mới nhất
                     .collect(Collectors.toList());
             comic.setChapters(filteredChapters);
         });

@@ -4,6 +4,8 @@ import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.*;
+import com.example.asuracomic.model.enums.ComicStatus;
+import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.service.ArtistService;
@@ -171,23 +173,37 @@ public class WebController {
     @GetMapping("/series")
     public String series(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size, // Set size to 10 for 10 comics per page
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "", required = false) String genre,
+            @RequestParam(defaultValue = "ALL", required = false) String status,
+            @RequestParam(defaultValue = "ALL", required = false) String type,
+            @RequestParam(defaultValue = "lastUpdated", required = false) String orderBy,
             Model model) {
 
-        // Fetch all comics with pagination
-        Page<Comic> comicPage = comicService.getComicPage(page, size);
+        // Lấy danh sách thể loại để hiển thị trong form lọc
+        List<Genre> genres = comicService.getAllGenres();
 
-        // Fetch top 10 for weekly and monthly (for sidebar)
+        // Lấy danh sách truyện với bộ lọc
+        Page<Comic> comicPage = comicService.getComics(genre, status, type, orderBy, page, size);
+
+        // Lấy top 10 truyện tuần và tháng (cho sidebar)
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
 
-        // Add data to model
+        // Thêm dữ liệu vào model
         model.addAttribute("comics", comicPage.getContent());
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", comicPage.getNumber());
         model.addAttribute("totalPages", comicPage.getTotalPages());
-        model.addAttribute("currentPage", comicPage.getNumber()); // Use getNumber() for zero-based index
+        model.addAttribute("size", size);
+        model.addAttribute("genres", genres);
+        model.addAttribute("selectedGenre", genre);
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("selectedType", type);
+        model.addAttribute("selectedOrderBy", orderBy);
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("statuses", Arrays.asList(ComicStatus.values()));
+        model.addAttribute("types", Arrays.asList(ComicType.values()));
 
         return "web/web-templates/series";
     }
