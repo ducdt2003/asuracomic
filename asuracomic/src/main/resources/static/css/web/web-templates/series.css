@@ -344,6 +344,7 @@ main {
 }
 
 /* Phần phân trang tĩnh */
+/* Phần phân trang tĩnh */
 .pagination {
     display: flex;
     justify-content: center;
@@ -362,21 +363,41 @@ main {
     display: flex;
     align-items: center;
     gap: 5px;
+    position: relative;
+    transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển đổi mượt mà */
+}
+
+.pagination button i.fas {
+    margin: 0 2px; /* Giữ khoảng cách giữa biểu tượng và văn bản */
 }
 
 .pagination .prev-btn {
-    background-color: #2a2a2a;
-    color: #666;
-    cursor: not-allowed;
-}
-
-.pagination .next-btn {
-    background-color: #8a4af3;
+    background-color: #a060ff;
     color: #fff;
 }
 
-.pagination .next-btn:hover {
+.pagination .prev-btn:disabled {
+    background-color: #808080; /* Màu xám nhạt */
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.pagination .next-btn {
     background-color: #a060ff;
+    color: #fff;
+}
+
+.pagination .next-btn:disabled {
+    background-color: #a060ff; /* Màu xám nhạt */
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.pagination .prev-btn:not(:disabled):hover,
+.pagination .next-btn:not(:disabled):hover {
+    background-color: #c084fc; /* Hiệu ứng hover giống nhau cho cả hai nút */
 }
 
 /* Responsive adjustments */
@@ -419,7 +440,6 @@ main {
         font-size: 14px;
     }
 }
-
 /* phần bên phải trang series  */
 /* CSS: Style cho phần truyện phổ biến (sidebar) */
 

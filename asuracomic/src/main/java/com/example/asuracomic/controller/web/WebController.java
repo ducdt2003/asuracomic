@@ -53,13 +53,11 @@ public class WebController {
         model.addAttribute("top10Monthly", top10Monthly);
 
 
-
-
-
         Page<Comic> comicPage = comicService.getComicPage(page, size);
         model.addAttribute("comics", comicPage.getContent());
-        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+
 
         return "web/web-main/home";
     }
@@ -172,53 +170,28 @@ public class WebController {
     // template
     @GetMapping("/series")
     public String series(
-            @RequestParam(name = "genre", required = false) String genre,
-            @RequestParam(name = "status", required = false) String status,
-            @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "orderBy", defaultValue = "lastUpdated") String orderBy,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "30") int size,
+            @RequestParam(defaultValue = "10") int size, // Set size to 10 for 10 comics per page
             Model model) {
-        int pageSize = 10;
 
-        // Fetch filtered comics
-        Page<Comic> comics = comicService.getComics(genre, status, type, orderBy, page, pageSize);
+        // Fetch all comics with pagination
+        Page<Comic> comicPage = comicService.getComicPage(page, size);
 
-        // Fetch top 10 for weekly and monthly
+        // Fetch top 10 for weekly and monthly (for sidebar)
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
 
-        /*Page<Comic> comicPage = comicService.getComicPage(page, size);*/
-
-        // Fetch genres for dropdown
-        List<Genre> genres = comicService.getAllGenres();
-
-        // Fetch status and type options
-        List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
-        List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
-
         // Add data to model
-        model.addAttribute("comics", comics.getContent());
+        model.addAttribute("comics", comicPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("currentPage", comicPage.getNumber()); // Use getNumber() for zero-based index
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("genres", genres);
-        model.addAttribute("statuses", statuses);
-        model.addAttribute("types", types);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", comics.getTotalPages());
-        model.addAttribute("currentGenre", genre != null ? genre : "");
-        model.addAttribute("currentStatus", status != null ? status : "");
-        model.addAttribute("currentType", type != null ? type : "");
-        model.addAttribute("currentOrderBy", orderBy);
-
-        // thêm
-        model.addAttribute("comics", comics.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", comics.getTotalPages());
-
 
         return "web/web-templates/series";
     }
+
 
     @GetMapping("/bookmarks")
     public String bookmarks(Model model) {

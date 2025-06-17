@@ -928,30 +928,7 @@
 </head>
 <body>
     <!-- Header Section -->
-    <header>
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="navbar-left">
-                    <a class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Bookmark</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Comics</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Membership</a></li>
-
-                    </ul>
-                </div>
-                <div class="navbar-right">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn btn-login">Login</button>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
     <!-- Main Body Section -->
     <main>

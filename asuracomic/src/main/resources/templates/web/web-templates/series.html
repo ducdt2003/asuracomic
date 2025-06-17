@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANH SÁCH TRUYỆN</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/web/web-templates/series.css}">
+
 </head>
 <body>
 <!-- Header Section -->
@@ -81,11 +80,14 @@
                     <div class="series-list">
                         <div class="series-item" th:each="comic : ${comics}">
                             <div class="image-container">
-                                <img th:src="${comic.coverImage}" th:alt="${comic.title}">
+                                <a th:href="@{'/asura/comic/' + ${comic.slug}}">
+                                    <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                                </a>
                                 <span class="status" th:text="${comic.status}"></span>
                                 <span class="type" th:text="${comic.type}"></span>
                             </div>
                             <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${#strings.abbreviate(comic.title, 30)}"></a>
+
                             <div class="chapter" th:if="${comic.chapters != null and !comic.chapters.isEmpty()}" th:text="'Chapter ' + ${comic.chapters[0].chapterNumber}"></div>
                             <div class="rating">
                                 <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
@@ -93,14 +95,23 @@
                             </div>
                         </div>
                     </div>
-                    <!-- PHÂN TRANG -->
-                    <div class="pagination">
-                        <button class="prev-btn" disabled>
+                    <!-- Pagination -->
+                    <div class="pagination" th:if="${totalPages > 0}">
+                        <button class="prev-btn" th:disabled="${currentPage == 0}"
+                                th:onclick="'location.href=\'' + @{/asura/series(page=${currentPage - 1})} + '\''"
+                                style="background-color: #a060ff;">
+                            <i th:if="${currentPage == 0}" ></i>
                             <i class="fas fa-chevron-left"></i> Previous
                         </button>
-                        <button class="next-btn">
+                        <span th:text="'Page ' + ${currentPage + 1} + ' of ' + ${totalPages}"></span>
+                        <button class="next-btn" th:disabled="${currentPage >= totalPages - 1}"
+                                th:onclick="'location.href=\'' + @{/asura/series(page=${currentPage + 1})} + '\''">
                             Next <i class="fas fa-chevron-right"></i>
+                            <i th:if="${currentPage >= totalPages - 1}" ></i>
                         </button>
+                    </div>
+                    <div th:if="${totalPages == 0}">
+                        <p>Không có truyện để hiển thị.</p>
                     </div>
                 </div>
             </div>
@@ -126,9 +137,13 @@
                                     </div>
                                     <div class="comic-rating">
                                         <span class="stars">
-                                            <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
                                         </span>
-                                        <span th:text="${comic.averageRating}"></span>
+                                        <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'" style="color: yellow;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -145,9 +160,13 @@
                                     </div>
                                     <div class="comic-rating">
                                         <span class="stars">
-                                            <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                            <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
                                         </span>
-                                        <span th:text="${comic.averageRating}"></span>
+                                        <span th:text="${comic.averageRating != null} ? ${#numbers.formatDecimal(comic.averageRating, 1, 1)} : 'N/A'" style="color: yellow;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -174,14 +193,71 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JavaScript for tab switching -->
+<!-- JavaScript for tab switching and pagination control -->
 <script>
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
-            tab.classList.add('active');
-            document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+    document.addEventListener('DOMContentLoaded', () => {
+        // Tab switching logic (giữ nguyên)
+        const tabs = document.querySelectorAll('.tab');
+        const comicLists = document.querySelectorAll('.comic-list');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                comicLists.forEach(list => list.classList.remove('active'));
+
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Pagination button control
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const currentPage = parseInt([[${currentPage}]], 10);
+        const totalPages = parseInt([[${totalPages}]], 10);
+
+        console.log('Current Page:', currentPage, 'Total Pages:', totalPages);
+
+        prevBtn.disabled = currentPage === 0;
+        prevBtn.classList.toggle('disabled', currentPage === 0);
+
+        nextBtn.disabled = currentPage >= totalPages - 1;
+        nextBtn.classList.toggle('disabled', currentPage >= totalPages - 1);
+
+        // Thêm sự kiện click để hiển thị biểu tượng cấm khi nhấn nút vô hiệu
+        prevBtn.addEventListener('click', (e) => {
+            if (prevBtn.disabled) {
+                e.preventDefault(); // Ngăn chặn hành vi mặc định
+                const timesIcon = prevBtn.querySelector('.fa-times');
+                if (!timesIcon) {
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-times';
+                    icon.style.color = '#ff4444';
+                    icon.style.margin = '0 2px';
+                    prevBtn.insertBefore(icon, prevBtn.firstChild);
+                }
+                setTimeout(() => {
+                    prevBtn.querySelector('.fa-times')?.remove();
+                }, 1000); // Ẩn biểu tượng sau 1 giây
+            }
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            if (nextBtn.disabled) {
+                e.preventDefault();
+                const timesIcon = nextBtn.querySelector('.fa-times');
+                if (!timesIcon) {
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-times';
+                    icon.style.color = '#ff4444';
+                    icon.style.margin = '0 2px';
+                    nextBtn.appendChild(icon);
+                }
+                setTimeout(() => {
+                    nextBtn.querySelector('.fa-times')?.remove();
+                }, 1000);
+            }
         });
     });
 </script>
