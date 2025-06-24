@@ -156,4 +156,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
 
     // tìm kiếm truyện
     List<Comic> findByTitleContainingIgnoreCase(String title);
+
+
+
 }
