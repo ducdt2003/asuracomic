@@ -3,6 +3,7 @@ package com.example.asuracomic.controller.web;
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
+import com.example.asuracomic.dto.SearchComicDTO;
 import com.example.asuracomic.entity.*;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
@@ -13,6 +14,7 @@ import com.example.asuracomic.service.AuthorService;
 import com.example.asuracomic.service.ComicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,11 +37,12 @@ public class WebController {
     private final GenreRepository genreRepository;
     private final AuthorService authorService;
     private final ArtistService artistService;
+
     // trang chủ
     @GetMapping
-    public String homeLogin(  @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "30") int size,
-                              Model model) {
+    public String homeLogin(@RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "30") int size,
+                            Model model) {
         // top comics rating
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
@@ -54,16 +58,13 @@ public class WebController {
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
 
-
         Page<Comic> comicPage = comicService.getComicPage(page, size);
         model.addAttribute("comics", comicPage.getContent());
         model.addAttribute("totalPages", comicPage.getTotalPages());
         model.addAttribute("currentPage", page);
 
-
         return "web/web-main/home";
     }
-
 
     // trang chi tiết
     @GetMapping("/comic/{slug}")
@@ -114,17 +115,16 @@ public class WebController {
         return "web/web-main/detail";
     }
 
-
     // trang chapter
     @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
     public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug, Model model) {
-        // Lấy chi tiết truyện theo comicSlug
+        // Lấy chi tiết truyện qua comicSlug
         Comic comic = comicService.getComicDetailsBySlug(comicSlug);
         if (comic == null) {
             return "redirect:/error";
         }
 
-        // Lấy chương theo chapterSlug
+        // Lấy chương qua chapterSlug
         Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
         if (chapter == null) {
             return "redirect:/error";
@@ -167,8 +167,6 @@ public class WebController {
         return "web/web-main/chapter";
     }
 
-
-
     // template
     @GetMapping("/series")
     public String series(
@@ -178,19 +176,21 @@ public class WebController {
             @RequestParam(defaultValue = "ALL", required = false) String status,
             @RequestParam(defaultValue = "ALL", required = false) String type,
             @RequestParam(defaultValue = "lastUpdated", required = false) String orderBy,
+            @RequestParam(defaultValue = "", required = false) String query,
             Model model) {
-
-        // Lấy danh sách thể loại để hiển thị trong form lọc
         List<Genre> genres = comicService.getAllGenres();
-
-        // Lấy danh sách truyện với bộ lọc
-        Page<Comic> comicPage = comicService.getComics(genre, status, type, orderBy, page, size);
-
-        // Lấy top 10 truyện tuần và tháng (cho sidebar)
+        Page<Comic> comicPage;
+        if (query != null && !query.trim().isEmpty()) {
+            List<Comic> searchResults = comicService.findByTitleContainingIgnoreCase(query.trim());
+            int start = page * size;
+            int end = Math.min(start + size, searchResults.size());
+            List<Comic> pagedResults = start < searchResults.size() ? searchResults.subList(start, end) : List.of();
+            comicPage = new PageImpl<>(pagedResults, PageRequest.of(page, size), searchResults.size());
+        } else {
+            comicPage = comicService.getComics(genre, status, type, orderBy, page, size);
+        }
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
-
-        // Thêm dữ liệu vào model
         model.addAttribute("comics", comicPage.getContent());
         model.addAttribute("currentPage", comicPage.getNumber());
         model.addAttribute("totalPages", comicPage.getTotalPages());
@@ -200,14 +200,13 @@ public class WebController {
         model.addAttribute("selectedStatus", status);
         model.addAttribute("selectedType", type);
         model.addAttribute("selectedOrderBy", orderBy);
+        model.addAttribute("query", query);
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("statuses", Arrays.asList(ComicStatus.values()));
         model.addAttribute("types", Arrays.asList(ComicType.values()));
-
         return "web/web-templates/series";
     }
-
 
     @GetMapping("/bookmarks")
     public String bookmarks(Model model) {
@@ -285,8 +284,6 @@ public class WebController {
         return "web/web-templates/artist"; // Có thể đổi tên template nếu cần (xem bước 4)
     }
 
-
-
     // chân trang
     @GetMapping("/privacy-policy")
     public String privacyPolicy(){
@@ -303,4 +300,33 @@ public class WebController {
         return "web/web-footer/terms-of-service";
     }
 
+    // API tìm kiếm truyện theo tiêu đề
+    @GetMapping("/api/search")
+    @ResponseBody
+    public List<SearchComicDTO> searchComicsApi(@RequestParam("query") String query) {
+        // Xóa khoảng trắng đầu cuối của từ khóa tìm kiếm để đảm bảo tính chính xác
+        String trimmedQuery = query.trim();
+
+        // Gọi ComicService để lấy danh sách truyện có tiêu đề chứa từ khóa (không phân biệt hoa thường)
+        List<Comic> comics = comicService.findByTitleContainingIgnoreCase(trimmedQuery);
+
+        // Chuyển đổi danh sách Comic thành danh sách SearchComicDTO để trả về dữ liệu tối ưu
+        return comics.stream()
+                .map(comic -> {
+                    // Tạo đối tượng SearchComicDTO mới
+                    SearchComicDTO dto = new SearchComicDTO();
+                    // Gán ID của truyện
+                    dto.setId(comic.getId());
+                    // Gán tiêu đề của truyện
+                    dto.setTitle(comic.getTitle());
+                    // Gán slug của truyện (dùng để tạo URL)
+                    dto.setSlug(comic.getSlug());
+                    // Gán URL ảnh bìa của truyện
+                    dto.setCoverImage(comic.getCoverImage());
+                    // Trả về DTO đã được điền dữ liệu
+                    return dto;
+                })
+                // Thu thập kết quả thành danh sách
+                .collect(Collectors.toList());
+    }
 }

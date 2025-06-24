@@ -5,30 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <link rel="stylesheet" href="/css/web/web-main/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="navbar-left">
-                    <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li  class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
-                    </ul>
-                </div>
-                <div class="navbar-right">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fas fa-search"></i></button>
-                    </div>
-                    <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
-                </div>
+<header>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-left">
+                <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                </ul>
             </div>
-        </nav>
-    </header>
+            <div class="navbar-right">
+                <div class="search-bar">
+                    <form th:action="@{/asura/series}" method="get">
+                        <input type="text" name="query" placeholder="Tìm kiếm truyện..." id="searchInput" autocomplete="off">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+                <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!--tìm kiếm truyện theo title-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', async (e) => {
+            const query = e.target.value.trim();
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/asura/api/search?query=${encodeURIComponent(query)}`);
+                const comics = await response.json();
+
+                if (comics.length === 0) {
+                    searchResults.innerHTML = '<div class="search-result-item">Không tìm thấy truyện nào.</div>';
+                } else {
+                    searchResults.innerHTML = comics.map(comic => `
+                        <a href="/asura/comic/${comic.slug}" class="search-result-item">
+                            <img src="${comic.coverImage}" alt="${comic.title}">
+                            <span>${comic.title}</span>
+                        </a>
+                    `).join('');
+                }
+                searchResults.style.display = 'block';
+            } catch (error) {
+                console.error('Lỗi tìm kiếm:', error);
+                searchResults.innerHTML = '<div class="search-result-item">Đã xảy ra lỗi.</div>';
+                searchResults.style.display = 'block';
+            }
+        });
+
+        // Ẩn dropdown khi click ra ngoài
+        document.addEventListener('click', (e) => {
+            if (!searchResults.contains(e.target) && e.target !== searchInput) {
+                searchResults.style.display = 'none';
+            }
+        });
+    });
+</script>
 </body>
 </html>

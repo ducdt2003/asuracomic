@@ -1,4 +1,4 @@
-package com.example.asuracomic.controller.admin;
+package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.service.UserService;

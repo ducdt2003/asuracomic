@@ -11,29 +11,7 @@
 </head>
 <body>
 <!-- Header Section -->
-<header>
-    <nav class="navbar">
-        <div class="container-fluid">
-            <div class="navbar-left">
-                <a th:href="@{/asura}" class="navbar-brand"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/asura}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/series}">Comics</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/purchase}">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/asura}">Membership</a></li>
-                </ul>
-            </div>
-            <div class="navbar-right">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </div>
-                <button class="btn btn-login">Login</button>
-            </div>
-        </div>
-    </nav>
-</header>
+<th:block th:replace="~{web/fragments/header::header}"></th:block>
 
 <!-- Main Body Section -->
 <main>

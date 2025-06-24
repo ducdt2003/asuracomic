@@ -241,4 +241,9 @@ public class ComicService {
                 return Sort.by(Sort.Order.desc("updatedAt"));
         }
     }
+
+    // tìm kiếm truyện theo title contaile
+    public List<Comic> findByTitleContainingIgnoreCase(String title) {
+        return comicRepository.findByTitleContainingIgnoreCase(title);
+    }
 }

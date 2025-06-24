@@ -152,4 +152,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     // Fetch distinct genres with published comics
     @Query("SELECT DISTINCT g FROM Genre g JOIN g.comicGenres cg WHERE cg.comic.isPublished = true")
     List<Genre> findGenresWithPublishedComics();
+
+
+    // tìm kiếm truyện
+    List<Comic> findByTitleContainingIgnoreCase(String title);
 }
