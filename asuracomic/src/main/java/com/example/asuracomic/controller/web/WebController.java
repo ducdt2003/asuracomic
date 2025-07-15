@@ -1,9 +1,6 @@
 package com.example.asuracomic.controller.web;
 
-import com.example.asuracomic.dto.ComicCarouselDTO;
-import com.example.asuracomic.dto.ComicTopDTO;
-import com.example.asuracomic.dto.RelatedComicDTO;
-import com.example.asuracomic.dto.SearchComicDTO;
+import com.example.asuracomic.dto.*;
 import com.example.asuracomic.entity.*;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
@@ -12,6 +9,7 @@ import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.service.ArtistService;
 import com.example.asuracomic.service.AuthorService;
 import com.example.asuracomic.service.ComicService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +35,7 @@ public class WebController {
     private final GenreRepository genreRepository;
     private final AuthorService authorService;
     private final ArtistService artistService;
+    private final HttpSession session;
 
     // trang chủ
     @GetMapping
@@ -329,4 +328,5 @@ public class WebController {
                 // Thu thập kết quả thành danh sách
                 .collect(Collectors.toList());
     }
+
 }

@@ -75,5 +75,10 @@ public class User {
     private List<Report> resolvedReports; // Danh sách báo cáo do quản trị viên này xử lý, hỗ trợ quản lý nội dung (chỉ dành cho ADMIN)
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Rating> ratings; // Danh sách đánh giá truyện của người dùng, góp phần tính điểm trung bình cho truyệ
+    private List<Rating> ratings; // Danh sách đánh giá truyện của người dùng, góp phần tính điểm trung bình cho truyện
+
+    // Thêm phương thức để cập nhật lastLogin
+    public void updateLastLogin() {
+        this.lastLogin = LocalDateTime.now();
+    }
 }

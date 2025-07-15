@@ -279,8 +279,8 @@ class AsuraComicApplicationTests {
 			// Tạo số lượt xem ngẫu nhiên từ 1 triệu đến 5 triệu cho mỗi truyện
 			int viewCount = faker.number().numberBetween(1_000_000, 5_000_000);
 			for (int i = 0; i < viewCount / 1000; i++) { // Chia nhỏ để giảm số bản ghi tạo ra
-				ComicView comicView = ComicView.builder() // Sử dụng builder pattern để tạo đối tượng ComicView
-						.comic(comic) // Gán truyện
+				ComicView comicView = ComicView.builder() // Sử dụng builder pattern để tạo đối tượng Comiciew
+						.comic(comic) // Gán truyệnV
 						.viewedAt(LocalDateTime.now().minusDays(faker.number().numberBetween(0, 30))) // Gán thời điểm xem ngẫu nhiên trong 30 ngày qua
 						.build();
 				comicViewRepository.save(comicView); // Lưu lượt xem vào cơ sở dữ liệu
