@@ -4,6 +4,8 @@ import com.example.asuracomic.model.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,10 +14,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
     Long id;
-    String username;
-    String displayName;
     String email;
+    String username;
     String avatar;
-    String phone;
     Role role;
+    BigDecimal coinBalance;
+    boolean vipStatus;
 }

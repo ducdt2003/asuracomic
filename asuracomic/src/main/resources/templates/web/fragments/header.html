@@ -1,10 +1,11 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>Trang Chủ - Asura Scans</title>
     <link rel="stylesheet" href="/css/web/web-main/home.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -12,10 +13,14 @@
     <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-left">
-                <a th:href="@{'/asura'}" class="navbar-brand" href="#"><img src="https://asuracomic.net/images/logo.webp" alt="Logo"></a>
+                <a th:href="@{'/asura'}" class="navbar-brand">
+                    <img src="https://asuracomic.net/images/logo.webp" alt="Logo">
+                </a>
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/bookmarks'}">Bookmark</a></li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
@@ -29,17 +34,61 @@
                     </form>
                     <div id="searchResults" class="search-results"></div>
                 </div>
-                <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
+                <th:block th:if="${session.currentUser == null}">
+                    <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
+                </th:block>
+                <th:block th:if="${session.currentUser != null}">
+                    <div class="dropdown">
+                        <a class="btn btn-profile dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:src="${session.currentUser.avatar != null ? session.currentUser.avatar : 'https://via.placeholder.com/40'}" alt="Avatar" class="rounded-circle" width="40" height="40">
+                            <span th:text="${session.currentUser.username}"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <div class="dropdown-item disabled">
+                                    <i class="fas fa-user"></i> <span th:text="${session.currentUser.username}"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item disabled">
+                                    <i class="fas fa-coins"></i> Số dư: <span th:text="${session.currentUser.coinBalance != null ? session.currentUser.coinBalance + ' coins' : '0 coins'}"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item disabled">
+                                    <i class="fas fa-crown"></i> Trạng thái: <span th:text="${session.currentUser.vipStatus ? 'VIP' : 'Thường'}"></span>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/asura/profile}">Hồ sơ</a></li>
+                            <li th:if="${session.currentUser.role.name() == 'USER'}" ><a class="dropdown-item" th:href="@{/asura/bookmarks}">Truyện yêu thích</a></li>
+                            <li th:if="${session.currentUser.role.name() == 'ADMIN'}">
+                                <a class="dropdown-item" th:href="@{/asura/admin}">Bảng điều khiển Admin</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/asura/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </th:block>
             </div>
         </div>
     </nav>
 </header>
 
-<!--tìm kiếm truyện theo title-->
-<script>
+<main>
+    <div class="container mt-5">
+        <h1>Chào mừng đến với Asura Scans</h1>
+        <p>Khám phá bộ sưu tập truyện tranh tuyệt vời của chúng tôi!</p>
+    </div>
+</main>
+
+<!-- Script tìm kiếm truyện -->
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', () => {
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
+        let currentUser = [[${session.currentUser}]];
+
+        console.log('Current User:', currentUser); // Debugging thông tin người dùng
 
         searchInput.addEventListener('input', async (e) => {
             const query = e.target.value.trim();
@@ -71,7 +120,6 @@
             }
         });
 
-        // Ẩn dropdown khi click ra ngoài
         document.addEventListener('click', (e) => {
             if (!searchResults.contains(e.target) && e.target !== searchInput) {
                 searchResults.style.display = 'none';
@@ -79,5 +127,8 @@
         });
     });
 </script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

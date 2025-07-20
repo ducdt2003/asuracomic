@@ -10,12 +10,16 @@ public class UserMapper {
             return null;
         }
 
-        return UserDTO.builder()
+        UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .avatar(user.getAvatar())
                 .role(user.getRole())
+                .coinBalance(user.getCoinBalance())
+                .vipStatus(user.isVipStatus())
                 .build();
+        System.out.println("Mapped UserDTO: " + userDTO);
+        return userDTO;
     }
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHI TIẾT</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/web/web-templates/profile.css">
+</head>
+<body>
+
+<!--
+<input type="text" class="chapter-search-bar" placeholder="Search Chapter. EXAMPLE: 25 or 178">
+-->
+<!-- fragments cho header -->
+<th:block th:replace="~{web/fragments/header::header}"></th:block>
+
+<!-- HTML: Phần nội dung chính -->
+<main>
+    <div class="main-container">
+        <div class="profile-section">
+            <img src="https://asuracomic.net/images/profile-picture.webp" alt="Profile Image" class="profile-img">
+            <button class="btn btn-purple">CHANGE PHOTO</button>
+            <button class="btn btn-red">DELETE PHOTO</button>
+
+            <div class="input-group">
+                <input type="text" value="Đinh Đức" readonly>
+            </div>
+
+            <div class="input-group">
+                <input type="email" value="dinhtrongduc2003@gmail.com" readonly>
+            </div>
+
+            <div class="input-group">
+                <textarea placeholder="Enter Description"></textarea>
+            </div>
+
+            <button class="btn btn-purple">SAVE CHANGES</button>
+        </div>
+
+        <div class="password-section">
+            <h3>Change Password</h3>
+            <div class="input-group">
+                <label>Current Password</label>
+                <input type="password">
+            </div>
+            <div class="input-group">
+                <label>New Password</label>
+                <input type="password">
+            </div>
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password">
+            </div>
+            <p class="requirements">
+                Password Requirements<br>
+                • Minimum 8 characters long - the more, the better<br>
+                • At least one lowercase character<br>
+                • At least one number, symbol, or whitespace character
+            </p>
+            <button class="btn btn-purple">SAVE CHANGES</button>
+        </div>
+    </div>
+</main>
+
+<!-- Footer Section -->
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+
+<!-- JavaScript: Xử lý chuyển đổi tab -->
+<script>
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
+
+            tab.classList.add('active');
+            const tabName = tab.getAttribute('data-tab');
+            document.getElementById(`${tabName}List`).classList.add('active');
+        });
+    });
+</script>
+<script th:inline="javascript">
+    let movie = [[${movie}]];
+    let currentUser = [[${session.currentUser}]];
+    console.log(currentUser);
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

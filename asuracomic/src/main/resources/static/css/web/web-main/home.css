@@ -20,7 +20,7 @@ header {
 /* Thanh điều hướng */
 .navbar {
     position: relative; /* Vị trí tương đối để chứa phần tử giả */
-    overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+    overflow: visible; /* Thay đổi từ hidden để dropdown không bị cắt */
 }
 
 .navbar::before {
@@ -146,7 +146,6 @@ main {
     padding: 20px 15px; /* Khoảng đệm */
 }
 
-/* Phần carousel truyện nổi bật */
 /* Phần carousel truyện nổi bật */
 .carousel-container {
     background: linear-gradient(to right, #2c1e3d, #2a2929); /* Gradient nền từ tím đậm đến xám đậm */
@@ -743,4 +742,39 @@ footer {
 .footer-logo img {
     height: 40px; /* Chiều cao logo */
     border-radius: 50%; /* Bo góc tròn */
+}
+
+/* Điều chỉnh dropdown */
+.navbar-right .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.navbar-right .dropdown-toggle img {
+    border: 2px solid #fff;
+}
+
+.navbar-right .dropdown-menu {
+    min-width: 200px;
+    z-index: 1050; /* Đảm bảo hiển thị trên các phần tử khác */
+    position: absolute;
+    top: 100%; /* Mở xuống dưới nút toggle */
+    left: auto;
+    right: 0; /* Vì dùng dropdown-menu-end */
+}
+
+.navbar-right .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-right .dropdown-item i {
+    width: 20px;
+    text-align: center;
 }

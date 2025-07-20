@@ -10,75 +10,92 @@
 <div class="comments-container">
     <h2>Comments</h2>
 
-    <!-- Thông báo đăng nhập -->
-    <div class="login-prompt">
-        <p>Log in to join the conversation <a href="#">Log in</a></p>
+    <!-- Success/Error Messages -->
+    <div th:if="${message}" class="success-message" th:text="${message}"></div>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <!-- Login Prompt -->
+    <div class="login-prompt" th:if="${!isLoggedIn}">
+        <p>Log in to join the conversation <a th:href="@{/asura/login}">Log in</a></p>
     </div>
 
-    <!-- Ô nhập bình luận -->
-    <div class="comment-input">
-        <textarea placeholder="Write a comment…" disabled></textarea>
-        <div class="comment-toolbar">
-            <button disabled>Post Comment</button>
-        </div>
+    <!-- Comment Input -->
+    <div class="comment-input" th:if="${isLoggedIn}">
+        <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/comment(comicSlug=${comic.slug},chapterSlug=${chapter.slug})}"
+              th:object="${newComment}" method="post">
+            <textarea th:field="*{content}" placeholder="Write a comment…" required></textarea>
+            <div class="comment-toolbar">
+                <button type="submit">Post Comment</button>
+            </div>
+        </form>
     </div>
 
-    <!-- Danh sách bình luận -->
+    <!-- Comment List -->
     <ul class="comment-list">
-        <li class="comment-item">
+        <li class="comment-item" th:each="comment : ${comments}">
             <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">perkys</strong> - <span class="timestamp">9 days ago</span>
+                <img th:src="${comment.user.avatar != null} ? ${comment.user.avatar} : 'https://asuracomic.net/images/logo.webp'" class="avatar"/>
+                <strong class="username" th:text="${comment.user.username}">Username</strong> -
+                <span class="timestamp"
+                      th:text="${#temporals.format(comment.createdAt, 'd MMM yyyy')}">Time</span>
             </div>
-            <div class="comment-text">Def read this! The Arm Collector</div>
-        </li>
-
-        <li class="comment-item">
-            <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">Dankreader</strong> - <span class="timestamp">9 days ago</span>
-            </div>
-            <div class="comment-text">Currently the best one on this site. 10/10</div>
-        </li>
-
-        <li class="comment-item">
-            <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">Sweetos</strong> - <span class="timestamp">7 days ago</span>
-            </div>
-            <div class="comment-text">Lies</div>
-        </li>
-
-        <li class="comment-item">
-            <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">Vanithas</strong> - <span class="timestamp">5 days ago</span>
-            </div>
-            <div class="comment-text">One of the top 5 for sure yea, even top 3 for me! I enjoyed this!</div>
-        </li>
-
-        <li class="comment-item">
-            <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">MoonReader</strong> - <span class="timestamp">2 days ago</span>
-            </div>
-            <div class="comment-text">Art is insane. Can’t wait for next chapter!</div>
-        </li>
-
-        <li class="comment-item">
-            <div class="user-info">
-                <img src="https://asuracomic.net/images/logo.webp" class="avatar" />
-                <strong class="username">SoloFan</strong> - <span class="timestamp">1 day ago</span>
-            </div>
-            <div class="comment-text">Love the MC's development!</div>
+            <div class="comment-text" th:text="${comment.content}">Comment content</div>
         </li>
     </ul>
 
-    <!-- Phân trang -->
-    <div class="pagination">
-        <button class="prev-btn" disabled>Previous</button>
-        <button class="next-btn">Next</button>
+
+    <!-- Pagination -->
+    <div class="pagination" th:if="${totalCommentPages > 1}">
+        <a th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug},chapterSlug=${chapter.slug},commentPage=${commentPage - 1},commentSize=${commentSize})}"
+           th:classappend="${commentPage == 0} ? 'prev-btn disabled' : 'prev-btn'">Previous</a>
+        <a th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug},chapterSlug=${chapter.slug},commentPage=${commentPage + 1},commentSize=${commentSize})}"
+           th:classappend="${commentPage + 1 >= totalCommentPages} ? 'next-btn disabled' : 'next-btn'">Next</a>
     </div>
 </div>
 </body>
+
+<!-- JavaScript for Comment Actions -->
+<script>
+    function toggleReplyForm(commentId) {
+        const form = document.getElementById('reply-form-' + commentId);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleEditForm(commentId) {
+        const form = document.getElementById('edit-form-' + commentId);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleReportForm(commentId) {
+        const form = document.getElementById('report-form-' + commentId);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function deleteComment(commentId, comicSlug, chapterSlug) {
+        if (confirm('Are you sure you want to delete this comment?')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/asura/comic/' + comicSlug + '/chapter/' + chapterSlug + '/comment/' + commentId + '/delete';
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    // Back to Top Script
+    window.addEventListener('scroll', function() {
+        const backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </html>

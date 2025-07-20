@@ -2,25 +2,28 @@ package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.*;
 import com.example.asuracomic.entity.*;
+import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
+import com.example.asuracomic.model.enums.CommentStatus;
 import com.example.asuracomic.repository.ComicRepository;
+import com.example.asuracomic.repository.CommentRepository;
 import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.service.ArtistService;
 import com.example.asuracomic.service.AuthorService;
 import com.example.asuracomic.service.ComicService;
+import com.example.asuracomic.service.CommentService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -35,6 +38,8 @@ public class WebController {
     private final GenreRepository genreRepository;
     private final AuthorService authorService;
     private final ArtistService artistService;
+    private final CommentService commentService;
+    private final CommentRepository commentRepository;
     private final HttpSession session;
 
     // trang chủ
@@ -115,7 +120,7 @@ public class WebController {
     }
 
     // trang chapter
-    @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
+    /*@GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
     public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug, Model model) {
         // Lấy chi tiết truyện qua comicSlug
         Comic comic = comicService.getComicDetailsBySlug(comicSlug);
@@ -162,9 +167,253 @@ public class WebController {
         model.addAttribute("previousChapter", previousChapter);
         model.addAttribute("nextChapter", nextChapter);
         model.addAttribute("chapter", chapter);
+        // Lấy danh sách bình luận cho chương này
+        List<CommentResponseDTO> comments = commentService.getCommentsByChapter(chapter.getId());
+        model.addAttribute("comments", comments);
+
+        return "web/web-main/chapter";
+    }*/
+    // trang chapter
+    /*@GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
+    public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                          @RequestParam(defaultValue = "0") int commentPage,
+                          @RequestParam(defaultValue = "10") int commentSize,
+                          Model model) {
+
+        // Lấy chi tiết truyện qua comicSlug
+        Comic comic = comicService.getComicDetailsBySlug(comicSlug);
+        if (comic == null) {
+            return "redirect:/error";
+        }
+
+        // Lấy chương qua chapterSlug
+        Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
+        if (chapter == null) {
+            return "redirect:/error";
+        }
+
+        // Lấy danh sách truyện liên quan
+        List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
+
+        // Sắp xếp danh sách chương theo chapterNumber (tăng dần)
+        List<Chapter> sortedChapters = comic.getChapters().stream()
+                .filter(Chapter::isPublished)
+                .sorted(Comparator.comparingInt(Chapter::getChapterNumber))
+                .collect(Collectors.toList());
+
+        // Tìm chương trước và chương sau
+        Chapter previousChapter = null;
+        Chapter nextChapter = null;
+        for (int i = 0; i < sortedChapters.size(); i++) {
+            Chapter current = sortedChapters.get(i);
+            if (current.getId().equals(chapter.getId())) {
+                if (i > 0) {
+                    previousChapter = sortedChapters.get(i - 1);
+                }
+                if (i < sortedChapters.size() - 1) {
+                    nextChapter = sortedChapters.get(i + 1);
+                }
+                break;
+            }
+        }
+
+        // Lấy danh sách bình luận từ entity Comment
+        List<Comment> allComments = commentRepository.findByChapterAndStatusOrderByCreatedAtDesc(chapter, CommentStatus.ACTIVE);
+
+        // Phân trang thủ công
+        int start = commentPage * commentSize;
+        int end = Math.min(start + commentSize, allComments.size());
+        List<Comment> pagedComments = start < allComments.size() ? allComments.subList(start, end) : List.of();
+        Page<Comment> commentPageData = new PageImpl<>(pagedComments, PageRequest.of(commentPage, commentSize), allComments.size());
+
+        // Thêm bình luận vào model
+        model.addAttribute("comments", commentPageData.getContent());
+        model.addAttribute("commentPage", commentPageData.getNumber());
+        model.addAttribute("totalCommentPages", commentPageData.getTotalPages());
+        model.addAttribute("commentSize", commentSize);
+
+        // Thêm dữ liệu chương truyện vào model
+        model.addAttribute("comic", comic);
+        model.addAttribute("chapter", chapter);
+        model.addAttribute("relatedComics", relatedComics);
+        model.addAttribute("sortedChapters", sortedChapters);
+        model.addAttribute("previousChapter", previousChapter);
+        model.addAttribute("nextChapter", nextChapter);
+        model.addAttribute("isLoggedIn", getCurrentUserId() != null);
+        model.addAttribute("newComment", new CommentDTO());
+
+        return "web/web-main/chapter";
+    }*/
+    @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
+    public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                          @RequestParam(defaultValue = "0") int commentPage,
+                          @RequestParam(defaultValue = "10") int commentSize,
+                          Model model) {
+
+        // Lấy chi tiết truyện qua comicSlug
+        Comic comic = comicService.getComicDetailsBySlug(comicSlug);
+        if (comic == null) return "redirect:/error";
+
+        // Lấy chương qua chapterSlug
+        Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
+        if (chapter == null) return "redirect:/error";
+
+        // Lấy danh sách truyện liên quan
+        List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
+
+        // Sắp xếp danh sách chương
+        List<Chapter> sortedChapters = comic.getChapters().stream()
+                .filter(Chapter::isPublished)
+                .sorted(Comparator.comparingInt(Chapter::getChapterNumber))
+                .collect(Collectors.toList());
+
+        // Tìm chương trước và sau
+        Chapter previousChapter = null;
+        Chapter nextChapter = null;
+        for (int i = 0; i < sortedChapters.size(); i++) {
+            Chapter current = sortedChapters.get(i);
+            if (current.getId().equals(chapter.getId())) {
+                if (i > 0) previousChapter = sortedChapters.get(i - 1);
+                if (i < sortedChapters.size() - 1) nextChapter = sortedChapters.get(i + 1);
+                break;
+            }
+        }
+
+        // BỔ SUNG: Lấy danh sách bình luận trực tiếp từ entity
+        List<Comment> allComments = commentRepository.findByChapterAndStatusOrderByCreatedAtDesc(chapter, CommentStatus.ACTIVE);
+
+        int start = commentPage * commentSize;
+        int end = Math.min(start + commentSize, allComments.size());
+        List<Comment> pagedComments = start < allComments.size() ? allComments.subList(start, end) : List.of();
+        Page<Comment> commentPageData = new PageImpl<>(pagedComments, PageRequest.of(commentPage, commentSize), allComments.size());
+
+        // Đẩy dữ liệu bình luận ra giao diện (sử dụng trực tiếp entity Comment)
+        model.addAttribute("comments", commentPageData.getContent());
+        model.addAttribute("commentPage", commentPageData.getNumber());
+        model.addAttribute("totalCommentPages", commentPageData.getTotalPages());
+        model.addAttribute("commentSize", commentSize);
+
+        // Dữ liệu khác (không thay đổi)
+        model.addAttribute("comic", comic);
+        model.addAttribute("chapter", chapter);
+        model.addAttribute("relatedComics", relatedComics);
+        model.addAttribute("sortedChapters", sortedChapters);
+        model.addAttribute("previousChapter", previousChapter);
+        model.addAttribute("nextChapter", nextChapter);
+        model.addAttribute("isLoggedIn", getCurrentUserId() != null);
+        model.addAttribute("newComment", new CommentDTO());
 
         return "web/web-main/chapter";
     }
+
+
+
+    // Thêm bình luận mới (Form submission)
+    @PostMapping("/comic/{comicSlug}/chapter/{chapterSlug}/comment")
+    public String createComment(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                                @Valid @ModelAttribute("newComment") CommentDTO commentDTO,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = getCurrentUserId();
+            Comic comic = comicService.getComicDetailsBySlug(comicSlug);
+            if (comic == null) {
+                return "redirect:/error";
+            }
+            Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
+            if (chapter == null) {
+                return "redirect:/error";
+            }
+            commentDTO.setChapterId(chapter.getId());
+            commentService.createComment(userId, commentDTO);
+            redirectAttributes.addFlashAttribute("message", "Bình luận đã được thêm!");
+        } catch (CustomException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
+    }
+
+    // Thêm bình luận mới (AJAX)
+    @PostMapping(value = "/comic/{comicSlug}/chapter/{chapterSlug}/comment/ajax", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<CommentResponseDTO> createCommentAjax(@PathVariable String comicSlug,
+                                                                @PathVariable String chapterSlug,
+                                                                @Valid @RequestBody CommentDTO commentDTO) {
+        try {
+            Long userId = getCurrentUserId();
+            Comic comic = comicService.getComicDetailsBySlug(comicSlug);
+            if (comic == null) {
+                throw new CustomException("Comic not found");
+            }
+            Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
+            if (chapter == null) {
+                throw new CustomException("Chapter not found");
+            }
+            commentDTO.setChapterId(chapter.getId());
+            CommentResponseDTO createdComment = commentService.createComment(userId, commentDTO);
+            return ResponseEntity.ok(createdComment);
+        } catch (CustomException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    // Chỉnh sửa bình luận
+    @PostMapping("/comic/{comicSlug}/chapter/{chapterSlug}/comment/{commentId}/edit")
+    public String editComment(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                              @PathVariable Long commentId, @Valid @ModelAttribute("editComment") CommentDTO commentDTO,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = getCurrentUserId();
+            commentService.editComment(commentId, userId, commentDTO.getContent());
+            redirectAttributes.addFlashAttribute("message", "Bình luận đã được chỉnh sửa!");
+        } catch (CustomException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
+    }
+
+    // Xóa bình luận
+    @PostMapping("/comic/{comicSlug}/chapter/{chapterSlug}/comment/{commentId}/delete")
+    public String deleteComment(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                                @PathVariable Long commentId, RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = getCurrentUserId();
+            commentService.deleteComment(commentId, userId);
+            redirectAttributes.addFlashAttribute("message", "Bình luận đã được xóa!");
+        } catch (CustomException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
+    }
+
+    // Báo cáo bình luận
+    @PostMapping("/comic/{comicSlug}/chapter/{chapterSlug}/comment/{commentId}/report")
+    public String reportComment(@PathVariable String comicSlug, @PathVariable String chapterSlug,
+                                @PathVariable Long commentId, @ModelAttribute ReportDTO reportDTO,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = getCurrentUserId();
+            commentService.reportComment(commentId, userId, reportDTO.getReason());
+            redirectAttributes.addFlashAttribute("message", "Báo cáo đã được gửi!");
+        } catch (CustomException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
+    }
+
+    // Lấy ID người dùng hiện tại từ session
+    private Long getCurrentUserId() {
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return null;
+        }
+        return ((UserDTO) currentUser).getId();
+    }
+
+
+
+
+
+
 
     // template
     @GetMapping("/series")
@@ -229,6 +478,7 @@ public class WebController {
 
         return "web/web-templates/bookmarks";
     }
+
 
     @GetMapping("/report")
     public String report(){
@@ -299,6 +549,11 @@ public class WebController {
         return "web/web-footer/terms-of-service";
     }
 
+    @GetMapping("/profile")
+    public String proFile(){
+        return "web/web-templates/profile";
+    }
+
     // API tìm kiếm truyện theo tiêu đề
     @GetMapping("/api/search")
     @ResponseBody
@@ -328,5 +583,7 @@ public class WebController {
                 // Thu thập kết quả thành danh sách
                 .collect(Collectors.toList());
     }
+
+
 
 }

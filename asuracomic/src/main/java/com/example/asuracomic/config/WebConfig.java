@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/asura/series");
+                .addPathPatterns("/asura/bookmarks");
 
 //        registry.addInterceptor(authorizationInterceptor)
 //                .addPathPatterns("/api/admin/**", "/admin/**", "/phim-bo", "/api/favorites", "/api/favorites/**");

@@ -31,10 +31,10 @@ public class LoginController {
 
         try {
             authService.login(request);
-            return "redirect:/asura"; // Đăng nhập thành công
+            return "redirect:/asura";
         } catch (BadRequestException ex) {
             model.addAttribute("error", ex.getMessage());
-            return "web/web-user/login"; // Quay lại trang đăng nhập nếu sai
+            return "web/web-user/login";
         }
     }
 
