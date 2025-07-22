@@ -112,6 +112,7 @@ public class CommentService {
         return reportRepository.save(report);
     }
 
+
     private CommentResponseDTO mapToResponseDTO(Comment comment, boolean includeReplies) {
         CommentResponseDTO dto = new CommentResponseDTO();
         dto.setId(comment.getId());

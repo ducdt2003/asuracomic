@@ -2,6 +2,8 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Favorite;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
@@ -13,4 +15,11 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     // Trả về true nếu bản ghi tồn tại, false nếu không
     // Được sử dụng để tránh tạo trùng lặp dữ liệu trong bảng favorites
     boolean existsByUser_IdAndComic_Id(Long userId, Long comicId);
+
+    boolean existsByUserIdAndComicId(Long userId, Long comicId);
+    List<Favorite> findByUserId(Long userId);
+
+
+    Optional<Favorite> findByUserIdAndComicId(Long userId, Long comicId);
+    void deleteByUserIdAndComicId(Long userId, Long comicId);
 }

@@ -9,255 +9,164 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/web/web-templates/bookmarks.css">
-
 </head>
 <body>
 <!-- fragments cho header -->
 <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
-    <!-- Main Body Section -->
-    <main>
-        <div class="main-container">
-            <div class="row">
-                <!-- Main Content -->
-                <div class="col-lg-8">
-                    <div class="bookmarks-section">
-                        <h2>Bookmarks</h2>
-                        <hr>
-                        <div class="filters">
-                            <form th:action="@{/asura/bookmarks}" method="get">
-                                <!-- Dropdown Genre -->
-                                <select name="genre">
-                                    <option value="">Genre All</option>
-                                    <option th:each="genre : ${genres}"
-                                            th:value="${genre.slug}"
-                                            th:text="${genre.name}">Genre</option>
-                                </select>
+<main>
+    <div class="main-container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="bookmarks-section">
+                    <h2>Bookmarks</h2>
+                    <hr>
+                    <div class="filters">
+                        <form th:action="@{/asura/bookmarks}" method="get">
+                            <!-- Dropdown Genre -->
+                            <select name="genre">
+                                <option value="">Genre All</option>
+                                <option th:each="genre : ${genres}"
+                                        th:value="${genre.slug}"
+                                        th:text="${genre.name}">Genre</option>
+                            </select>
 
-                                <!-- Dropdown Status -->
-                                <select name="status">
-                                    <option th:each="status : ${statuses}"
-                                            th:value="${status}"
-                                            th:text="${status == 'ALL' ? 'Status All' : status}">Status</option>
-                                </select>
+                            <!-- Dropdown Status -->
+                            <select name="status">
+                                <option th:each="status : ${statuses}"
+                                        th:value="${status}"
+                                        th:text="${status == 'ALL' ? 'Status All' : status}">Status</option>
+                            </select>
 
-                                <!-- Dropdown Type -->
-                                <select name="type">
-                                    <option th:each="type : ${types}"
-                                            th:value="${type}"
-                                            th:text="${type == 'ALL' ? 'Type All' : type}">Type</option>
-                                </select>
+                            <!-- Dropdown Type -->
+                            <select name="type">
+                                <option th:each="type : ${types}"
+                                        th:value="${type}"
+                                        th:text="${type == 'ALL' ? 'Type All' : type}">Type</option>
+                            </select>
 
-                                <!-- Dropdown Order By -->
-                                <select name="orderBy">
-                                    <option value="lastUpdated" selected>Order By Last Up...</option>
-                                    <option value="rating">Order By Rating</option>
-                                    <option value="name">Order By Name</option>
-                                </select>
+                            <!-- Dropdown Order By -->
+                            <select name="orderBy">
+                                <option value="lastUpdated" selected>Order By Last Up...</option>
+                                <option value="rating">Order By Rating</option>
+                                <option value="name">Order By Name</option>
+                            </select>
 
-                                <!-- Search Button -->
-                                <button type="submit" class="search-btn">
-                                    <i class="fas fa-search"></i> Search
-                                </button>
-                            </form>
-                        </div>
-                        <div class="bookmarks-list">
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/270399/conversions/01JKTBDEEZRNKTH6TRHPF5PCXM-thumb-small.webp" alt="The Fox-Eyed Villain of the Demon Academy">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">The Fox-Eyed Villain of the Demon Academy...</a>
-                                <div class="chapter">Chapter 22</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.7</span>
-                                </div>
-                            </div>
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/290931/conversions/01JT1GF3SMZ0RYE2KYXHMTFKNB-thumb-small.webp" alt="Absolute Regression">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">Absolute Regression</a>
-                                <div class="chapter">Chapter 45</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/298/conversions/01J7TV2G7719CVSTSW9T9M6F31-thumb-small.webp" alt="Absolute Regression">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">Absolute Regression</a>
-                                <div class="chapter">Chapter 45</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/289385/conversions/01JSF8DMSKQKQB56YZ3TW7E5Y8-thumb-small.webp" alt="Absolute Regression">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">Absolute Regression</a>
-                                <div class="chapter">Chapter 45</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/243966/conversions/01J9KCWWJBA7Z7P1XWYXX9MEZC-thumb-small.webp" alt="Absolute Regression">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">Absolute Regression</a>
-                                <div class="chapter">Chapter 45</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                            <div class="bookmark-item">
-                                <div class="image-container">
-                                    <img src="https://gg.asuracomic.net/storage/media/289796/conversions/01JSJJEGZCGKCGS8YRGJNAEA91-thumb-small.webp" alt="Absolute Regression">
-                                    <span class="status">Ongoing</span>
-                                    <span class="type">Manhwa</span>
-                                </div>
-                                <a href="#">Absolute Regression</a>
-                                <div class="chapter">Chapter 45</div>
-                                <div class="rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>9.9</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pagination">
-                            <button class="prev-btn" disabled>
-                                <i class="fas fa-chevron-left"></i> Previous
+                            <!-- Search Button -->
+                            <button type="submit" class="search-btn">
+                                <i class="fas fa-search"></i> Search
                             </button>
-                            <button class="next-btn">
-                                Next <i class="fas fa-chevron-right"></i>
-                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bookmarks-list">
+                        <div class="bookmark-item" th:each="comic : ${favoriteComics}">
+                            <div class="image-container">
+                                <img th:src="${comic.coverImage}" th:alt="${comic.title}">
+                                <span class="status" th:text="${comic.status}">Ongoing</span>
+                                <span class="type" th:text="${comic.type}">Manhwa</span>
+                            </div>
+                            <a th:href="@{/comic/{slug}(slug=${comic.slug})}" th:text="${comic.title}">Comic Title</a>
+                            <div class="chapter" th:text="'Chapter ' + ${#lists.size(comic.chapters)}">Chapter ?</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span th:text="${comic.averageRating}">9.9</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- HTML: Sidebar (phần truyện phổ biến) -->
-                <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
+                    <div class="pagination">
+                        <button class="prev-btn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="next-btn">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
+
+            <!-- Sidebar -->
+            <th:block th:replace="~{web/fragments/popular::.col-lg-4}"></th:block>
         </div>
-    </main>
+    </div>
+</main>
 
 <!-- Footer Section -->
 <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
-    <!-- JavaScript for Hot Comics Carousel -->
-    <script>
-        const slidesContainer = document.getElementById("carouselSlides");
-        const dotsContainer = document.getElementById("carouselDots");
-        const slides = slidesContainer.querySelectorAll(".carousel-slide");
+<!-- JavaScript for Hot Comics Carousel -->
+<script>
+    const slidesContainer = document.getElementById("carouselSlides");
+    const dotsContainer = document.getElementById("carouselDots");
+    const slides = slidesContainer.querySelectorAll(".carousel-slide");
 
-        slides.forEach((_, index) => {
-            const dot = document.createElement("span");
-            dot.className = `dot ${index === 0 ? "active" : ""}`;
-            dot.addEventListener("click", () => showSlide(index));
-            dotsContainer.appendChild(dot);
+    slides.forEach((_, index) => {
+        const dot = document.createElement("span");
+        dot.className = `dot ${index === 0 ? "active" : ""}`;
+        dot.addEventListener("click", () => showSlide(index));
+        dotsContainer.appendChild(dot);
+    });
+
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        currentIndex = index;
+        const slides = document.querySelectorAll(".carousel-slide");
+        const dots = document.querySelectorAll(".dot");
+
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
         });
 
-        let currentIndex = 0;
-
-        function showSlide(index) {
-            currentIndex = index;
-            const slides = document.querySelectorAll(".carousel-slide");
-            const dots = document.querySelectorAll(".dot");
-
-            slides.forEach((slide, i) => {
-                slide.classList.toggle("active", i === index);
-            });
-
-            dots.forEach((dot, i) => {
-                dot.classList.toggle("active", i === index);
-            });
-        }
-
-        showSlide(0);
-
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        }, 5000);
-    </script>
-
-
-    <!-- JavaScript for Popular Section Tabs -->
-    <script>
-        const tabs = document.querySelectorAll(".popular-section .tab");
-        const comicList = document.getElementById("comicList");
-
-        tabs.forEach(tab => {
-            tab.addEventListener("click", () => {
-                tabs.forEach(t => t.classList.remove("active"));
-                tab.classList.add("active");
-
-                const tabType = tab.getAttribute("data-tab");
-                console.log(`Switched to ${tabType} tab`);
-            });
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === index);
         });
-    </script>
+    }
 
-     <script>
-        // Tab switching functionality
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and lists
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
+    showSlide(0);
 
-                // Add active class to the clicked tab
-                tab.classList.add('active');
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+    }, 5000);
+</script>
 
-                // Show the corresponding list
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById(`${tabName}List`).classList.add('active');
-            });
+<!-- JavaScript for Popular Section Tabs -->
+<script>
+    const tabs = document.querySelectorAll(".popular-section .tab");
+    const comicList = document.getElementById("comicList");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const tabType = tab.getAttribute("data-tab");
+            console.log(`Switched to ${tabType} tab`);
         });
-    </script>
+    });
+</script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.comic-list').forEach(list => list.classList.remove('active'));
+
+            tab.classList.add('active');
+            const tabName = tab.getAttribute('data-tab');
+            document.getElementById(`${tabName}List`).classList.add('active');
+        });
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -302,6 +302,7 @@ public class WebController {
         model.addAttribute("nextChapter", nextChapter);
         model.addAttribute("isLoggedIn", getCurrentUserId() != null);
         model.addAttribute("newComment", new CommentDTO());
+        model.addAttribute("currentUserId", getCurrentUserId());
 
         return "web/web-main/chapter";
     }
@@ -400,6 +401,37 @@ public class WebController {
         return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
     }
 
+
+    @PostMapping("/report/submit")
+    public String submitReport(@RequestParam(required = false) Long commentId,
+                               @RequestParam String reason,
+                               @RequestParam String description,
+                               @RequestParam(required = false) String comicSlug,
+                               @RequestParam(required = false) String chapterSlug,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            Long userId = getCurrentUserId();
+            if (userId == null) {
+                throw new CustomException("Bạn cần đăng nhập để gửi báo cáo.");
+            }
+            String fullReason = reason + (description != null && !description.isEmpty() ? " - " + description : "");
+            if (commentId != null) {
+                commentService.reportComment(commentId, userId, fullReason);
+            } else {
+                throw new CustomException("Vui lòng cung cấp ID bình luận.");
+            }
+            redirectAttributes.addFlashAttribute("message", "Báo cáo đã được gửi thành công!");
+            if (comicSlug != null && chapterSlug != null) {
+                redirectAttributes.addFlashAttribute("redirectUrl", "/asura/comic/" + comicSlug + "/chapter/" + chapterSlug);
+            }
+        } catch (CustomException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/asura/report/success";
+    }
+
+
+
     // Lấy ID người dùng hiện tại từ session
     private Long getCurrentUserId() {
         Object currentUser = session.getAttribute("currentUser");
@@ -410,6 +442,11 @@ public class WebController {
     }
 
 
+    @GetMapping("/report/success")
+    public String showReportSuccessPage(Model model) {
+        // Không cần thêm logic phức tạp vì thông báo đã được truyền qua RedirectAttributes
+        return "web/web-templates/report-success";
+    }
 
 
 
@@ -456,34 +493,100 @@ public class WebController {
         return "web/web-templates/series";
     }
 
+//    @GetMapping("/bookmarks")
+//    public String bookmarks(Model model) {
+//        // Lấy danh sách top 10 cho tuần và tháng
+//        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+//        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+//
+//        // Lấy danh sách thể loại
+//        List<Genre> genres = genreRepository.findAll();
+//
+//        // Lấy danh sách ComicStatus và ComicType từ enum
+//        List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
+//        List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
+//
+//        // Thêm vào model để hiển thị trên view
+//        model.addAttribute("top10Weekly", top10Weekly);
+//        model.addAttribute("top10Monthly", top10Monthly);
+//        model.addAttribute("genres", genres);
+//        model.addAttribute("statuses", statuses);
+//        model.addAttribute("types", types);
+//
+//        return "web/web-templates/bookmarks";
+//    }
+// Trong WebController.java
+/*@GetMapping("/bookmarks")
+public String bookmarks(Model model) {
+    Long userId = getCurrentUserId();
+    if (userId != null) {
+        List<Comic> favoriteComics = comicService.getFavoriteComics(userId);
+        model.addAttribute("favoriteComics", favoriteComics);
+    } else {
+        model.addAttribute("favoriteComics", List.of()); // Tránh lỗi khi chưa đăng nhập
+    }
+
+    // Lấy danh sách top 10 cho tuần và tháng
+    List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+    List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+
+    // Lấy danh sách thể loại
+    List<Genre> genres = genreRepository.findAll();
+
+    // Lấy danh sách ComicStatus và ComicType từ enum
+    List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
+    List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
+
+    // Thêm vào model để hiển thị trên view
+    model.addAttribute("top10Weekly", top10Weekly);
+    model.addAttribute("top10Monthly", top10Monthly);
+    model.addAttribute("genres", genres);
+    model.addAttribute("statuses", statuses);
+    model.addAttribute("types", types);
+
+    return "web/web-templates/bookmarks";
+}*/
+
     @GetMapping("/bookmarks")
     public String bookmarks(Model model) {
-        // Lấy danh sách top 10 cho tuần và tháng
-        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
-        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+        Long userId = getCurrentUserId();
+        if (userId != null) {
+            List<Comic> favoriteComics = comicService.getFavoriteComics(userId);
+            model.addAttribute("favoriteComics", favoriteComics);
+        } else {
+            model.addAttribute("favoriteComics", List.of());
+        }
 
-        // Lấy danh sách thể loại
-        List<Genre> genres = genreRepository.findAll();
-
-        // Lấy danh sách ComicStatus và ComicType từ enum
-        List<String> statuses = Arrays.asList("ALL", "ONGOING", "COMPLETED");
-        List<String> types = Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA");
-
-        // Thêm vào model để hiển thị trên view
-        model.addAttribute("top10Weekly", top10Weekly);
-        model.addAttribute("top10Monthly", top10Monthly);
-        model.addAttribute("genres", genres);
-        model.addAttribute("statuses", statuses);
-        model.addAttribute("types", types);
+        model.addAttribute("top10Weekly", comicService.getTop10CombinedWeekly());
+        model.addAttribute("top10Monthly", comicService.getTop10CombinedMonthly());
+        model.addAttribute("genres", genreRepository.findAll());
+        model.addAttribute("statuses", Arrays.asList("ALL", "ONGOING", "COMPLETED"));
+        model.addAttribute("types", Arrays.asList("ALL", "MANHWA", "MANHUA", "MANGA"));
 
         return "web/web-templates/bookmarks";
     }
 
 
+
+
+
     @GetMapping("/report")
-    public String report(){
+    public String showReportPage(@RequestParam(required = false) Long chapterId,
+                                 @RequestParam(required = false) Long commentId,
+                                 Model model) {
+        if (getCurrentUserId() == null) {
+            return "redirect:/asura/login";
+        }
+        if (chapterId != null) {
+            model.addAttribute("chapterId", chapterId);
+        }
+        if (commentId != null) {
+            model.addAttribute("commentId", commentId);
+        }
         return "web/web-templates/report";
     }
+
+
 
     @GetMapping("/authors/{slug}")
     public String authorProfile(@PathVariable String slug,

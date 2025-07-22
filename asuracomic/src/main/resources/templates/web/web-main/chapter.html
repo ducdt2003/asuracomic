@@ -976,13 +976,16 @@ header {
             </select>
 
 
-            <!-- Nút Report -->
-            <button class="report-btn">
-                <a th:href="@{/asura/report}"
-                   style="text-decoration: none; color: inherit;">
-                    <i class="fas fa-flag"></i> Report
-                </a>
-            </button>
+
+            <!-- Nút Báo cáo -->
+           <!-- <th:block th:if="${isLoggedIn}">
+                <button class="report-btn">
+                    <a th:href="@{/asura/report(chapterId=${chapter.id}, comicSlug=${comic.slug}, chapterSlug=${chapter.slug})}"
+                       style="text-decoration: none; color: inherit;">
+                        <i class="fas fa-flag"></i> Báo cáo
+                    </a>
+                </button>
+            </th:block>-->
 
             <!-- Nút điều hướng Prev/Next -->
             <div class="nav-buttons">
@@ -1023,9 +1026,12 @@ header {
             <select onchange="if (this.value) window.location.href = this.value;">
                 <option th:each="chap : ${sortedChapters}"
                         th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
-                        th:text="${chap.title}"
-                        th:selected="${chap.id == chapter.id}">Chapter Title</option>
+                        th:text="${chap.title + (chap.isFree ? '' : ' 🔒')}"
+                        th:selected="${chap.id == chapter.id}">
+                    Chapter Title
+                </option>
             </select>
+
             <!-- Nút điều hướng Prev/Next -->
             <div class="nav-buttons">
                 <button class="prev-btn"
@@ -1081,6 +1087,10 @@ header {
         <!-- HTML: Phần bình luận -->
         <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>
 
+        <!-- Back to Top Button -->
+        <button class="back-to-top" onclick="scrollToTop()" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
         <!--<div class="comments-container">
             <h2>Comments</h2>
 

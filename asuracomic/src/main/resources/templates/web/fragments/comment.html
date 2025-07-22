@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Simple Comments</title>
     <link rel="stylesheet" href="/css/web/web-main/detail.css" />
+
 </head>
 <body>
 <div class="comments-container">
@@ -39,9 +40,37 @@
                 <span class="timestamp"
                       th:text="${#temporals.format(comment.createdAt, 'd MMM yyyy')}">Time</span>
             </div>
+
             <div class="comment-text" th:text="${comment.content}">Comment content</div>
+
+            <div class="comment-actions" th:if="${isLoggedIn}">
+                <!-- Nếu là chủ sở hữu bình luận -->
+                <div th:if="${comment.user.id == currentUserId}">
+                    <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/comment/{commentId}/delete(
+                comicSlug=${comic.slug},
+                chapterSlug=${chapter.slug},
+                commentId=${comment.id}
+            )}" method="post" style="display: inline;">
+                        <button type="submit" class="action-btn"
+                                onclick="return confirm('Xác nhận xóa bình luận?')">Xóa</button>
+                    </form>
+
+                    <a th:href="@{/asura/report(commentId=${comment.id})}"
+                       class="action-btn">Báo cáo</a>
+                </div>
+
+                <!-- Nếu không phải chủ sở hữu -->
+                <div th:if="${comment.user.id != currentUserId}">
+                    <a th:href="@{/asura/report(commentId=${comment.id})}"
+                       class="action-btn">Báo cáo</a>
+                </div>
+            </div>
+
         </li>
     </ul>
+
+
+
 
 
     <!-- Pagination -->

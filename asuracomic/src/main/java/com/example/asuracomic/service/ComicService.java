@@ -3,10 +3,8 @@ package com.example.asuracomic.service;
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
-import com.example.asuracomic.entity.Chapter;
-import com.example.asuracomic.entity.Comic;
-import com.example.asuracomic.entity.Comment;
-import com.example.asuracomic.entity.Genre;
+import com.example.asuracomic.entity.*;
+import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.CommentStatus;
@@ -32,7 +30,8 @@ public class ComicService {
     private final ComicRepository comicRepository;
     private final ComicViewRepository comicViewRepository;
     private final ChapterRepository chapterRepository;
-    private final GenreRepository genreRepository;
+    private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
 
     public Comic getComicById(Long id) {
         return comicRepository.findById(id)
@@ -247,5 +246,52 @@ public class ComicService {
     // tìm kiếm truyện theo title contaile
     public List<Comic> findByTitleContainingIgnoreCase(String title) {
         return comicRepository.findByTitleContainingIgnoreCase(title);
+    }
+
+
+
+    // truyện yêu thích
+    public void addToFavorites(Long userId, Long comicId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("Không tìm thấy người dùng."));
+        Comic comic = comicRepository.findById(comicId)
+                .orElseThrow(() -> new CustomException("Không tìm thấy truyện."));
+
+        if (favoriteRepository.existsByUserIdAndComicId(userId, comicId)) {
+            throw new CustomException("already exists");
+        }
+
+        Favorite favorite = new Favorite();
+        favorite.setUser(user);
+        favorite.setComic(comic);
+        favorite.setCreatedAt(LocalDateTime.now());
+        favoriteRepository.save(favorite);
+    }
+
+    public List<Comic> getFavoriteComics(Long userId) {
+        return favoriteRepository.findByUserId(userId)
+                .stream()
+                .map(Favorite::getComic)
+                .collect(Collectors.toList());
+    }
+
+    // Xóa truyện khỏi danh sách yêu thích
+    public void removeFromFavorites(Long userId, Long comicId) {
+        // Kiểm tra userId và comicId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("Không tìm thấy người dùng với ID: " + userId));
+        Comic comic = comicRepository.findById(comicId)
+                .orElseThrow(() -> new CustomException("Không tìm thấy truyện với ID: " + comicId));
+
+        // Tìm bản ghi yêu thích
+        Favorite favorite = favoriteRepository.findByUserIdAndComicId(userId, comicId)
+                .orElseThrow(() -> new CustomException("Truyện này không có trong danh sách yêu thích của bạn"));
+
+        // Xóa bản ghi yêu thích
+        favoriteRepository.delete(favorite);
+
+        // Cập nhật followCount của Comic
+        comic.setFollowCount(comic.getFollowCount() - 1);
+        comicRepository.save(comic);
     }
 }
