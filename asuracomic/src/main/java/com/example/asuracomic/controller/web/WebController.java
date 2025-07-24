@@ -67,6 +67,7 @@ public class WebController {
         model.addAttribute("totalPages", comicPage.getTotalPages());
         model.addAttribute("currentPage", page);
 
+
         return "web/web-main/home";
     }
 
@@ -74,7 +75,7 @@ public class WebController {
     @GetMapping("/comic/{slug}")
     public String detail(@PathVariable String slug,
                          @RequestParam(required = false) String redirectToAuthor,
-                         Model model) {
+                         Model model, HttpSession session) {
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
         if (comicDetail == null) {
@@ -116,8 +117,12 @@ public class WebController {
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
 
+        model.addAttribute("isLoggedIn", session.getAttribute("currentUser") != null);
+
         return "web/web-main/detail";
     }
+
+
 
     // trang chapter
     /*@GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
@@ -173,82 +178,11 @@ public class WebController {
 
         return "web/web-main/chapter";
     }*/
-    // trang chapter
-    /*@GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
-    public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug,
-                          @RequestParam(defaultValue = "0") int commentPage,
-                          @RequestParam(defaultValue = "10") int commentSize,
-                          Model model) {
-
-        // Lấy chi tiết truyện qua comicSlug
-        Comic comic = comicService.getComicDetailsBySlug(comicSlug);
-        if (comic == null) {
-            return "redirect:/error";
-        }
-
-        // Lấy chương qua chapterSlug
-        Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
-        if (chapter == null) {
-            return "redirect:/error";
-        }
-
-        // Lấy danh sách truyện liên quan
-        List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
-
-        // Sắp xếp danh sách chương theo chapterNumber (tăng dần)
-        List<Chapter> sortedChapters = comic.getChapters().stream()
-                .filter(Chapter::isPublished)
-                .sorted(Comparator.comparingInt(Chapter::getChapterNumber))
-                .collect(Collectors.toList());
-
-        // Tìm chương trước và chương sau
-        Chapter previousChapter = null;
-        Chapter nextChapter = null;
-        for (int i = 0; i < sortedChapters.size(); i++) {
-            Chapter current = sortedChapters.get(i);
-            if (current.getId().equals(chapter.getId())) {
-                if (i > 0) {
-                    previousChapter = sortedChapters.get(i - 1);
-                }
-                if (i < sortedChapters.size() - 1) {
-                    nextChapter = sortedChapters.get(i + 1);
-                }
-                break;
-            }
-        }
-
-        // Lấy danh sách bình luận từ entity Comment
-        List<Comment> allComments = commentRepository.findByChapterAndStatusOrderByCreatedAtDesc(chapter, CommentStatus.ACTIVE);
-
-        // Phân trang thủ công
-        int start = commentPage * commentSize;
-        int end = Math.min(start + commentSize, allComments.size());
-        List<Comment> pagedComments = start < allComments.size() ? allComments.subList(start, end) : List.of();
-        Page<Comment> commentPageData = new PageImpl<>(pagedComments, PageRequest.of(commentPage, commentSize), allComments.size());
-
-        // Thêm bình luận vào model
-        model.addAttribute("comments", commentPageData.getContent());
-        model.addAttribute("commentPage", commentPageData.getNumber());
-        model.addAttribute("totalCommentPages", commentPageData.getTotalPages());
-        model.addAttribute("commentSize", commentSize);
-
-        // Thêm dữ liệu chương truyện vào model
-        model.addAttribute("comic", comic);
-        model.addAttribute("chapter", chapter);
-        model.addAttribute("relatedComics", relatedComics);
-        model.addAttribute("sortedChapters", sortedChapters);
-        model.addAttribute("previousChapter", previousChapter);
-        model.addAttribute("nextChapter", nextChapter);
-        model.addAttribute("isLoggedIn", getCurrentUserId() != null);
-        model.addAttribute("newComment", new CommentDTO());
-
-        return "web/web-main/chapter";
-    }*/
     @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}")
     public String chapter(@PathVariable String comicSlug, @PathVariable String chapterSlug,
                           @RequestParam(defaultValue = "0") int commentPage,
                           @RequestParam(defaultValue = "10") int commentSize,
-                          Model model) {
+                          Model model, HttpSession session) {
 
         // Lấy chi tiết truyện qua comicSlug
         Comic comic = comicService.getComicDetailsBySlug(comicSlug);
@@ -300,9 +234,12 @@ public class WebController {
         model.addAttribute("sortedChapters", sortedChapters);
         model.addAttribute("previousChapter", previousChapter);
         model.addAttribute("nextChapter", nextChapter);
-        model.addAttribute("isLoggedIn", getCurrentUserId() != null);
+/*        model.addAttribute("isLoggedIn", getCurrentUserId() != null);*/
         model.addAttribute("newComment", new CommentDTO());
         model.addAttribute("currentUserId", getCurrentUserId());
+
+        model.addAttribute("isLoggedIn", session.getAttribute("currentUser") != null);
+
 
         return "web/web-main/chapter";
     }

@@ -115,15 +115,35 @@
                                         <li class="chapter-item"
                                             th:each="chapter : ${comic.chapters}"
                                             th:attr="data-chapter=${chapter.chapterNumber},
-               data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},
-               data-is-free=${chapter.isFree}">
-                                            <a th:href="@{'/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug}}" style="text-decoration: none;">
+                 data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},
+                 data-is-free=${chapter.isFree}">
+
+                                            <!-- Link nếu chương miễn phí -->
+                                            <a th:if="${chapter.isFree}"
+                                               th:href="@{'/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug}}"
+                                               style="text-decoration: none;">
                                                 <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
-                                                <!-- icon khóa nếu có -->
                                             </a>
+
+                                            <!-- Link nếu chương bị khóa và user đã đăng nhập -->
+                                            <a th:if="${!chapter.isFree} and ${session.currentUser != null}"
+                                               th:href="@{'/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock'}"
+                                               style="text-decoration: none;">
+                                                <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                            </a>
+
+                                            <!-- Link nếu chương bị khóa và user chưa đăng nhập -->
+                                            <a th:if="${!chapter.isFree} and ${session.currentUser == null}"
+                                               th:href="@{'/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock'}"
+                                               style="text-decoration: none;">
+                                                <span class="chapter-number" th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+                                            </a>
+
                                             <span class="chapter-time" th:attr="data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                         </li>
                                     </ul>
+
+
 
                                 </div>
                             </div>

@@ -12,4 +12,6 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     // Trả về Optional<UnlockedChapter> để xử lý trường hợp không tìm thấy bản ghi (tránh NullPointerException)
     // Được sử dụng để kiểm tra xem một người dùng đã mở khóa một chương cụ thể nào chưa
     Optional<UnlockedChapter> findByUser_IdAndChapter_Id(Long userId, Long chapterId); // Tham số userId và chapterId là các giá trị cần tìm kiếm
+
+    boolean existsByUserIdAndChapterId(Long userId, Long chapterId);
 }

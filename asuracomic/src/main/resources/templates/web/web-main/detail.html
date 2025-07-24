@@ -152,22 +152,40 @@
                 <!-- HTML: Phần danh sách chapter-->
                 <div class="chapter-section">
                     <h2 th:text="'Chapter: ' + ${comic.title}">Chapter Nano Machine</h2>
+
                     <!-- Navigation buttons for first and latest chapter -->
                     <div class="chapter-buttons">
+                        <!-- First Chapter Button -->
                         <button th:if="${firstChapter != null}"
                                 class="btn btn-primary me-2"
-                                th:onclick="'location.href=\'' + @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} + '\''">
+                                th:onclick="'location.href=\'' +
+                (${firstChapter.isFree} ?
+                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
+                    (${isLoggedIn} ?
+                        @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
+                        @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${firstChapter.slug} + '/unlock')}
+                    )
+                ) + '\''">
                             <span>First Chapter</span><br>
                             <span th:text="'Chapter ' + ${firstChapter.chapterNumber}">Chapter 1</span>
                         </button>
 
+                        <!-- Latest Chapter Button -->
                         <button th:if="${latestChapter != null}"
                                 class="btn btn-primary"
-                                th:onclick="'location.href=\'' + @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} + '\''">
+                                th:onclick="'location.href=\'' +
+                (${latestChapter.isFree} ?
+                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
+                    (${isLoggedIn} ?
+                        @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
+                        @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${latestChapter.slug} + '/unlock')}
+                    )
+                ) + '\''">
                             <span>New Chapter</span><br>
                             <span th:text="${latestChapter.title != null and !latestChapter.title.isEmpty()} ? ${latestChapter.title} : 'New Chapter'">New Chapter</span>
                         </button>
                     </div>
+
 
                     <!-- Chapter search bar -->
                     <input type="text" class="chapter-search-bar form-control mb-3"
@@ -178,10 +196,13 @@
                         <ul class="chapter-list list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center"
                                 th:each="chapter : ${chapters}">
-                                <a th:href="@{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})}"
-                                   class="text-decoration-none">
+                                <a class="text-decoration-none"
+                                   th:href="${chapter.isFree} ?
+                       @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                       (${isLoggedIn} ?
+                           @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                           @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock')})">
                                     <span th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
-                                    <!-- Thêm icon khóa nếu chương không miễn phí -->
                                     <span th:if="${!chapter.isFree}" style="color: red; margin-left: 5px;">&#128274;</span>
                                 </a>
                                 <span th:text="${#temporals.format(chapter.updatedAt, 'MMMM dd, yyyy')} ?: 'Unknown'">Unknown</span>
@@ -190,6 +211,7 @@
                         </ul>
                     </div>
                 </div>
+
 
                 <!-- HTML: Phần bình luận -->
 <!--                <th:block th:replace="~{web/fragments/comment::.comments-container}"></th:block>-->

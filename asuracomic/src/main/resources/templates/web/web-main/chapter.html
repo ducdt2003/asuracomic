@@ -967,15 +967,18 @@ header {
         <div class="chapter-nav">
             <!-- Dropdown danh sách chương -->
             <select onchange="if (this.value) window.location.href = this.value;">
+                <option disabled>-- Select Chapter --</option>
                 <option th:each="chap : ${sortedChapters}"
-                        th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
+                        th:value="${chap.isFree} ?
+                        @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                        (${isLoggedIn} ?
+                            @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                            '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${chap.slug} + '/unlock')"
                         th:text="${chap.title + (chap.isFree ? '' : ' 🔒')}"
                         th:selected="${chap.id == chapter.id}">
                     Chapter Title
                 </option>
             </select>
-
-
 
             <!-- Nút Báo cáo -->
            <!-- <th:block th:if="${isLoggedIn}">
@@ -986,27 +989,36 @@ header {
                     </a>
                 </button>
             </th:block>-->
-
             <!-- Nút điều hướng Prev/Next -->
             <div class="nav-buttons">
                 <button class="prev-btn"
                         th:disabled="${previousChapter == null}"
                         th:classappend="${previousChapter == null} ? 'disabled' : ''">
                     <a th:if="${previousChapter != null}"
-                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})}"
+                       th:href="${previousChapter.isFree} ?
+           @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})} :
+           (${isLoggedIn} ?
+               @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})} :
+               '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${previousChapter.slug} + '/unlock')"
                        style="text-decoration: none; color: inherit;">
                         Prev
                     </a>
+
                     <span th:if="${previousChapter == null}">Prev</span>
                 </button>
                 <button class="next-btn"
                         th:disabled="${nextChapter == null}"
                         th:classappend="${nextChapter == null} ? 'disabled' : ''">
                     <a th:if="${nextChapter != null}"
-                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})}"
+                       th:href="${nextChapter.isFree} ?
+           @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})} :
+           (${isLoggedIn} ?
+               @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})} :
+               '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${nextChapter.slug} + '/unlock')"
                        style="text-decoration: none; color: inherit;">
                         Next
                     </a>
+
                     <span th:if="${nextChapter == null}">Next</span>
                 </button>
             </div>
@@ -1038,20 +1050,30 @@ header {
                         th:disabled="${previousChapter == null}"
                         th:classappend="${previousChapter == null} ? 'disabled' : ''">
                     <a th:if="${previousChapter != null}"
-                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})}"
+                       th:href="${previousChapter.isFree} ?
+           @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})} :
+           (${isLoggedIn} ?
+               @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${previousChapter.slug})} :
+               '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${previousChapter.slug} + '/unlock')"
                        style="text-decoration: none; color: inherit;">
                         Prev
                     </a>
+
                     <span th:if="${previousChapter == null}">Prev</span>
                 </button>
                 <button class="next-btn"
                         th:disabled="${nextChapter == null}"
                         th:classappend="${nextChapter == null} ? 'disabled' : ''">
                     <a th:if="${nextChapter != null}"
-                       th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})}"
+                       th:href="${nextChapter.isFree} ?
+           @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})} :
+           (${isLoggedIn} ?
+               @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${nextChapter.slug})} :
+               '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${nextChapter.slug} + '/unlock')"
                        style="text-decoration: none; color: inherit;">
                         Next
                     </a>
+
                     <span th:if="${nextChapter == null}">Next</span>
                 </button>
             </div>

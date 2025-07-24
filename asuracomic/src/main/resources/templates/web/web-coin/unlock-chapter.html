@@ -1,23 +1,24 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asura Scans - Locked Chapter</title>
-    <!-- Bootstrap CSS -->
+    &lt;!&ndash; Bootstrap CSS &ndash;&gt;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
+    &lt;!&ndash; Font Awesome for icons &ndash;&gt;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/web/web-coin/unlock-chapter.css">
 </head>
 <body>
-<!-- fragments cho header -->
+&lt;!&ndash; fragments cho header &ndash;&gt;
 <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
-    <!-- Main Body Section -->
+    &lt;!&ndash; Main Body Section &ndash;&gt;
     <main>
         <div class="main-container">
-            <!-- Locked Chapter Section -->
+            &lt;!&ndash; Locked Chapter Section &ndash;&gt;
             <div class="locked-chapter">
                 <div class="locked-icon">
                     <i class="fas fa-lock"></i>
@@ -29,9 +30,10 @@
                 <a href="#" class="buy-btn">
                     <i class="fas fa-credit-card"></i> Buy now for 50
                 </a>
-                <a href="#" class="return-btn">
+                <a href="javascript:history.back()" class="return-btn">
                     <i class="fas fa-arrow-left"></i> Return to Series
                 </a>
+
                 <div class="discord-link">
                     Join our <a href="#">Discord</a> for more information and updates <i class="fas fa-star"></i>
                 </div>
@@ -39,10 +41,179 @@
         </div>
     </main>
 
-<!-- Footer Section -->
+&lt;!&ndash; Footer Section &ndash;&gt;
 <th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
-    <!-- Bootstrap JS -->
+    &lt;!&ndash; Bootstrap JS &ndash;&gt;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>-->
+
+
+
+<!--c mỡ khóa được-->
+<!--
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asura Scans - Locked Chapter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/web/web-coin/unlock-chapter.css">
+</head>
+<body>
+&lt;!&ndash; Header &ndash;&gt;
+<th:block th:replace="~{web/fragments/header::header}"></th:block>
+
+&lt;!&ndash; Main Body Section &ndash;&gt;
+<main>
+    <div class="main-container">
+        &lt;!&ndash; Locked Chapter Section &ndash;&gt;
+        <div class="locked-chapter">
+            <div class="locked-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="chapter-title" th:text="${chapter.title}">Chapter 60</div>
+            <div class="locked-message">
+                This chapter is locked <i class="fas fa-gift"></i>
+            </div>
+            <div class="user-balance">
+                Your Coin Balance: <span th:text="${user.coinBalance}">0</span> coins
+            </div>
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comicSlug}, chapterSlug=${chapter.slug})}" method="post">
+                <button type="submit" class="buy-btn" th:disabled="${user.coinBalance < chapter.coinPrice}">
+                    <i class="fas fa-credit-card"></i> Buy now for <span th:text="${chapter.coinPrice}">50</span> coins
+                </button>
+            </form>
+            <a th:href="@{/asura/comic/{comicSlug}(comicSlug=${comicSlug})}" class="return-btn">
+                <i class="fas fa-arrow-left"></i> Return to Series
+            </a>
+            <div class="discord-link">
+                Join our <a href="#">Discord</a> for more information and updates <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+</main>
+
+&lt;!&ndash; Footer &ndash;&gt;
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>-->
+
+
+
+<!--có ghi lại mỡ khóa chướng-->
+<!--
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asura Scans - Locked Chapter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/web/web-coin/unlock-chapter.css">
+</head>
+<body>
+&lt;!&ndash; Header &ndash;&gt;
+<th:block th:replace="~{web/fragments/header::header}"></th:block>
+
+&lt;!&ndash; Main Body Section &ndash;&gt;
+<main>
+    <div class="main-container">
+        &lt;!&ndash; Locked Chapter Section &ndash;&gt;
+        <div class="locked-chapter">
+            <div class="locked-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="chapter-title" th:text="${chapter.title}">Chapter 60</div>
+            <div class="locked-message">
+                This chapter is locked <i class="fas fa-gift"></i>
+            </div>
+            <div class="user-balance">
+                Your Coin Balance: <span th:text="${user.coinBalance}">0</span> coins
+            </div>
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comicSlug}, chapterSlug=${chapter.slug})}" method="post">
+                <button type="submit" class="buy-btn" th:disabled="${user.coinBalance < chapter.coinPrice}">
+                    <i class="fas fa-credit-card"></i> Buy now for <span th:text="${chapter.coinPrice}">50</span> coins
+                </button>
+            </form>
+            <a th:href="@{/asura/comic/{comicSlug}(comicSlug=${comicSlug})}" class="return-btn">
+                <i class="fas fa-arrow-left"></i> Return to Series
+            </a>
+            <div class="discord-link">
+                Join our <a href="#">Discord</a> for more information and updates <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+</main>
+
+&lt;!&ndash; Footer &ndash;&gt;
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asura Scans - Locked Chapter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/web/web-coin/unlock-chapter.css">
+</head>
+<body>
+<!-- Header -->
+<th:block th:replace="~{web/fragments/header::header}"></th:block>
+
+<!-- Main Body Section -->
+<main>
+    <div class="main-container">
+        <!-- Locked Chapter Section -->
+        <div class="locked-chapter">
+            <div class="locked-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="chapter-title" th:text="${chapter.title}">Chapter 60</div>
+            <div class="locked-message">
+                This chapter is locked <i class="fas fa-gift"></i>
+            </div>
+            <div class="user-balance">
+                Your Coin Balance: <span th:text="${user.coinBalance}">0</span> coins
+            </div>
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comicSlug}, chapterSlug=${chapter.slug})}" method="post">
+                <button type="submit" class="buy-btn">
+                    <i class="fas fa-credit-card"></i> Buy now for <span th:text="${chapter.coinPrice}">50</span> coins
+                </button>
+            </form>
+            <a href="javascript:history.back()" class="return-btn">
+                <i class="fas fa-arrow-left"></i> Return to Previous Page
+            </a>
+
+            <div class="discord-link">
+                Join our <a href="#">Discord</a> for more information and updates <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
