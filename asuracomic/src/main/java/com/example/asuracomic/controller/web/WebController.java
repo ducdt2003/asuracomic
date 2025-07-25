@@ -9,6 +9,7 @@ import com.example.asuracomic.model.enums.CommentStatus;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.CommentRepository;
 import com.example.asuracomic.repository.GenreRepository;
+import com.example.asuracomic.repository.UnlockedChapterRepository;
 import com.example.asuracomic.service.ArtistService;
 import com.example.asuracomic.service.AuthorService;
 import com.example.asuracomic.service.ComicService;
@@ -40,6 +41,7 @@ public class WebController {
     private final ArtistService artistService;
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+    private final UnlockedChapterRepository unlockedChapterRepository;
     private final HttpSession session;
 
     // trang chủ
@@ -68,6 +70,13 @@ public class WebController {
         model.addAttribute("currentPage", page);
 
 
+        // Lấy danh sách chương đã mở khóa nếu có người dùng đăng nhập
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser != null) {
+            Long userId = ((UserDTO) currentUser).getId();
+            List<Long> unlockedChapterIds = unlockedChapterRepository.findChapterIdsByUserId(userId);
+            model.addAttribute("unlockedChapterIds", unlockedChapterIds);
+        }
         return "web/web-main/home";
     }
 
@@ -119,6 +128,13 @@ public class WebController {
 
         model.addAttribute("isLoggedIn", session.getAttribute("currentUser") != null);
 
+        // Lấy danh sách chương đã mở khóa nếu có người dùng đăng nhập
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser != null) {
+            Long userId = ((UserDTO) currentUser).getId();
+            List<Long> unlockedChapterIds = unlockedChapterRepository.findChapterIdsByUserId(userId);
+            model.addAttribute("unlockedChapterIds", unlockedChapterIds);
+        }
         return "web/web-main/detail";
     }
 
@@ -240,6 +256,14 @@ public class WebController {
 
         model.addAttribute("isLoggedIn", session.getAttribute("currentUser") != null);
 
+
+        // Lấy danh sách chương đã mở khóa nếu có người dùng đăng nhập
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser != null) {
+            Long userId = ((UserDTO) currentUser).getId();
+            List<Long> unlockedChapterIds = unlockedChapterRepository.findChapterIdsByUserId(userId);
+            model.addAttribute("unlockedChapterIds", unlockedChapterIds);
+        }
 
         return "web/web-main/chapter";
     }

@@ -192,7 +192,7 @@
                            placeholder="Search Chapter. EXAMPLE: 25 or 178">
 
                     <!-- Chapter list container -->
-                    <div class="chapter-list-container" style="max-height: 400px; overflow-y: auto;">
+                    <!--<div class="chapter-list-container" style="max-height: 400px; overflow-y: auto;">
                         <ul class="chapter-list list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center"
                                 th:each="chapter : ${chapters}">
@@ -209,7 +209,31 @@
                             </li>
                             <li class="list-group-item" th:if="${#lists.isEmpty(chapters)}">No chapters available</li>
                         </ul>
+                    </div>-->
+                    <div class="chapter-list-container" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="chapter-list list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center"
+                                th:each="chapter : ${chapters}">
+                                <a class="text-decoration-none"
+                                   th:href="${chapter.isFree} ?
+                   @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                   (${isLoggedIn} ?
+                       @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                       @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock')})">
+                                    <span th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
+
+                                    <!-- 🔒 Chỉ hiển thị nếu chương chưa mở khóa -->
+                                    <span th:if="${!chapter.isFree and (unlockedChapterIds == null or !unlockedChapterIds.contains(chapter.id))}"
+                                          style="color: red; margin-left: 5px;">&#128274;</span>
+                                </a>
+
+                                <span th:text="${#temporals.format(chapter.updatedAt, 'MMMM dd, yyyy')} ?: 'Unknown'">Unknown</span>
+                            </li>
+
+                            <li class="list-group-item" th:if="${#lists.isEmpty(chapters)}">No chapters available</li>
+                        </ul>
                     </div>
+
                 </div>
 
 

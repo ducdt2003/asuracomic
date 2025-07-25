@@ -2,7 +2,10 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.UnlockedChapter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 // Định nghĩa interface UnlockedChapterRepository, mở rộng JpaRepository để cung cấp các phương thức thao tác với thực thể UnlockedChapter
@@ -14,4 +17,8 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     Optional<UnlockedChapter> findByUser_IdAndChapter_Id(Long userId, Long chapterId); // Tham số userId và chapterId là các giá trị cần tìm kiếm
 
     boolean existsByUserIdAndChapterId(Long userId, Long chapterId);
+
+    // b khóa
+    @Query("SELECT uc.chapter.id FROM UnlockedChapter uc WHERE uc.user.id = :userId")
+    List<Long> findChapterIdsByUserId(@Param("userId") Long userId);
 }
