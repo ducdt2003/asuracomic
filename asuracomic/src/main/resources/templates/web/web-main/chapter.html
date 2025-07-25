@@ -967,9 +967,14 @@ header {
         <div class="chapter-nav">
             <!-- Dropdown danh sách chương -->
             <select onchange="if (this.value) window.location.href = this.value;">
+                <option disabled>-- Select Chapter --</option>
                 <option th:each="chap : ${sortedChapters}"
-                        th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
-                        th:text="${chap.title + ((chap.isFree or (unlockedChapterIds != null and unlockedChapterIds.contains(chap.id))) ? '' : ' 🔒')}"
+                        th:value="${chap.isFree} ?
+                @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                (${isLoggedIn} ?
+                    @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                    '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${chap.slug} + '/unlock')"
+                        th:text="${chap.title + ((!chap.isFree and (unlockedChapterIds == null or !unlockedChapterIds.contains(chap.id))) ? ' 🔒' : '')}"
                         th:selected="${chap.id == chapter.id}">
                     Chapter Title
                 </option>
@@ -1032,9 +1037,14 @@ header {
         <div class="end-chapter-nav">
             <!-- Dropdown danh sách chương -->
             <select onchange="if (this.value) window.location.href = this.value;">
+                <option disabled>-- Select Chapter --</option>
                 <option th:each="chap : ${sortedChapters}"
-                        th:value="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})}"
-                        th:text="${chap.title + ((chap.isFree or (unlockedChapterIds != null and unlockedChapterIds.contains(chap.id))) ? '' : ' 🔒')}"
+                        th:value="${chap.isFree} ?
+                @{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                (${isLoggedIn} ?
+                    @{/asura/comic/{comicSlug}/chapter/{chapterSlug}/unlock(comicSlug=${comic.slug}, chapterSlug=${chap.slug})} :
+                    '/asura/login?redirectUrl=/asura/comic/' + ${comic.slug} + '/chapter/' + ${chap.slug} + '/unlock')"
+                        th:text="${chap.title + ((!chap.isFree and (unlockedChapterIds == null or !unlockedChapterIds.contains(chap.id))) ? ' 🔒' : '')}"
                         th:selected="${chap.id == chapter.id}">
                     Chapter Title
                 </option>
