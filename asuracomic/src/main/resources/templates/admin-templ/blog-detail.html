@@ -1,0 +1,874 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | Dashboard</title>
+
+    &lt;!&ndash; Google Font: Source Sans Pro &ndash;&gt;
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    &lt;!&ndash; Font Awesome &ndash;&gt;
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    &lt;!&ndash; Ionicons &ndash;&gt;
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
+    &lt;!&ndash; Theme style &ndash;&gt;
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+    &lt;!&ndash; overlayScrollbars &ndash;&gt;
+    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
+
+    <link rel="stylesheet" href="/css/admin-assets/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/style.css">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        &lt;!&ndash; Navbar &ndash;&gt;
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            &lt;!&ndash; Left navbar links &ndash;&gt;
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            &lt;!&ndash; Right navbar links &ndash;&gt;
+            <ul class="navbar-nav ml-auto">
+                &lt;!&ndash; Notifications Dropdown Menu &ndash;&gt;
+                <li class="nav-item dropdown">
+                    <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
+                        <div class="user-panel">
+                          <div class="image">
+                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
+                          </div>
+                        </div>
+                      </a>
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <span class="text-muted">Trang chủ</span>
+                          </a>
+                        <a href="#" class="dropdown-item">
+                            <span class="text-muted">Đăng xuất</span>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        &lt;!&ndash; Main Sidebar Container &ndash;&gt;
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            &lt;!&ndash; Brand Logo &ndash;&gt;
+            <a href="./index.html" class="brand-link">
+                <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                    style="opacity: 0.8" />
+                <span class="brand-text font-weight-light">Admin</span>
+            </a>
+
+            &lt;!&ndash; Sidebar &ndash;&gt;
+            <div class="sidebar">
+                &lt;!&ndash; Sidebar Menu &ndash;&gt;
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Quản lý bài viết
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./blog-index.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tất cả bài viết</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./blog-yourself.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Bài viết của tôi</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./blog-create.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tạo bài viết</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tree"></i>
+                                <p>
+                                    Quản lý user
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="pages/UI/general.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách user</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/UI/icons.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Tạo user</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        &lt;!&ndash; Content Wrapper. Contains page content &ndash;&gt;
+        <div class="content-wrapper">
+            &lt;!&ndash; Content Header (Page header) &ndash;&gt;
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="#">Blog</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    Thực hành làm ứng dụng Meal Finder API
+                                    với Javascript (Phần 2)
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            &lt;!&ndash; Main content &ndash;&gt;
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row py-2">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-default">
+                                <i class="fas fa-chevron-left"></i> Quay lại
+                            </button>
+                            <button type="button" class="btn btn-info px-4">
+                                Lưu
+                            </button>
+                            <button type="button" class="btn btn-primary px-4">
+                                Preview
+                            </button>
+                        </div>
+
+                        <div class="col-6 d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger px-4">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Tiêu đề</label>
+                                                <input type="text" class="form-control" id="title" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Nội dung</label>
+                                                <textarea id="content"></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Mô tả ngắn</label>
+                                                <textarea id="description" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Trạng thái</label>
+                                                <select id="status" class="form-control">
+                                                    <option value="0">
+                                                        Nháp
+                                                    </option>
+                                                    <option value="1">
+                                                        Công khai
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Danh mục</label>
+                                                <div class="select2-purple">
+                                                    <select class="select2 form-control" multiple="multiple"
+                                                        id="category">
+                                                        <option>
+                                                            Java
+                                                        </option>
+                                                        <option>
+                                                            Golang
+                                                        </option>
+                                                        <option>
+                                                            React
+                                                        </option>
+                                                        <option>
+                                                            Lập trình web
+                                                        </option>
+                                                        <option>
+                                                            Database
+                                                        </option>
+                                                        <option>
+                                                            Tips Trick
+                                                        </option>
+                                                        <option>
+                                                            Devops
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="thumbnail-preview-container mb-3">
+                                                    <img src="" alt="" id="thumbnail" />
+                                                </div>
+                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                                    data-target="#modal-xl">
+                                                    Chọn hình ảnh
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="modal fade" id="modal-xl" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Extra Large Modal</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    &lt;!&ndash; jQuery &ndash;&gt;
+    <script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+
+    &lt;!&ndash; Bootstrap 4 &ndash;&gt;
+    <script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    &lt;!&ndash; overlayScrollbars &ndash;&gt;
+    <script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
+    &lt;!&ndash; AdminLTE App &ndash;&gt;
+    <script src="/css/admin-assets/dist/js/adminlte.js"></script>
+
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+
+    <script src="/css/admin-assets/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        // Initialize editor
+        const easyMDE = new EasyMDE({
+            element: document.getElementById("content"),
+            spellChecker: false,
+            maxHeight: "500px",
+            renderingConfig: {
+                codeSyntaxHighlighting: true,
+            },
+        });
+
+        // Initialize data
+        const initData = (data) => {
+            $("#title").val(data.title);
+            easyMDE.value(data.content);
+            $("#description").html(data.description);
+            $("#status").val(data.status);
+            $("#category").val(data.categories).trigger("change");
+            $("#thumbnail").attr("src", data.thumbnail);
+        };
+
+        const blog = {
+            id: 36870,
+            title: "Làm ứng dụng Music Player bằng Javascript",
+            content:
+                'Chào các bạn, trong bài viết này chúng ta sẽ cùng nhau làm ứng dụng nghe nhạc " `Music Player`" bằng javascript. Chắc trong số chúng ta ai cũng thích nghe nhạc phải không nào, thay vì hằng ngày chúng ta nghe nhạc qua youtube, qua zing mp3, vậy tại sao chúng ta không tự tạo ra một ứng dụng nghe nhạc cơ bản bằng chính khả năng của chúng ta. Có phải sẽ thú vị hơn không 😁😁\n\nVới ứng dụng Music Player chúng ta có thể làm các chức năng đơn giản sau:\n\n- Play bài hát\n- Pause bài hát\n- Chuyển bài qua lại\n- Tua bài hát\n- ...\n\nĐây là giao diện ứng dụng Music Player ban đầu chúng ta, mình để link source ở đây để các bạn có thể tham khảo : [https://github.com/buihien0109/music-player/tree/main/start](https://github.com/buihien0109/music-player/tree/main/start)\n\nNgoài ra các bạn có thể tạo giao diện ứng dụng theo ý thích và phong cách của mình\n\n![demo music player app](https://media.techmaster.vn/api/static/9479/c6iesrs51cof74mrqnfg)\n\nBắt đầu thôi nào 😁😁😁\n\n### Hiển thị thông tin bài hát\n\nMặc định ban đầu chúng ta sẽ hiển thị ra 1 bài hát bất kỳ với tiêu đề, audio và ảnh tương ứng với bài hát đó\n\n```javascript\nconst audio = document.getElementById("audio");\nconst title = document.getElementById("title");\nconst cover = document.getElementById("cover");\n\n// Tiêu đề bài hát, tương ứng với các file mp3\nconst songs = ["mot_phut", "hen_yeu", "roi_xa"];\n\n// Lấy index bất kỳ trong mảng songs để hiện thị\nlet songIndex = 2;\n\n// Load 1 bài hát theo index\nloadSong(songs[songIndex]);\n\n// Cập nhật thông tin bài hát\nfunction loadSong(song) {\n    title.innerText = song;\n    audio.src = `music/${song}.mp3`;\n    cover.src = `images/${song}.jpg`;\n}\n```\n\nHiện tại trong project, chúng ta mockup sẵn 3 audio tương ứng là các giá trị trong mảng **songs**\n\nFunction **loadSong** giúp chúng ta hiển thị thông tin bài hát\n\n### Play & Pause\n\nMặc định ban đầu thì bài hát ở trạng thái " `pause`", chúng ta sẽ thực hiện click để play audio\n\nTuy nhiên chúng ta cần phải biết khi nào thì play, khi nào thì pause. Để làm điều này, chúng ta sẽ phụ thuộc vào class " `play`" trong element " `musicContainer`"\n\nĐịnh nghĩa 2 function :\n\n- `playSong` để phát nhạc\n- `pauseSong` để tam dừng\n\n```javascript\nconst musicContainer = document.getElementById("music-container");\nconst playBtn = document.getElementById("play");\n\n// Play song\nfunction playSong() {\n    musicContainer.classList.add("play");\n    playBtn.querySelector("i.fas").classList.remove("fa-play");\n    playBtn.querySelector("i.fas").classList.add("fa-pause");\n\n    audio.play();\n}\n\n// Pause song\nfunction pauseSong() {\n    musicContainer.classList.remove("play");\n    playBtn.querySelector("i.fas").classList.add("fa-play");\n    playBtn.querySelector("i.fas").classList.remove("fa-pause");\n\n    audio.pause();\n}\n\n// Lắng nghe sự kiện\nplayBtn.addEventListener("click", () => {\n    // Kiểm tra xem musicContainer có chứa class "play" hay không?\n    const isPlaying = musicContainer.classList.contains("play");\n\n    // Nếu có thì thực hiện pause\n    // Nếu không thì thực hiện play\n    if (isPlaying) {\n        pauseSong();\n    } else {\n        playSong();\n    }\n});\n```\n\n### Progress song\n\nTheo mặc định là khi chúng ta bắt đầu 1 bài hát mới thì thanh tiến trình (progress bar) bắt đầu chạy, dựa vào progress chúng ta có thể biết được tiến độ phát bài hát. Để làm được điều này, chúng ta lắng nghe sự kiện " `timeupdate`" của `audio` element, và gọi hàm xử lý tương ứng là `updateProgress`.\n\nSự kiện " `timeUpdate`" được kích hoạt khi vị trí phát của audio/video bị thay đổi.\n\nNgoài ra, chúng ta có thể "tua" nhanh bài hát đến 1 vị trí được chỉ định trên thanh progress. Ở đây chúng ta sẽ lắng nghe sự kiện "click" trên `progressContainer` element để update `currentTime` của audio\n\n```javascript\nconst progress = document.getElementById("progress");\nconst progressContainer = document.getElementById("progress-container");\n\n// Time/song update\naudio.addEventListener("timeupdate", updateProgress);\n\n// Click on progress bar\nprogressContainer.addEventListener("click", setProgress);\n\n// Update progress bar\nfunction updateProgress(e) {\n    const { duration, currentTime } = e.srcElement;\n    const progressPercent = (currentTime / duration) * 100;\n    progress.style.width = `${progressPercent}%`;\n}\n\n// Set progress bar\nfunction setProgress(e) {\n    const width = this.clientWidth;\n    const clickX = e.offsetX;\n    const duration = audio.duration;\n\n    audio.currentTime = (clickX / width) * duration;\n}\n```\n\n### Next song & Prev song\n\nMột tính năng rất quan trọng trong một ứng dụng "`Music Player`" là next và prev bài hát. Để làm được điều này chúng ta lắng nghe sự kiện "click" trên 2 nút `nextBtn` gọi hàm xử lý `nextSong` để thực hiện next bài hát và nút `prevBtn` gọi hàm xử lý `prevSong` để thực hiện prev bài hát\n\n```javascript\nconst prevBtn = document.getElementById("prev");\nconst nextBtn = document.getElementById("next");\n\n// Lắng nghe sự kiện khi next và prev bài hát\nprevBtn.addEventListener("click", prevSong);\nnextBtn.addEventListener("click", nextSong);\n\n// Lắng nghe sự kiện khi kết thúc bài hát\naudio.addEventListener("ended", nextSong);\n\n// Xử lý khi prev bài hát\nfunction prevSong() {\n    // Giảm index của songIndex đi 1\n    songIndex&#45;&#45;;\n\n    // Nếu đang là bài hát đầu thì quay lại bài hát cuối\n    if (songIndex < 0) {\n        songIndex = songs.length - 1;\n    }\n\n    // Cập nhật thông tin của bài hát lên giao diện\n    loadSong(songs[songIndex]);\n\n    // Phát nhạc\n    playSong();\n}\n\n// Xử lý khi next bài hát\nfunction nextSong() {\n    // Tăng index của songIndex lên 1\n    songIndex++;\n\n    // Nếu đang là bài hát cuối thì quay lại bài hát đầu\n    if (songIndex > songs.length - 1) {\n        songIndex = 0;\n    }\n\n    // Cập nhật thông tin của bài hát lên giao diện\n    loadSong(songs[songIndex]);\n\n    // Phát nhạc\n    playSong();\n}\n```\n\nVà đây là kết quả cuối cùng của chúng ta\n\n![kết quả](https://media.techmaster.vn/api/static/9479/c6ioqls51cof74mrqnh0)\n\nVậy là chúng ta đã hoàn thành ứng dụng "Music Player" với các chức năng cơ bản. Hi vọng các bạn thấy bài viết này hữu ích và thú vị 😁😁😁\n\nPhần sources code của bài viết này, các bạn có thể tham khảo tại đây: [https://github.com/buihien0109/music-player/tree/main/final](https://github.com/buihien0109/music-player/tree/main/final)\n\n> Các bạn có thể tham khảo thêm khóa học này nhé:\n\n- Javascript căn bản - Tổng hợp 12 game huyền thoại - [tại đây](https://techmaster.vn/khoa-hoc/ev5/javascript-can-ban-tong-hop-12-game-huyen-thoai).\n- Lập trình Game Javascript (trực tuyến có tương tác) - [tại đây](https://codegame.techmaster.vn/).',
+            description:
+                "Chào các bạn, trong bài viết này chúng ta sẽ cùng nhau làm ứng dụng nghe nhạc &#34;Music Player&#34; bằng javascript\n",
+            thumbnail:
+                "https://media.techmaster.vn/api/static/9479/c6iesrs51cof74mrqnfg",
+            status: 1,
+            categories: ["Golang", "Java", "Lập trình web"],
+        };
+
+        initData(blog);
+    </script>
+</body>
+
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | Comic Details</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <!-- EasyMDE for description editing -->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
+    <!-- Select2 for multi-select -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/style.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
+                    <div class="user-panel">
+                        <div class="image">
+                            <img src="/css/admin-assets/dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <a href="#" class="dropdown-item"><span class="text-muted">Trang chủ</span></a>
+                    <a href="#" class="dropdown-item"><span class="text-muted">Đăng xuất</span></a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="./index.html" class="brand-link">
+            <img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+            <span class="brand-text font-weight-light">Admin</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Tổng quan -->
+                    <li class="nav-item">
+                        <a href="/asura/admin/comic" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Tổng quan</p>
+                        </a>
+                    </li>
+                    <!-- Quản lý Truyện -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Quản lý Truyện
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/detail" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tất cả Truyện</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm/Update Truyện</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Quản lý User -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Quản lý Người dùng
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách Người dùng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tạo Người dùng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+    </aside>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Content Header -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="./comics-index.html">Truyện</a></li>
+                            <li class="breadcrumb-item active" id="comic-title-breadcrumb"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row py-2">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-default" onclick="window.history.back()">
+                            <i class="fas fa-chevron-left"></i> Quay lại
+                        </button>
+                        <button type="button" class="btn btn-primary px-4"
+                                onclick="window.location.href='/asura/admin/comic/edit/${comicId}'">
+                            Sửa
+                        </button>
+
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger px-4" onclick="deleteComic()">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tiêu đề</label>
+                                            <input type="text" class="form-control" id="title" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả</label>
+                                            <textarea id="description"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Serialization</label>
+                                            <input type="text" class="form-control" id="serialization" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select id="status" class="form-control">
+                                                <option value="ONGOING">Đang tiến hành</option>
+                                                <option value="COMPLETED">Hoàn thành</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Loại truyện</label>
+                                            <select id="type" class="form-control">
+                                                <option value="MANHWA">Manhwa</option>
+                                                <option value="MANGA">Manga</option>
+                                                <option value="MANHUA">Manhua</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Thể loại</label>
+                                            <div class="select2-purple">
+                                                <select class="select2 form-control" multiple="multiple" id="genres">
+                                                    <!-- Populated dynamically -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tác giả</label>
+                                            <div class="select2-purple">
+                                                <select class="select2 form-control" multiple="multiple" id="authors">
+                                                    <!-- Populated dynamically -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Họa sĩ</label>
+                                            <div class="select2-purple">
+                                                <select class="select2 form-control" multiple="multiple" id="artists">
+                                                    <!-- Populated dynamically -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Hình bìa</label>
+                                            <div class="thumbnail-preview-container mb-3">
+                                                <img src="" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
+                                            </div>
+                                            <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
+                                                Chọn hình ảnh
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Trạng thái xuất bản</label>
+                                            <select id="isPublished" class="form-control">
+                                                <option value="true">Công khai</option>
+                                                <option value="false">Ẩn</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Chapters Section -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Danh sách chương</h3>
+                                                <div class="card-tools">
+                                                    <a href="/asura/admin/comic/chapter/update/${comicId}" class="btn btn-sm btn-primary">Thêm chương</a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Số chương</th>
+                                                        <th>Tiêu đề</th>
+                                                        <th>Lượt xem</th>
+                                                        <th>Miễn phí</th>
+                                                        <th>Giá coin</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Hành động</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="chapters-table">
+                                                    <!-- Populated dynamically -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Selection Modal -->
+        <div class="modal fade" id="modal-xl" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Chọn hình bìa</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" id="imageUpload" accept="image/*" />
+                        <div id="imagePreview" class="mt-3"></div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" onclick="saveImage()">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/css/admin-assets/dist/js/adminlte.js"></script>
+    <!-- EasyMDE -->
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+    <!-- Select2 -->
+    <script src="/css/admin-assets/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+        // Initialize Select2
+        $('.select2').select2();
+
+        // Initialize EasyMDE for description
+        const easyMDE = new EasyMDE({
+            element: document.getElementById('description'),
+            spellChecker: false,
+            maxHeight: '300px',
+            renderingConfig: { codeSyntaxHighlighting: true }
+        });
+
+        // Mock data (replace with API calls in production)
+        const comicData = {
+            id: 1,
+            title: "One Piece",
+            slug: "one-piece",
+            description: "The story follows the adventures of Monkey D. Luffy and his pirate crew...",
+            coverImage: "https://example.com/one-piece-cover.jpg",
+            viewCount: 1000000,
+            followCount: 500000,
+            averageRating: 4.8,
+            status: "ONGOING",
+            type: "MANGA",
+            isPublished: true,
+            serialization: "Weekly Shonen Jump",
+            createdAt: "2020-01-01T00:00:00",
+            updatedAt: "2025-08-14T14:57:00",
+            genres: [{ id: 1, name: "Action" }, { id: 2, name: "Adventure" }],
+            authors: [{ id: 1, name: "Eiichiro Oda" }],
+            artists: [{ id: 1, name: "Eiichiro Oda" }],
+            chapters: [
+                { id: 1, chapterNumber: 1, title: "Romance Dawn", slug: "chapter-1", isFree: true, coinPrice: 0, viewCount: 50000, isPublished: true },
+                { id: 2, chapterNumber: 2, title: "The Man in the Straw Hat", slug: "chapter-2", isFree: false, coinPrice: 5.00, viewCount: 45000, isPublished: true }
+            ]
+        };
+
+        // Initialize data
+        function initData(data) {
+            $('#title').val(data.title);
+            easyMDE.value(data.description || '');
+            $('#serialization').val(data.serialization || '');
+            $('#status').val(data.status);
+            $('#type').val(data.type);
+            $('#isPublished').val(data.isPublished.toString());
+            $('#coverImage').attr('src', data.coverImage || '');
+            $('#comic-title-breadcrumb').text(data.title);
+
+            // Populate genres (mock API call)
+            $.ajax({
+                url: '/api/genres', // Replace with actual endpoint
+                success: function(genres) {
+                    $('#genres').empty();
+                    genres.forEach(genre => {
+                        const selected = data.genres.some(g => g.id === genre.id) ? 'selected' : '';
+                        $('#genres').append(`<option value="${genre.id}" ${selected}>${genre.name}</option>`);
+                    });
+                    $('#genres').trigger('change');
+                }
+            });
+
+            // Populate authors (mock API call)
+            $.ajax({
+                url: '/api/authors', // Replace with actual endpoint
+                success: function(authors) {
+                    $('#authors').empty();
+                    authors.forEach(author => {
+                        const selected = data.authors.some(a => a.id === author.id) ? 'selected' : '';
+                        $('#authors').append(`<option value="${author.id}" ${selected}>${author.name}</option>`);
+                    });
+                    $('#authors').trigger('change');
+                }
+            });
+
+            // Populate artists (mock API call)
+            $.ajax({
+                url: '/api/artists', // Replace with actual endpoint
+                success: function(artists) {
+                    $('#artists').empty();
+                    artists.forEach(artist => {
+                        const selected = data.artists.some(a => a.id === artist.id) ? 'selected' : '';
+                        $('#artists').append(`<option value="${artist.id}" ${selected}>${artist.name}</option>`);
+                    });
+                    $('#artists').trigger('change');
+                }
+            });
+
+            // Populate chapters
+            $('#chapters-table').empty();
+            data.chapters.forEach(chapter => {
+                $('#chapters-table').append(`
+                    <tr>
+                        <td>${chapter.chapterNumber}</td>
+                        <td>${chapter.title}</td>
+                        <td>${chapter.viewCount}</td>
+                        <td>${chapter.isFree ? 'Miễn phí' : 'Trả phí'}</td>
+                        <td>${chapter.coinPrice}</td>
+                        <td>${chapter.isPublished ? 'Công khai' : 'Ẩn'}</td>
+                       <td>
+            <a href="/asura/admin/comic/chapter/edit/${chapter.id}" class="btn btn-sm btn-primary">Sửa</a>
+            <button class="btn btn-sm btn-danger" onclick="deleteChapter(${chapter.id})">Xóa</button>
+        </td>
+                    </tr>
+                `);
+            });
+        }
+
+        // Save comic
+        function saveComic() {
+            const comic = {
+                id: comicData.id,
+                title: $('#title').val(),
+                description: easyMDE.value(),
+                serialization: $('#serialization').val(),
+                status: $('#status').val(),
+                type: $('#type').val(),
+                isPublished: $('#isPublished').val() === 'true',
+                genres: $('#genres').val().map(id => ({ id: parseInt(id) })),
+                authors: $('#authors').val().map(id => ({ id: parseInt(id) })),
+                artists: $('#artists').val().map(id => ({ id: parseInt(id) })),
+                coverImage: $('#coverImage').attr('src')
+            };
+            // Mock API call
+            $.ajax({
+                url: `/api/comics/${comic.id}`,
+                method: 'PUT',
+                data: JSON.stringify(comic),
+                contentType: 'application/json',
+                success: function(response) {
+                    alert('Lưu thành công!');
+                },
+                error: function() {
+                    alert('Lưu thất bại!');
+                }
+            });
+        }
+
+        // Preview comic
+        function previewComic() {
+            const comicId = comicData.id;
+            window.open(`/comics/${comicData.slug}`, '_blank');
+        }
+
+        // Delete comic
+        function deleteComic() {
+            if (confirm('Bạn có chắc muốn xóa truyện này?')) {
+                $.ajax({
+                    url: `/api/comics/${comicData.id}`,
+                    method: 'DELETE',
+                    success: function() {
+                        alert('Xóa thành công!');
+                        window.location.href = './comics-index.html';
+                    },
+                    error: function() {
+                        alert('Xóa thất bại!');
+                    }
+                });
+            }
+        }
+
+        // Delete chapter
+        function deleteChapter(chapterId) {
+            if (confirm('Bạn có chắc muốn xóa chương này?')) {
+                $.ajax({
+                    url: `/api/chapters/${chapterId}`,
+                    method: 'DELETE',
+                    success: function() {
+                        alert('Xóa chương thành công!');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Xóa chương thất bại!');
+                    }
+                });
+            }
+        }
+
+        // Handle image upload
+        $('#imageUpload').on('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').html(`<img src="${e.target.result}" style="max-width: 100%; height: auto;" />`);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Save image
+        function saveImage() {
+            const src = $('#imagePreview img').attr('src');
+            if (src) {
+                $('#coverImage').attr('src', src);
+                $('#modal-xl').modal('hide');
+            } else {
+                alert('Vui lòng chọn hình ảnh!');
+            }
+        }
+
+        // Initialize with comic data
+        initData(comicData);
+    </script>
+</body>
+</html>

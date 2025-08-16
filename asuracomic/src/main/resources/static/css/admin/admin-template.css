@@ -71,4 +71,24 @@
         .fade-in { animation: fadeIn 0.5s ease-in; }
 
 
+/* /css/admin/admin-template.css */
+.section {
+    display: none; /* Ẩn tất cả các section mặc định */
+}
+
+.section.active {
+    display: block; /* Hiển thị section được chọn */
+}
+
+.sidebar-nav a {
+    display: block;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.sidebar-nav a.active {
+    background: #4a90e2; /* Màu nền cho tab đang chọn */
+}
 

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +18,12 @@ public class UserDTO {
     String email;
     String username;
     String avatar;
+    String description;
     Role role;
     BigDecimal coinBalance;
     boolean vipStatus;
+    boolean isVip;
+    LocalDateTime vipStartDate;
+    LocalDateTime vipExpireAt;
+
 }

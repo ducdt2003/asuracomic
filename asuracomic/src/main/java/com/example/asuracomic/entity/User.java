@@ -33,6 +33,9 @@ public class User {
     @Column(length = 255)
     private String avatar; // Đường dẫn ảnh đại diện, hiển thị trong hồ sơ, bình luận, tăng tính cá nhân hóa
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role; // Vai trò: USER (người đọc) hoặc ADMIN (quản lý nội dung, báo cáo), kiểm soát quyền truy cập
@@ -43,7 +46,10 @@ public class User {
     @Column(nullable = false)
     private boolean vipStatus = false; // Trạng thái VIP: true nếu người dùng là VIP, hiển thị quyền lợi đặc biệt (VD: đọc chương miễn phí)
 
+    private LocalDateTime vipStartDate; // Ngày bắt đầu VIP
+
     private LocalDateTime vipExpiryDate; // Thời điểm hết hạn VIP, dùng để kiểm tra tư cách VIP khi đăng nhập hoặc truy cập nội dung
+
 
     @Column(nullable = false)
     private boolean isActive = true; // Trạng thái tài khoản: true (hoạt động), false (bị khóa), kiểm soát đăng nhập và quyền truy cập

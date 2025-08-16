@@ -18,6 +18,8 @@ public class UserMapper {
                 .role(user.getRole())
                 .coinBalance(user.getCoinBalance())
                 .vipStatus(user.isVipStatus())
+                .vipStartDate(user.getVipStartDate())        // thêm dòng này
+                .vipExpireAt(user.getVipExpiryDate())     // thêm dòng này
                 .build();
         System.out.println("Mapped UserDTO: " + userDTO);
         return userDTO;

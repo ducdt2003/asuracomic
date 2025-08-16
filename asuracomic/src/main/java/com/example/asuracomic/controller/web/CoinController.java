@@ -237,20 +237,24 @@ package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.Chapter;
+import com.example.asuracomic.entity.Transaction;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.exception.BadRequestException;
+import com.example.asuracomic.model.enums.TransactionType;
 import com.example.asuracomic.repository.ChapterRepository;
+import com.example.asuracomic.repository.TransactionRepository;
 import com.example.asuracomic.repository.UnlockedChapterRepository;
 import com.example.asuracomic.repository.UserRepository;
 import com.example.asuracomic.service.CoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -263,13 +267,19 @@ public class CoinController {
     private final UserRepository userRepository;
     private final UnlockedChapterRepository unlockedChapterRepository;
 
+    private final TransactionRepository transactionRepository;
+
     @GetMapping("/purchase")
     public String purchase() {
         return "web/web-coin/shop";
     }
 
     @GetMapping("/membership")
-    public String membership() {
+    public String membership(Model model, HttpSession session) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            model.addAttribute("currentUser", currentUser);
+        }
         return "web/web-coin/membership";
     }
 
@@ -340,4 +350,30 @@ public class CoinController {
             return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug + "/unlock";
         }
     }
+
+    @GetMapping("/transaction-history")
+    public String transactionHistory(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     HttpSession session,
+                                     Model model) {
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/asura/login?redirectUrl=/asura/transaction-history";
+        }
+
+        Long userId = ((UserDTO) currentUser).getId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại."));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Transaction> transactionsPage = coinService.getUserTransactionHistory(pageable);
+
+        model.addAttribute("transactionsPage", transactionsPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("user", user); // Ensure user is added
+
+        return "web/web-coin/transaction-history";
+    }
+
+
 }

@@ -53,4 +53,11 @@ public class Transaction {
 
     @Column(nullable = false)
     private LocalDateTime createdAt; // Thời điểm tạo giao dịch, dùng để sắp xếp và thống kê giao dịch
+
+    @Column
+    private LocalDateTime vipStartDate; // Ngày mua VIP
+
+    @Column
+    private LocalDateTime vipEndDate; // Ngày hết hạn VIP
+
 }

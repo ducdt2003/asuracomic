@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tổng quan - AsuraComic Admin</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    /* Đảm bảo đồng bộ với AdminLTE */
+    .content-wrapper .content {
+        padding: 20px;
+    }
+    /* Container cho các thẻ thống kê */
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    /* Thẻ thống kê chung */
+    .stat-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Hiệu ứng hover cho thẻ */
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    /* Màu sắc và gradient cho từng thẻ */
+    .stat-card.blue {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: #fff;
+    }
+    .stat-card.green {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+        color: #fff;
+    }
+    .stat-card.red {
+        background: linear-gradient(135deg, #dc3545, #a71d2a);
+        color: #fff;
+    }
+    .stat-card.yellow {
+        background: linear-gradient(135deg, #ffc107, #d39e00);
+        color: #fff;
+    }
+    /* Tiêu đề thẻ */
+    .stat-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    /* Giá trị thống kê */
+    .stat-card p {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+    /* Hiệu ứng fade-in cho thẻ */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    /* Responsive cho màn hình nhỏ */
+    @media (max-width: 768px) {
+        .dashboard-stats {
+            grid-template-columns: 1fr;
+        }
+        .stat-card {
+            padding: 15px;
+        }
+        .stat-card h3 {
+            font-size: 1rem;
+        }
+        .stat-card p {
+            font-size: 1.5rem;
+        }
+    }
+    /* Chart container */
+    .chart-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .chart-card canvas {
+        max-height: 400px;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
+          <div class="user-panel">
+            <div class="image">
+              <img src="/css/admin-assets/dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
+            </div>
+          </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+          <a href="/asura/admin/comic" class="dropdown-item">
+            <span class="text-muted">Trang chủ</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <span class="text-muted">Đăng xuất</span>
+          </a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="./index.html" class="brand-link">
+      <img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+      <span class="brand-text font-weight-light">Admin Truyện</span>
+    </a>
+    <div class="sidebar">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Tổng quan -->
+          <li class="nav-item">
+            <a href="/asura/admin/comic" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Tổng quan</p>
+            </a>
+          </li>
+          <!-- Quản lý Truyện -->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Quản lý Truyện
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/asura/admin/comic/detail" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tất cả Truyện</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/asura/admin/comic/create" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm/Update Truyện</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Quản lý User -->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Quản lý Người dùng
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/asura/admin/comic/users" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh sách Người dùng</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/asura/admin/comic/users/create" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tạo Người dùng</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Tổng quan</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nội dung chính -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Dashboard -->
+        <div id="dashboard" class="section active">
+          <div class="card fade-in">
+            <div class="card-header">
+              <h3 class="card-title">Thống kê</h3>
+            </div>
+            <div class="card-body">
+              <div class="dashboard-stats">
+                <div class="stat-card blue">
+                  <h3>Tổng số truyện</h3>
+                  <p th:text="${stats.totalComics}">0</p>
+                </div>
+                <div class="stat-card green">
+                  <h3>Tổng số người dùng</h3>
+                  <p th:text="${stats.totalUsers}">0</p>
+                </div>
+                <div class="stat-card red">
+                  <h3>Báo cáo đang chờ</h3>
+                  <p th:text="${stats.pendingReports}">0</p>
+                </div>
+                <div class="stat-card yellow">
+                  <h3>Doanh thu tháng này</h3>
+                  <p th:text="${stats.formattedMonthlyRevenue}">0 VNĐ</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Biểu đồ doanh thu -->
+          <div class="chart-card fade-in">
+            <div class="card-header">
+              <h3 class="card-title">Doanh thu hàng tháng (2025)</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.js"></script>
+<script>
+  function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.className = `alert alert-${type} alert-dismissible fade show`;
+      notification.style.position = 'fixed';
+      notification.style.top = '20px';
+      notification.style.right = '20px';
+      notification.style.zIndex = '2000';
+      notification.innerHTML = `
+          ${message}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      `;
+      document.body.appendChild(notification);
+      setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 300);
+      }, 3000);
+  }
+
+  // Dữ liệu giả lập cho biểu đồ (sẽ được thay bằng Thymeleaf từ backend)
+  const monthlyRevenue = /*[[${stats.monthlyRevenue}]]*/ [
+      1200000, 1500000, 800000, 2000000, 1800000, 2200000,
+      2500000, 1900000, 3000000, 0, 0, 0 // Tháng 1-8 có dữ liệu, 9-12 là 0
+  ];
+
+  // Tạo biểu đồ doanh thu
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: ['Th1', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7', 'Th8', 'Th9', 'Th10', 'Th11', 'Th12'],
+          datasets: [{
+              label: 'Doanh thu (VNĐ)',
+              data: monthlyRevenue,
+              backgroundColor: 'rgba(40, 167, 69, 0.6)', // Màu xanh lá AdminLTE (success)
+              borderColor: '#28a745',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  title: {
+                      display: true,
+                      text: 'Doanh thu (VNĐ)'
+                  },
+                  ticks: {
+                      callback: function(value) {
+                          return value.toLocaleString('vi-VN') + ' VNĐ';
+                      }
+                  }
+              },
+              x: {
+                  title: {
+                      display: true,
+                      text: 'Tháng'
+                  }
+              }
+          },
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top'
+              },
+              tooltip: {
+                  callbacks: {
+                      label: function(context) {
+                          return context.dataset.label + ': ' + context.parsed.y.toLocaleString('vi-VN') + ' VNĐ';
+                      }
+                  }
+              }
+          }
+      }
+  });
+</script>
+</body>
+</html>

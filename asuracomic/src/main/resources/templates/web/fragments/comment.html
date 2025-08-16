@@ -36,7 +36,13 @@
         <li class="comment-item" th:each="comment : ${comments}">
             <div class="user-info">
                 <img th:src="${comment.user.avatar != null} ? ${comment.user.avatar} : 'https://asuracomic.net/images/logo.webp'" class="avatar"/>
-                <strong class="username" th:text="${comment.user.username}">Username</strong> -
+                <strong class="username" th:text="${comment.user.username}">Username</strong>
+                - <i class="fas fa-crown"
+                     th:style="${comment.user.vipStatus ? 'color: gold;' : 'color: #6a5acd;'}"></i>
+                <span th:text="${comment.user.vipStatus ? 'VIP' : 'Thường'}"
+                      th:style="${comment.user.vipStatus ? 'color: gold; font-weight: bold;' : 'color: #6a5acd; font-weight: bold;'}">
+</span>
+
                 <span class="timestamp"
                       th:text="${#temporals.format(comment.createdAt, 'd MMM yyyy')}">Time</span>
             </div>
@@ -52,17 +58,25 @@
                 commentId=${comment.id}
             )}" method="post" style="display: inline;">
                         <button type="submit" class="action-btn"
-                                onclick="return confirm('Xác nhận xóa bình luận?')">Xóa</button>
+                                onclick="return confirm('Xác nhận xóa bình luận?')"
+                                style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; transition: background-color 0.3s ease;">
+                            Xóa
+                        </button>
                     </form>
-
-                    <a th:href="@{/asura/report(commentId=${comment.id})}"
-                       class="action-btn">Báo cáo</a>
+                    <a th:href="@{/asura/report(commentId=${comment.id})}" class="action-btn"
+                       style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; transition: background-color 0.3s ease;">
+                        Báo cáo
+                    </a>
                 </div>
 
                 <!-- Nếu không phải chủ sở hữu -->
                 <div th:if="${comment.user.id != currentUserId}">
                     <a th:href="@{/asura/report(commentId=${comment.id})}"
-                       class="action-btn">Báo cáo</a>
+                       class="action-btn"
+                       style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; transition: background-color 0.3s ease;">
+                        Báo cáo
+                    </a>
+
                 </div>
             </div>
 
@@ -76,10 +90,27 @@
     <!-- Pagination -->
     <div class="pagination" th:if="${totalCommentPages > 1}">
         <a th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug},chapterSlug=${chapter.slug},commentPage=${commentPage - 1},commentSize=${commentSize})}"
-           th:classappend="${commentPage == 0} ? 'prev-btn disabled' : 'prev-btn'">Previous</a>
+           th:classappend="${commentPage == 0} ? 'prev-btn disabled' : 'prev-btn'"
+           style="display:inline-block; padding:8px 16px; margin-right:8px; background-color:#007bff; color:#fff; text-decoration:none; border-radius:5px; font-weight:600; cursor:pointer;
+              border: none; user-select:none;"
+           onmouseover="if(!this.classList.contains('disabled')) this.style.backgroundColor='#0056b3';"
+           onmouseout="if(!this.classList.contains('disabled')) this.style.backgroundColor='#007bff';"
+           th:attr="onclick=${commentPage == 0} ? 'return false;' : null"
+        >
+            Previous
+        </a>
         <a th:href="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}(comicSlug=${comic.slug},chapterSlug=${chapter.slug},commentPage=${commentPage + 1},commentSize=${commentSize})}"
-           th:classappend="${commentPage + 1 >= totalCommentPages} ? 'next-btn disabled' : 'next-btn'">Next</a>
+           th:classappend="${commentPage + 1 >= totalCommentPages} ? 'next-btn disabled' : 'next-btn'"
+           style="display:inline-block; padding:8px 16px; background-color:#007bff; color:#fff; text-decoration:none; border-radius:5px; font-weight:600; cursor:pointer;
+              border: none; user-select:none;"
+           onmouseover="if(!this.classList.contains('disabled')) this.style.backgroundColor='#0056b3';"
+           onmouseout="if(!this.classList.contains('disabled')) this.style.backgroundColor='#007bff';"
+           th:attr="onclick=${commentPage + 1 >= totalCommentPages} ? 'return false;' : null"
+        >
+            Next
+        </a>
     </div>
+
 </div>
 </body>
 

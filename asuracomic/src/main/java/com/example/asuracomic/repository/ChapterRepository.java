@@ -30,4 +30,6 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
     @Query("SELECT c FROM Chapter c WHERE c.comic.slug = :comicSlug AND c.slug = :chapterSlug")
     Optional<Chapter> findByComicSlugAndChapterSlug(String comicSlug, String chapterSlug);
+
+    List<Chapter> findByComicId(Long comicId);
 }

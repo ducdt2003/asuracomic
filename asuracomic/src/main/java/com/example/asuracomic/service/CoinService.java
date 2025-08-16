@@ -214,11 +214,14 @@ import com.example.asuracomic.repository.UnlockedChapterRepository;
 import com.example.asuracomic.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -292,4 +295,33 @@ public class CoinService {
         // Trả về URL chương để chuyển hướng
         return "/asura/comic/" + chapter.getComic().getSlug() + "/chapter/" + chapter.getSlug();
     }
+
+
+    @Transactional(readOnly = true)
+    public Page<Transaction> getUserTransactionHistory(Pageable pageable) {
+        Object currentUser = session.getAttribute("currentUser");
+        if (currentUser == null) {
+            throw new BadRequestException("Vui lòng đăng nhập để xem lịch sử giao dịch.");
+        }
+        Long userId = ((UserDTO) currentUser).getId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("Người dùng không tồn tại."));
+
+        Page<Transaction> transactions = transactionRepository.findByUserIdAndTransactionTypeIn(
+                userId,
+                List.of(TransactionType.CHAPTER_UNLOCK, TransactionType.VIP_PURCHASE),
+                pageable
+        );
+
+        // Debug: Log transactions
+        transactions.forEach(txn -> {
+            System.out.println("Transaction: ID=" + txn.getId() +
+                    ", Type=" + txn.getTransactionType() +
+                    ", CreatedAt=" + txn.getCreatedAt() +
+                    ", VipConfig=" + (txn.getVipConfig() != null ? txn.getVipConfig().getName() : "N/A"));
+        });
+
+        return transactions;
+    }
+
 }

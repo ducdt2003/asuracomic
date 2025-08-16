@@ -6,14 +6,11 @@ import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.CommentStatus;
-import com.example.asuracomic.repository.ComicRepository;
+import com.example.asuracomic.model.request.ChangePasswordRequest;
 import com.example.asuracomic.repository.CommentRepository;
 import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.repository.UnlockedChapterRepository;
-import com.example.asuracomic.service.ArtistService;
-import com.example.asuracomic.service.AuthorService;
-import com.example.asuracomic.service.ComicService;
-import com.example.asuracomic.service.CommentService;
+import com.example.asuracomic.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -43,6 +41,8 @@ public class WebController {
     private final CommentRepository commentRepository;
     private final UnlockedChapterRepository unlockedChapterRepository;
     private final HttpSession session;
+    private final UserService userService;
+
 
     // trang chủ
     @GetMapping
@@ -72,11 +72,23 @@ public class WebController {
 
         // Lấy danh sách chương đã mở khóa nếu có người dùng đăng nhập
         Object currentUser = session.getAttribute("currentUser");
+        boolean isVip = false;
+
         if (currentUser != null) {
-            Long userId = ((UserDTO) currentUser).getId();
-            List<Long> unlockedChapterIds = unlockedChapterRepository.findChapterIdsByUserId(userId);
+            UserDTO userDTO = (UserDTO) currentUser;
+
+            // Kiểm tra VIP còn hạn
+            if (userDTO.isVip() && userDTO.getVipExpireAt() != null
+                    && userDTO.getVipExpireAt().isAfter(LocalDateTime.now())) {
+                isVip = true;
+            }
+
+            List<Long> unlockedChapterIds = unlockedChapterRepository.findChapterIdsByUserId(userDTO.getId());
             model.addAttribute("unlockedChapterIds", unlockedChapterIds);
         }
+
+        model.addAttribute("isVip", isVip);
+
         return "web/web-main/home";
     }
 
@@ -613,10 +625,20 @@ public String bookmarks(Model model) {
         return "web/web-footer/terms-of-service";
     }
 
+
+    // profile user
     @GetMapping("/profile")
-    public String proFile(){
+    public String proFile(Model model){
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", currentUser);
         return "web/web-templates/profile";
     }
+
+
+
 
     // API tìm kiếm truyện theo tiêu đề
     @GetMapping("/api/search")

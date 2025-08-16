@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | Thêm chương</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <!-- Select2 for multi-select -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/style.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
+                    <div class="user-panel">
+                        <div class="image">
+                            <img src="/css/admin-assets/dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <a href="#" class="dropdown-item"><span class="text-muted">Trang chủ</span></a>
+                    <a href="#" class="dropdown-item"><span class="text-muted">Đăng xuất</span></a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="./index.html" class="brand-link">
+            <img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+            <span class="brand-text font-weight-light">Admin</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Tổng quan -->
+                    <li class="nav-item">
+                        <a href="/asura/admin/comic" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Tổng quan</p>
+                        </a>
+                    </li>
+                    <!-- Quản lý Truyện -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Quản lý Truyện
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/detail" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tất cả Truyện</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm/Update Truyện</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Quản lý User -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Quản lý Người dùng
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách Người dùng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tạo Người dùng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/comics">Truyện</a></li>
+                            <li class="breadcrumb-item"><a id="comic-title-breadcrumb" href=""></a></li>
+                            <li class="breadcrumb-item active">Thêm chương</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Thêm chương mới</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="chapter-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Tiêu đề <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="title" name="title" required maxlength="255" />
+                                                <small class="form-text text-muted">Tối đa 255 ký tự.</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Slug <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="slug" name="slug" required maxlength="255" pattern="[a-z0-9-]+" />
+                                                <small class="form-text text-muted">Chỉ chứa chữ thường, số, và dấu gạch ngang (VD: chapter-1).</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Số chương <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="chapterNumber" name="chapterNumber" min="1" required />
+                                                <small class="form-text text-muted">Truyện hiện có <span id="currentChapterCount">0</span> chương.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Miễn phí</label>
+                                                <select id="isFree" name="isFree" class="form-control">
+                                                    <option value="true" selected>Miễn phí</option>
+                                                    <option value="false">Trả phí</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Giá coin</label>
+                                                <input type="number" class="form-control" id="coinPrice" name="coinPrice" min="0" step="0.01" value="0" disabled />
+                                                <small class="form-text text-muted">Giá coin chỉ áp dụng khi chương không miễn phí.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Chapter Images Section -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">Nội dung chương (Hình ảnh) <span class="text-danger">*</span></h3>
+                                                    <div class="card-tools">
+                                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#image-modal">
+                                                            Thêm hình ảnh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 10%;">Thứ tự</th>
+                                                            <th style="width: 70%;">Hình ảnh</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="images-table">
+                                                        <!-- Populated dynamically -->
+                                                        </tbody>
+                                                    </table>
+                                                    <small class="form-text text-muted mt-2">Thêm ít nhất một hình ảnh để hiển thị nội dung chương.</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Tải Lên</button>
+                                        <a id="cancel-btn" class="btn btn-default">Hủy</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Upload Modal -->
+        <div class="modal fade" id="image-modal" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Thêm hình ảnh chương</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Chọn hình ảnh <span class="text-danger">*</span></label>
+                            <input type="file" id="imageUpload" accept="image/*" multiple required />
+                            <small class="form-text text-muted">Chọn nhiều hình ảnh (jpg, png). Tối đa 10MB mỗi hình.</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Thứ tự hiển thị</label>
+                            <input type="number" id="orderIndex" class="form-control" min="1" value="1" />
+                            <small class="form-text text-muted">Thứ tự hiển thị của hình ảnh trong chương.</small>
+                        </div>
+                        <div id="imagePreview" class="mt-3 d-flex flex-wrap"></div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" onclick="addImage()">Thêm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="/css/admin-assets/dist/js/adminlte.js"></script>
+    <script src="/css/admin-assets/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Get comic ID from URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const comicId = urlParams.get('comicId');
+
+            // Fetch comic data and last chapter number
+            $.ajax({
+                url: `/api/comics/${comicId}`,
+                method: 'GET',
+                success: function(comicData) {
+                    $('#comic-title-breadcrumb').text(comicData.title).attr('href', `/admin/comics/edit/${comicId}`);
+                    $('#cancel-btn').attr('href', `/admin/comics/edit/${comicId}`);
+                    // Get last chapter number
+                    $.ajax({
+                        url: `/api/chapters/last?comicId=${comicId}`,
+                        method: 'GET',
+                        success: function(response) {
+                            const nextChapterNumber = (response.lastChapterNumber || 0) + 1;
+                            $('#chapterNumber').val(nextChapterNumber);
+                            $('#currentChapterCount').text(response.lastChapterNumber || 0);
+                        },
+                        error: function() {
+                            $('#chapterNumber').val(1);
+                            $('#currentChapterCount').text(0);
+                        }
+                    });
+                },
+                error: function() {
+                    $('#comic-title-breadcrumb').text('Unknown Comic').attr('href', `/admin/comics/edit/${comicId}`);
+                    $('#cancel-btn').attr('href', `/admin/comics/edit/${comicId}`);
+                }
+            });
+
+            // Initialize images array
+            let images = [];
+
+            // Auto-generate slug based on title
+            $('#title').on('input', function() {
+                const title = $(this).val().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                $('#slug').val(`chapter-${title}`);
+            });
+
+            // Validate form on submission
+            $('#chapter-form').on('submit', function(e) {
+                e.preventDefault();
+                if (images.length === 0) {
+                    alert('Vui lòng thêm ít nhất một hình ảnh cho nội dung chương!');
+                    return;
+                }
+                const chapter = {
+                    comic: { id: parseInt(comicId) },
+                    title: $('#title').val(),
+                    slug: $('#slug').val(),
+                    chapterNumber: parseInt($('#chapterNumber').val()),
+                    isFree: $('#isFree').val() === 'true',
+                    coinPrice: parseFloat($('#coinPrice').val()) || 0,
+                    chapterImages: images.map(img => ({
+                        imageUrl: img.imageUrl,
+                        orderIndex: img.orderIndex
+                    }))
+                };
+                $.ajax({
+                    url: '/api/chapters',
+                    method: 'POST',
+                    data: JSON.stringify(chapter),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert('Thêm chương thành công!');
+                        window.location.href = `/admin/comics/edit/${comicId}`;
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Thêm chương thất bại!';
+                        alert(errorMsg);
+                    }
+                });
+            });
+
+            // Handle image upload
+            $('#imageUpload').on('change', function(e) {
+                const files = e.target.files;
+                $('#imagePreview').empty();
+                Array.from(files).forEach(file => {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert(`Hình ảnh ${file.name} vượt quá 10MB!`);
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').append(`<img src="${e.target.result}" style="max-width: 200px; height: auto; margin: 5px;" />`);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            // Add image to table
+            function addImage() {
+                const files = $('#imageUpload')[0].files;
+                const orderIndex = parseInt($('#orderIndex').val());
+                if (files.length === 0) {
+                    alert('Vui lòng chọn ít nhất một hình ảnh!');
+                    return;
+                }
+                Array.from(files).forEach(file => {
+                    if (file.size > 10 * 1024 * 1024) return; // Skip oversized files
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        images.push({ imageUrl: e.target.result, orderIndex: orderIndex });
+                        updateImagesTable();
+                    };
+                    reader.readAsDataURL(file);
+                });
+                $('#image-modal').modal('hide');
+                $('#imageUpload').val('');
+                $('#imagePreview').empty();
+                $('#orderIndex').val(orderIndex + 1);
+            }
+
+            // Update images table
+            function updateImagesTable() {
+                $('#images-table').empty();
+                images.sort((a, b) => a.orderIndex - b.orderIndex); // Sort by orderIndex
+                images.forEach((image, index) => {
+                    $('#images-table').append(`
+                        <tr>
+                            <td>${image.orderIndex}</td>
+                            <td><img src="${image.imageUrl}" style="max-width: 100px; height: auto;" /></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" onclick="removeImage(${index})">Xóa</button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Remove image
+            function removeImage(index) {
+                images.splice(index, 1);
+                updateImagesTable();
+            }
+
+            // Enable/disable coin price input based on isFree
+            $('#isFree').on('change', function() {
+                const isFree = $(this).val() === 'true';
+                $('#coinPrice').prop('disabled', isFree);
+                if (isFree) {
+                    $('#coinPrice').val(0);
+                }
+            });
+
+            // Validate slug format
+            $('#slug').on('input', function() {
+                const slug = $(this).val();
+                if (!/^[a-z0-9-]+$/.test(slug)) {
+                    $(this).addClass('is-invalid');
+                    $(this).next('.invalid-feedback').remove();
+                    $(this).after('<div class="invalid-feedback">Slug chỉ chứa chữ thường, số, và dấu gạch ngang.</div>');
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).next('.invalid-feedback').remove();
+                    // Check slug uniqueness
+                    $.ajax({
+                        url: `/api/chapters/checkSlug?comicId=${comicId}&slug=${slug}`,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.exists) {
+                                $('#slug').addClass('is-invalid');
+                                $('#slug').next('.invalid-feedback').remove();
+                                $('#slug').after('<div class="invalid-feedback">Slug đã tồn tại!</div>');
+                            } else {
+                                $('#slug').removeClass('is-invalid');
+                                $('#slug').next('.invalid-feedback').remove();
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Validate chapter number uniqueness
+            $('#chapterNumber').on('change', function() {
+                const chapterNumber = $(this).val();
+                $.ajax({
+                    url: `/api/chapters/check?comicId=${comicId}&chapterNumber=${chapterNumber}`,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.exists) {
+                            $('#chapterNumber').addClass('is-invalid');
+                            $('#chapterNumber').next('.invalid-feedback').remove();
+                            $('#chapterNumber').after('<div class="invalid-feedback">Số chương đã tồn tại!</div>');
+                        } else {
+                            $('#chapterNumber').removeClass('is-invalid');
+                            $('#chapterNumber').next('.invalid-feedback').remove();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

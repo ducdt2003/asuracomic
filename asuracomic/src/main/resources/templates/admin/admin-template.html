@@ -88,17 +88,18 @@
             <i class="fas fa-shield-alt mr-2"></i> Asura Admin
         </div>
         <ul class="sidebar-nav">
-            <li><a data-tab="dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
-            <li><a data-tab="comics"><i class="fas fa-book"></i> Truyện tranh</a></li>
-            <li><a data-tab="chapters"><i class="fas fa-file-alt"></i> Chương</a></li>
-            <li><a data-tab="users"><i class="fas fa-users"></i> Người dùng</a></li>
-            <li><a data-tab="reports"><i class="fas fa-flag"></i> Báo cáo</a></li>
-            <li><a data-tab="transactions"><i class="fas fa-money-bill"></i> Giao dịch</a></li>
-            <li><a data-tab="comments"><i class="fas fa-comment"></i> Bình luận</a></li>
-            <li><a data-tab="ratings"><i class="fas fa-star"></i> Đánh giá</a></li>
-            <li><a data-tab="notifications"><i class="fas fa-bell"></i> Thông báo</a></li>
-            <li><a data-tab="settings"><i class="fas fa-cog"></i> Cài đặt</a></li>
+            <li><a data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+            <li><a data-tab="comics" onclick="switchTab('comics')"><i class="fas fa-book"></i> Truyện tranh</a></li>
+            <li><a data-tab="chapters" onclick="switchTab('chapters')"><i class="fas fa-file-alt"></i> Chương</a></li>
+            <li><a data-tab="users" onclick="switchTab('users')"><i class="fas fa-users"></i> Người dùng</a></li>
+            <li><a data-tab="reports" onclick="switchTab('reports')"><i class="fas fa-flag"></i> Báo cáo</a></li>
+            <li><a data-tab="transactions" onclick="switchTab('transactions')"><i class="fas fa-money-bill"></i> Giao dịch</a></li>
+            <li><a data-tab="comments" onclick="switchTab('comments')"><i class="fas fa-comment"></i> Bình luận</a></li>
+            <li><a data-tab="ratings" onclick="switchTab('ratings')"><i class="fas fa-star"></i> Đánh giá</a></li>
+            <li><a data-tab="notifications" onclick="switchTab('notifications')"><i class="fas fa-bell"></i> Thông báo</a></li>
+            <li><a data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Cài đặt</a></li>
         </ul>
+
     </aside>
     <main class="main-content">
         <!-- Notification Panel -->
@@ -162,14 +163,26 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="pagination" id="comicsPagination">
-                    <a th:if="${currentPage > 0}" th:href="@{/asura/admin(page=${currentPage - 1})}">« Trước</a>
+                <div class="pagination">
+                    <!-- Nút Trước -->
+                    <a th:if="${currentPage > 0}"
+                       th:href="@{/asura/admin/comic/detail(page=${currentPage - 1})}">« Trước</a>
+                    <span th:if="${currentPage == 0}" class="disabled">« Trước</span>
+
+                    <!-- Số trang -->
                     <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                       th:class="${i == currentPage} ? 'active'"
-                       th:href="@{/asura/admin(page=${i})}"
+                       th:classappend="${i == currentPage} ? 'active'"
+                       th:href="@{/asura/admin/comic/detail(page=${i})}"
                        th:text="${i + 1}"></a>
-                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/asura/admin(page=${currentPage + 1})}">Tiếp »</a>
+
+                    <!-- Nút Tiếp -->
+                    <a th:if="${currentPage < totalPages - 1}"
+                       th:href="@{/asura/admin/comic/detail(page=${currentPage + 1})}">Tiếp »</a>
+                    <span th:if="${currentPage == totalPages - 1}" class="disabled">Tiếp »</span>
                 </div>
+
+
+
             </div>
             <div id="add-comic" class="card form-section fade-in">
                 <h2 class="text-xl font-bold mb-4">Thêm truyện mới</h2>
@@ -401,69 +414,84 @@ http://example.com/ch100-2.jpg</textarea>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>john_doe</td>
-                        <td>john@example.com</td>
-                        <td>Người dùng</td>
-                        <td>Có</td>
-                        <td>Hoạt động</td>
-                        <td>745.00</td>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">1</td>
+                        <td th:text="${user.username}">john_doe</td>
+                        <td th:text="${user.email}">john@example.com</td>
+                        <td th:text="${user.role == T(com.example.asuracomic.model.enums.Role).ADMIN ? 'Quản trị viên' : 'Người dùng'}">Người dùng</td>
+                        <td th:text="${user.vipStatus ? 'Có' : 'Không'}">Có</td>
+                        <td th:text="${user.isActive ? 'Hoạt động' : 'Khóa'}">Hoạt động</td>
+                        <td th:text="${#numbers.formatDecimal(user.coinBalance, 1, 'COMMA', 2, 'POINT')}">745.00</td>
                         <td class="action-buttons">
-                            <a onclick="showForm('edit-user-1')"><i class="fas fa-edit"></i></a>
-                            <a class="ban" onclick="banUser(1, 'ban')"><i class="fas fa-ban"></i></a>
+                            <a th:attr="onclick=|showForm('edit-user-' + ${user.id})|"><i class="fas fa-edit"></i></a>
+                            <a class="ban" th:attr="onclick=|banUser(${user.id}, 'ban')|"><i class="fas fa-ban"></i></a>
                         </td>
                     </tr>
-                    <!-- Additional users can be added here -->
                     </tbody>
                 </table>
-                <div class="pagination" id="usersPagination"></div>
+                <div class="pagination" id="usersPagination">
+    <span th:if="${currentUserPage > 0}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage - 1})}">&laquo;</a>
+    </span>
+                    <span th:each="i : ${#numbers.sequence(0, totalUserPages - 1)}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentUserPage} ? 'active' : ''"></a>
+    </span>
+                    <span th:if="${currentUserPage < totalUserPages - 1}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage + 1})}">&raquo;</a>
+    </span>
+                </div>
+
             </div>
-            <div id="edit-user-1" class="card form-section fade-in">
-                <h2 class="text-xl font-bold mb-4">Chỉnh sửa người dùng: john_doe</h2>
-                <form id="editUserForm1">
+
+            <!-- Forms chỉnh sửa người dùng -->
+            <div th:each="user : ${users}" th:id="'edit-user-' + ${user.id}" class="card form-section fade-in" style="display: none;">
+                <h2 class="text-xl font-bold mb-4" th:text="'Chỉnh sửa người dùng: ' + ${user.username}">Chỉnh sửa người dùng</h2>
+                <form th:id="'editUserForm' + ${user.id}">
                     <div class="form-group">
                         <label>Tên người dùng</label>
-                        <input type="text" name="username" value="john_doe" required>
+                        <input type="text" name="username" th:value="${user.username}" required>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" name="email" value="john@example.com" required>
+                        <input type="email" name="email" th:value="${user.email}" required>
                     </div>
                     <div class="form-group">
                         <label>Vai trò</label>
                         <select name="role" required>
-                            <option value="user" selected>Người dùng</option>
-                            <option value="admin">Quản trị viên</option>
+                            <option value="USER" th:selected="${user.role.name() == 'USER'}">Người dùng</option>
+                            <option value="ADMIN" th:selected="${user.role.name() == 'ADMIN'}">Quản trị viên</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Số dư coin</label>
-                        <input type="number" step="0.01" name="coins" value="50.00" required>
+                        <input type="number" step="0.01" name="coins" th:value="${user.coinBalance}" required>
                     </div>
                     <div class="form-group">
                         <label>Trạng thái VIP</label>
                         <select name="isVip" required>
-                            <option value="false">Không</option>
-                            <option value="true" selected>Có</option>
+                            <option value="false" th:selected="${!user.vipStatus}">Không</option>
+                            <option value="true" th:selected="${user.vipStatus}">Có</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Ngày hết hạn VIP</label>
-                        <input type="date" name="vipExpiry" value="2025-12-31" required>
+                        <input type="date" name="vipExpiry" th:value="${user.vipExpiryDate != null ? #temporals.format(user.vipExpiryDate, 'yyyy-MM-dd') : ''}" required>
                     </div>
                     <div class="form-group">
                         <label>Trạng thái tài khoản</label>
                         <select name="status" required>
-                            <option value="active" selected>Hoạt động</option>
-                            <option value="banned">Khóa</option>
+                            <option value="active" th:selected="${user.isActive}">Hoạt động</option>
+                            <option value="banned" th:selected="${!user.isActive}">Khóa</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Lưu</button>
-                    <button type="button" class="btn" onclick="hideForm('edit-user-1')">Hủy</button>
+                    <button type="button" class="btn" th:attr="onclick=|hideForm('edit-user-' + ${user.id})|">Hủy</button>
                 </form>
             </div>
         </div>
+
 
         <!-- Reports Management -->
         <div id="reports" class="section">
@@ -484,21 +512,35 @@ http://example.com/ch100-2.jpg</textarea>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Bình luận</td>
-                        <td>123</td>
-                        <td>Nội dung không phù hợp</td>
-                        <td>Đang chờ</td>
+                    <tr th:each="report : ${reports}">
+                        <td th:text="${report.id}">1</td>
+                        <td th:text="${report.contentType}">Bình luận</td>
+                        <td th:text="${report.contentId}">123</td>
+                        <td th:text="${report.reason}">Nội dung không phù hợp</td>
+                        <td th:text="${report.status}">Đang chờ</td>
                         <td class="action-buttons">
-                            <a onclick="showForm('view-report-1')"><i class="fas fa-eye"></i></a>
-                            <a class="resolve" onclick="resolveReport(1, 'resolve')"><i class="fas fa-check"></i></a>
+                            <a th:attr="onclick=|showForm('view-report-' + ${report.id})|"><i class="fas fa-eye"></i></a>
+                            <a class="resolve" th:attr="onclick=|resolveReport(${report.id}, 'resolve')|"><i class="fas fa-check"></i></a>
                         </td>
                     </tr>
-                    <!-- Additional reports can be added here -->
                     </tbody>
+
                 </table>
-                <div class="pagination" id="reportsPagination"></div>
+                <div class="pagination" id="reportsPagination">
+    <span th:if="${currentReportPage > 0}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage - 1})}">&laquo;</a>
+    </span>
+                    <span th:each="i : ${#numbers.sequence(0, totalReportPages - 1)}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentReportPage} ? 'active' : ''"></a>
+    </span>
+                    <span th:if="${currentReportPage < totalReportPages - 1}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage + 1})}">&raquo;</a>
+    </span>
+                </div>
+
+
             </div>
             <div id="view-report-1" class="card form-section fade-in">
                 <h2 class="text-xl font-bold mb-4">Xử lý báo cáo: Bình luận #123</h2>
@@ -553,21 +595,34 @@ http://example.com/ch100-2.jpg</textarea>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>john_doe</td>
-                        <td>Mở khóa chương</td>
-                        <td>5.00</td>
-                        <td>Thành công</td>
-                        <td>2025-06-23</td>
+                    <tr th:each="txn : ${transactions}">
+                        <td th:text="${txn.id}">1</td>
+                        <td th:text="${txn.user.username}">john_doe</td>
+                        <td th:text="${txn.transactionType}">Mở khóa chương</td>
+                        <td th:text="${txn.amount}">5.00</td>
+                        <td th:text="${txn.status}">Thành công</td>
+                        <td th:text="${#temporals.format(txn.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-23</td>
                         <td class="action-buttons">
-                            <a onclick="showForm('view-transaction-1')"><i class="fas fa-eye"></i></a>
+                            <a th:onclick="'showForm(\'view-transaction-' + ${txn.id} + '\')'"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
-                    <!-- Additional transactions can be added here -->
                     </tbody>
+
                 </table>
-                <div class="pagination" id="transactionsPagination"></div>
+                <div class="pagination" id="transactionsPagination">
+    <span th:if="${currentTransactionPage > 0}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage - 1})}">&laquo;</a>
+    </span>
+                    <span th:each="i : ${#numbers.sequence(0, totalTransactionPages - 1)}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentTransactionPage} ? 'active' : ''"></a>
+    </span>
+                    <span th:if="${currentTransactionPage < totalTransactionPages - 1}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage + 1})}">&raquo;</a>
+    </span>
+                </div>
+
             </div>
             <div id="view-transaction-1" class="card form-section fade-in">
                 <h2 class="text-xl font-bold mb-4">Chi tiết giao dịch: TXN123456</h2>
@@ -629,21 +684,40 @@ http://example.com/ch100-2.jpg</textarea>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>john_doe</td>
-                        <td>One Piece</td>
-                        <td>Trận chiến này rất hấp dẫn!</td>
-                        <td>2025-06-23</td>
+                    <tr th:each="comment : ${comments}">
+                        <td th:text="${comment.id}"></td>
+                        <td th:text="${comment.user.username}"></td>
+                        <td th:text="${comment.chapter.comic.title}"></td> <!-- Giả sử Chapter có liên kết đến Comic -->
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}"></td>
                         <td class="action-buttons">
-                            <a onclick="showForm('edit-comment-1')"><i class="fas fa-edit"></i></a>
-                            <a class="delete" onclick="deleteComment(1)"><i class="fas fa-trash"></i></a>
+                            <a th:onclick="'showForm(\'edit-comment-' + ${comment.id} + '\')'"><i class="fas fa-edit"></i></a>
+                            <a class="delete" th:onclick="'deleteComment(' + ${comment.id} + ')'"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
-                    <!-- Additional comments can be added here -->
                     </tbody>
+
                 </table>
-                <div class="pagination" id="commentsPagination"></div>
+                <div class="pagination" id="commentsPagination">
+    <span th:if="${currentCommentPage > 0}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage}, commentPage=${currentCommentPage - 1})}">&laquo;</a>
+    </span>
+
+                    <span th:each="i : ${#numbers.sequence(
+                        (currentCommentPage - 2 > 0 ? currentCommentPage - 2 : 0),
+                        (currentCommentPage + 2 < totalCommentPages - 1 ? currentCommentPage + 2 : totalCommentPages - 1))}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage}, commentPage=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentCommentPage} ? 'active' : ''"></a>
+    </span>
+
+                    <span th:if="${currentCommentPage < totalCommentPages - 1}">
+        <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage}, commentPage=${currentCommentPage + 1})}">&raquo;</a>
+    </span>
+                </div>
+
+
+
             </div>
             <div id="edit-comment-1" class="card form-section fade-in">
                 <h2 class="text-xl font-bold mb-4">Chỉnh sửa bình luận: john_doe</h2>
@@ -1140,246 +1214,6 @@ http://example.com/ch100-2.jpg</textarea>
     </main>
 </div>
 
-<!--<script>
-    // Tab Switching
-    document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-            document.getElementById(link.getAttribute('data-tab')).classList.add('active');
-            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-            link.classList.add('active');
-        });
-    });
-
-    // Form Handling
-    function showForm(formId) {
-        document.querySelectorAll('.form-section').forEach(form => form.classList.remove('active'));
-        document.getElementById(formId).classList.add('active');
-    }
-
-    function hideForm(formId) {
-        document.getElementById(formId).classList.remove('active');
-    }
-
-    // Table Filtering
-    function filterTable(tableId, query) {
-        const table = document.getElementById(tableId);
-        const rows = table.getElementsByTagName('tr');
-        for (let i = 1; i < rows.length; i++) {
-            let text = rows[i].textContent.toLowerCase();
-            rows[i].style.display = text.includes(query.toLowerCase()) ? '' : 'none';
-        }
-    }
-
-    // Pagination
-    function setupPagination(tableId, itemsPerPage = 5) {
-        const table = document.getElementById(tableId);
-        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-        const pagination = document.getElementById(`${tableId}Pagination`);
-        let currentPage = 1;
-
-        function displayPage(page) {
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            for (let i = 0; i < rows.length; i++) {
-                rows[i].style.display = (i >= start && i < end) ? '' : 'none';
-            }
-        }
-
-        function setupButtons(totalPages) {
-            pagination.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const button = document.createElement('button');
-                button.textContent = i;
-                button.addEventListener('click', () => {
-                    currentPage = i;
-                    displayPage(currentPage);
-                    document.querySelectorAll('#' + tableId + 'Pagination button').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                });
-                if (i === 1) button.classList.add('active');
-                pagination.appendChild(button);
-            }
-        }
-
-        const totalPages = Math.ceil(rows.length / itemsPerPage);
-        setupButtons(totalPages);
-        displayPage(1);
-    }
-
-    // Initialize Pagination for all tables
-    ['comicsTable', 'chaptersTable', 'usersTable', 'reportsTable', 'transactionsTable', 'commentsTable', 'ratingsTable', 'notificationsTable'].forEach(id => setupPagination(id));
-
-    // Chart
-    const ctx = document.getElementById('viewChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['One Piece', 'Solo Leveling', 'Attack on Titan', 'Tower of God', 'Naruto', 'Berserk'],
-            datasets: [{
-                label: 'Lượt xem',
-                data: [10000, 8000, 6500, 4200, 9000, 3800],
-                backgroundColor: 'rgba(59, 130, 246, 0.6)',
-                borderColor: 'rgba(59, 130, 246, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-
-    // Notification System
-    function addNotification(message, type = 'info') {
-        const panel = document.getElementById('notificationPanel');
-        const notif = document.createElement('div');
-        notif.className = `notification ${type === 'success' ? 'success' : 'error'}`;
-        notif.textContent = message;
-        panel.appendChild(notif);
-        setTimeout(() => notif.remove(), 5000);
-    }
-
-    // Form Submission Handlers
-    document.getElementById('addComicForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Truyện đã được thêm thành công!', 'success');
-        hideForm('add-comic');
-    });
-
-    document.getElementById('editComicForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Truyện đã được cập nhật thành công!', 'success');
-        hideForm('edit-comic-1');
-    });
-
-    document.getElementById('addChapterForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Chương đã được thêm thành công!', 'success');
-        hideForm('add-chapter');
-    });
-
-    document.getElementById('editChapterForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Chương đã được cập nhật thành công!', 'success');
-        hideForm('edit-chapter-1');
-    });
-
-    document.getElementById('editUserForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Thông tin người dùng đã được cập nhật!', 'success');
-        hideForm('edit-user-1');
-    });
-
-    document.getElementById('resolveReportForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Báo cáo đã được xử lý!', 'success');
-        hideForm('view-report-1');
-    });
-
-    document.getElementById('updateTransactionForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Trạng thái giao dịch đã được cập nhật!', 'success');
-        hideForm('view-transaction-1');
-    });
-
-    document.getElementById('editCommentForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Bình luận đã được cập nhật!', 'success');
-        hideForm('edit-comment-1');
-    });
-
-    document.getElementById('editRatingForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Đánh giá đã được cập nhật!', 'success');
-        hideForm('edit-rating-1');
-    });
-
-    document.getElementById('addNotificationForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Thông báo đã được gửi!', 'success');
-        hideForm('add-notification');
-    });
-
-    document.getElementById('editNotificationForm1')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Thông báo đã được cập nhật!', 'success');
-        hideForm('edit-notification-1');
-    });
-
-    document.getElementById('settingsForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addNotification('Cài đặt đã được lưu!', 'success');
-    });
-
-    // Admin Actions
-    function deleteComic(id) {
-        if (confirm('Bạn có chắc muốn xóa truyện này?')) {
-            addNotification('Truyện đã được xóa!', 'success');
-            // Simulate deletion (actual API call would be here)
-            document.querySelector(`#comicsTable tr[data-id="${id}"]`)?.remove();
-        }
-    }
-
-    function deleteChapter(id) {
-        if (confirm('Bạn có chắc muốn xóa chương này?')) {
-            addNotification('Chương đã được xóa!', 'success');
-            // Simulate deletion
-            document.querySelector(`#chaptersTable tr[data-id="${id}"]`)?.remove();
-        }
-    }
-
-    function banUser(id, action) {
-        if (confirm(`Bạn có chắc muốn ${action === 'ban' ? 'khóa' : 'mở khóa'} người dùng này?`)) {
-            addNotification(`Người dùng đã bị ${action === 'ban' ? 'khóa' : 'mở khóa'}!`, 'success');
-            // Simulate ban/unban (actual API call would be here)
-            const row = document.querySelector(`#usersTable tr[data-id="${id}"]`);
-            if (row) {
-                const statusCell = row.cells[5];
-                statusCell.textContent = action === 'ban' ? 'Khóa' : 'Hoạt động';
-            }
-        }
-    }
-
-    function resolveReport(id, action) {
-        if (confirm('Bạn có chắc muốn giải quyết báo cáo này?')) {
-            addNotification('Báo cáo đã được giải quyết!', 'success');
-            // Simulate resolution
-            const row = document.querySelector(`#reportsTable tr[data-id="${id}"]`);
-            if (row) {
-                row.cells[4].textContent = 'Đã giải quyết';
-            }
-        }
-    }
-
-    function deleteComment(id) {
-        if (confirm('Bạn có chắc muốn xóa bình luận này?')) {
-            addNotification('Bình luận đã được xóa!', 'success');
-            // Simulate deletion
-            document.querySelector(`#commentsTable tr[data-id="${id}"]`)?.remove();
-        }
-    }
-
-    function deleteRating(id) {
-        if (confirm('Bạn có chắc muốn xóa đánh giá này?')) {
-            addNotification('Đánh giá đã được xóa!', 'success');
-            // Simulate deletion
-            document.querySelector(`#ratingsTable tr[data-id="${id}"]`)?.remove();
-        }
-    }
-
-    function deleteNotification(id) {
-        if (confirm('Bạn có chắc muốn xóa thông báo này?')) {
-            addNotification('Thông báo đã được xóa!', 'success');
-            // Simulate deletion
-            document.querySelector(`#notificationsTable tr[data-id="${id}"]`)?.remove();
-        }
-    }
-
-    // Example Notification
-    setTimeout(() => addNotification('Chào mừng đến với AsuraComic Admin!', 'success'), 1000);
-</script>-->
 <script>
     function showForm(formId) {
         // Placeholder cho chức năng thêm/chỉnh sửa
@@ -1397,6 +1231,33 @@ http://example.com/ch100-2.jpg</textarea>
         }
     }
 </script>
+
+<!--phaan trang-->
+<script>
+    function switchTab(tabName) {
+        // Lưu tab đang chọn vào localStorage
+        localStorage.setItem('activeTab', tabName);
+
+        // Ẩn tất cả tab
+        document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+
+        // Bỏ class active khỏi các menu
+        document.querySelectorAll('.sidebar-nav a').forEach(el => el.classList.remove('active'));
+
+        // Hiện tab được chọn
+        document.getElementById(tabName).style.display = 'block';
+
+        // Kích hoạt class
+        document.querySelector(`.sidebar-nav a[data-tab="${tabName}"]`).classList.add('active');
+    }
+
+    // Tải lại tab đang hoạt động khi load trang (sau phân trang)
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTab = localStorage.getItem('activeTab') || 'dashboard';
+        switchTab(savedTab);
+    });
+</script>
+
 <script src="/js/admin/admin-template.js"></script>
 </body>
 </html>

@@ -46,27 +46,28 @@
             </div>
             <h1><span>Asura</span> Scans</h1>
             <p>Register your account</p>
-            <form>
+            <div th:if="${message}" th:text="${message}" style="color:red; text-align:center;"></div>
+
+            <form th:action="@{/asura/register}" method="post">
                 <div class="input-group">
                     <i>👤</i>
-                    <input type="text" placeholder="Username">
+                    <input type="text" name="username" placeholder="Username" required>
                 </div>
                 <div class="input-group">
                     <i>✉️</i>
-                    <input type="email" placeholder="Enter your Email">
+                    <input type="email" name="email" placeholder="Enter your Email" required>
                 </div>
                 <div class="input-group">
                     <i>🔒</i>
-                    <input type="password" placeholder="Password">
-                    <span class="toggle-password">👁️</span>
+                    <input type="password" name="password" placeholder="Password" required>
                 </div>
                 <div class="input-group">
                     <i>🔒</i>
-                    <input type="password" placeholder="Password Confirm">
-                    <span class="toggle-password">👁️</span>
+                    <input type="password" name="confirmPassword" placeholder="Password Confirm" required>
                 </div>
-                <button class="register-btn">REGISTER</button>
+                <button type="submit" class="register-btn">REGISTER</button>
             </form>
+
             <div class="login-link">
                 Already have Account? <a th:href="@{/asura/login}">Login</a>
             </div>

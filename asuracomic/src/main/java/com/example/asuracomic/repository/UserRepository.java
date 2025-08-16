@@ -2,8 +2,12 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.model.enums.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +20,27 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByRole(Role userRole);
 
     Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email); // thêm dòng này
+
+    Optional<User> findByUsername(String username);
+
+
+        @EntityGraph(attributePaths = {"transactions", "transactions.chapter", "transactions.vipConfig"})
+        Page<User> findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(String username, String email, Pageable pageable);
+
+        @EntityGraph(attributePaths = {"transactions", "transactions.chapter", "transactions.vipConfig"})
+        Page<User> findByVipStatus(boolean vipStatus, Pageable pageable);
+
+        @EntityGraph(attributePaths = {"transactions", "transactions.chapter", "transactions.vipConfig"})
+        Page<User> findByRole(Role role, Pageable pageable);
+
+        @EntityGraph(attributePaths = {"transactions", "transactions.chapter", "transactions.vipConfig"})
+        Page<User> findAll(Pageable pageable);
+
+    Page<User> findByVipStatusAndVipExpiryDateBefore(boolean vipStatus, LocalDateTime expiryDate, Pageable pageable);
+
+
+
+
 }

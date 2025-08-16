@@ -10,4 +10,6 @@ import org.springframework.data.domain.Pageable;
 public interface ComicAuthorRepository extends JpaRepository<ComicAuthor, Long> {
     @Query("SELECT ca.comic FROM ComicAuthor ca WHERE ca.author.slug = :authorSlug AND ca.comic.isPublished = true")
     Page<Comic> findComicsByAuthorSlug(String authorSlug, Pageable pageable);
+
+    void deleteByComicId(Long comicId);
 }
