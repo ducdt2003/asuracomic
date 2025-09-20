@@ -363,6 +363,8 @@ class AsuraComicApplicationTests {
 		}
 	}
 
+
+	// chưa tsst
 	@Test
 	void save_comments() {
 		// Lấy danh sách tất cả người dùng từ cơ sở dữ liệu
@@ -387,6 +389,8 @@ class AsuraComicApplicationTests {
 		}
 	}
 
+
+	// chua
 	@Test
 	void save_vip_configs() {
 		String[] vipNames = {"Monthly VIP", "Quarterly VIP", "Yearly VIP"};

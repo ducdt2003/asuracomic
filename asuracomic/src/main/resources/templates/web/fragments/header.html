@@ -63,7 +63,7 @@
                             <li><a class="dropdown-item" th:href="@{/asura/profile}">Hồ sơ</a></li>
                             <li th:if="${session.currentUser.role.name() == 'USER'}" ><a class="dropdown-item" th:href="@{/asura/bookmarks}">Truyện yêu thích</a></li>
                             <li th:if="${session.currentUser.role.name() == 'ADMIN'}">
-                                <a class="dropdown-item" th:href="@{/asura/admin}">Bảng điều khiển Admin</a>
+                                <a class="dropdown-item" th:href="@{/asura/admin/comic}">Bảng điều khiển Admin</a>
                             </li>
                             <li><a class="dropdown-item" th:href="@{/asura/logout}">Đăng xuất</a></li>
                         </ul>

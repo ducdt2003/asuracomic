@@ -2,6 +2,8 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -32,4 +34,5 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     Optional<Chapter> findByComicSlugAndChapterSlug(String comicSlug, String chapterSlug);
 
     List<Chapter> findByComicId(Long comicId);
+    Page<Chapter> findByComic(Comic comic, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.example.asuracomic.controller.admin;
 
 import com.example.asuracomic.dto.admin.DashboardStatsDTO;
+import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.model.enums.Role;
@@ -50,12 +51,25 @@ public class adminComicController {
 
     // chi tiết truyện
     @GetMapping("/{slug}")
-    public String getMovieDetail(@PathVariable String slug, Model model) {
+    public String getComicDetail(@PathVariable String slug,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "5") int size,
+                                 Model model) {
+        // Lấy thông tin truyện
         Comic comic = dashboardService.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện"));
+
+        // Lấy danh sách chương có phân trang
+        Page<Chapter> chapterPage = dashboardService.getChaptersByComic(comic, page, size);
+
         model.addAttribute("comic", comic);
-        return "admin-templ/blog-detail";
+        model.addAttribute("chapterPage", chapterPage);
+        return "admin-templ/blog-detail"; // file HTML
     }
+
+
+
+
 
     // chỉnh sữa truyện
     @GetMapping("/edit/{slug}")

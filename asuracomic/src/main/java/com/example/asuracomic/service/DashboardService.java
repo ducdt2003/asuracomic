@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.example.asuracomic.entity.Comment; // đảm bảo import
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,8 @@ public class DashboardService {
     @Autowired // Tiêm phụ thuộc ReportRepository
     private CommentRepository commentRepository; // Biến để truy vấn dữ liệu báo cáo
 
+    @Autowired
+    private ChapterRepository chapterRepository;
 
     public DashboardStatsDTO getDashboardStats() { // Phương thức lấy dữ liệu thống kê cho dashboard
         long totalComics = comicRepository.count(); // Đếm tổng số truyện trong cơ sở dữ liệu
@@ -128,6 +131,11 @@ public class DashboardService {
     }
 
 
+    // phân trang chpater ở chi tieets truyện
+    public Page<Chapter> getChaptersByComic(Comic comic, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("chapterNumber").descending());
+        return chapterRepository.findByComic(comic, pageable);
+    }
 
 
 }

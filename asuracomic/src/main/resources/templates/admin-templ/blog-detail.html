@@ -523,38 +523,44 @@
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Tiêu đề</label>
-                                            <input type="text" class="form-control" id="title" required />
+                                            <input type="text" class="form-control" id="title" th:value="${comic.title}" required />
                                         </div>
                                         <div class="form-group">
-                                            <label>Mô tả</label>
-                                            <textarea id="description"></textarea>
+                                            <label for="description"><b>Mô tả</b></label>
+                                            <textarea id="description" name="description" rows="6" cols="60" class="form-control">
+    [[${comic.description}]]
+</textarea>
+
                                         </div>
                                         <div class="form-group">
                                             <label>Serialization</label>
-                                            <input type="text" class="form-control" id="serialization" />
+                                            <input type="text" class="form-control" id="serialization" th:value="${comic.serialization}" />
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Trạng thái</label>
-                                            <select id="status" class="form-control">
-                                                <option value="ONGOING">Đang tiến hành</option>
-                                                <option value="COMPLETED">Hoàn thành</option>
+                                            <select id="status" class="form-control" th:value="${comic.status}">
+                                                <option value="ONGOING" th:selected="${comic.status == 'ONGOING'}">Đang tiến hành</option>
+                                                <option value="COMPLETED" th:selected="${comic.status == 'COMPLETED'}">Hoàn thành</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Loại truyện</label>
-                                            <select id="type" class="form-control">
-                                                <option value="MANHWA">Manhwa</option>
-                                                <option value="MANGA">Manga</option>
-                                                <option value="MANHUA">Manhua</option>
+                                            <select id="type" class="form-control" th:value="${comic.type}">
+                                                <option value="MANHWA" th:selected="${comic.type == 'MANHWA'}">Manhwa</option>
+                                                <option value="MANGA" th:selected="${comic.type == 'MANGA'}">Manga</option>
+                                                <option value="MANHUA" th:selected="${comic.type == 'MANHUA'}">Manhua</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Thể loại</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="genres">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="comicGenre : ${comic.comicGenres}"
+                                                            th:value="${comicGenre.genre.id}"
+                                                            th:text="${comicGenre.genre.name}"
+                                                            th:selected="${comicGenre.genre.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -562,7 +568,10 @@
                                             <label>Tác giả</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="authors">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="comicAuthor : ${comic.comicAuthors}"
+                                                            th:value="${comicAuthor.author.id}"
+                                                            th:text="${comicAuthor.author.name}"
+                                                            th:selected="${comicAuthor.author.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -570,14 +579,17 @@
                                             <label>Họa sĩ</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="artists">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="comicArtist : ${comic.comicArtists}"
+                                                            th:value="${comicArtist.artist.id}"
+                                                            th:text="${comicArtist.artist.name}"
+                                                            th:selected="${comicArtist.artist.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Hình bìa</label>
                                             <div class="thumbnail-preview-container mb-3">
-                                                <img src="" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
+                                                <img th:src="${comic.coverImage}" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
                                             </div>
                                             <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
                                                 Chọn hình ảnh
@@ -585,9 +597,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Trạng thái xuất bản</label>
-                                            <select id="isPublished" class="form-control">
-                                                <option value="true">Công khai</option>
-                                                <option value="false">Ẩn</option>
+                                            <select id="isPublished" class="form-control" th:value="${comic.isPublished}">
+                                                <option value="true" th:selected="${comic.isPublished == true}">Công khai</option>
+                                                <option value="false" th:selected="${comic.isPublished == false}">Ẩn</option>
                                             </select>
                                         </div>
                                     </div>
@@ -599,7 +611,7 @@
                                             <div class="card-header">
                                                 <h3 class="card-title">Danh sách chương</h3>
                                                 <div class="card-tools">
-                                                    <a href="/asura/admin/comic/chapter/update/${comicId}" class="btn btn-sm btn-primary">Thêm chương</a>
+                                                    <a th:href="@{/asura/admin/comic/chapter/update/{comicId}(comicId=${comic.id})}" class="btn btn-sm btn-primary">Thêm chương</a>
                                                 </div>
                                             </div>
                                             <div class="card-body">
@@ -615,10 +627,47 @@
                                                         <th>Hành động</th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody id="chapters-table">
-                                                    <!-- Populated dynamically -->
+                                                    <tbody>
+                                                    <tr th:each="chapter : ${chapterPage.content}">
+                                                        <td th:text="${chapter.chapterNumber}"></td>
+                                                        <td th:text="${chapter.title}"></td>
+                                                        <td th:text="${chapter.viewCount}"></td>
+                                                        <td th:text="${chapter.isFree} ? 'Có' : 'Không'"></td>
+                                                        <td th:text="${chapter.coinPrice}"></td>
+                                                        <td th:text="${chapter.isPublished} ? 'Công khai' : 'Ẩn'"></td>
+                                                        <td>
+                                                            <a th:href="@{/asura/admin/comic/chapter/update/{chapterId}(chapterId=${chapter.id})}"
+                                                               class="btn btn-sm btn-warning">Sửa</a>
+                                                            <button class="btn btn-sm btn-danger" th:onclick="'deleteChapter(' + ${chapter.id} + ')'">Xóa</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr th:if="${#lists.isEmpty(chapterPage.content)}">
+                                                        <td colspan="7" class="text-center">Chưa có chương nào</td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
+                                                <div>
+                                                    <ul class="pagination">
+                                                        <!-- Nút Previous -->
+                                                        <li th:classappend="${chapterPage.hasPrevious()} ? '' : 'disabled'">
+                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number - 1}, size=${chapterPage.size})}">«</a>
+                                                        </li>
+
+                                                        <!-- Các trang -->
+                                                        <li th:each="i : ${#numbers.sequence(0, chapterPage.totalPages - 1)}"
+                                                            th:classappend="${i == chapterPage.number} ? 'active'">
+                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${i}, size=${chapterPage.size})}"
+                                                               th:text="${i + 1}">1</a>
+                                                        </li>
+
+                                                        <!-- Nút Next -->
+                                                        <li th:classappend="${chapterPage.hasNext()} ? '' : 'disabled'">
+                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number + 1}, size=${chapterPage.size})}">»</a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -706,14 +755,21 @@
 
         // Initialize data
         function initData(data) {
-            $('#title').val(data.title);
-            easyMDE.value(data.description || '');
-            $('#serialization').val(data.serialization || '');
-            $('#status').val(data.status);
-            $('#type').val(data.type);
-            $('#isPublished').val(data.isPublished.toString());
-            $('#coverImage').attr('src', data.coverImage || '');
-            $('#comic-title-breadcrumb').text(data.title);
+    $('#title').val(data.title);
+    easyMDE.value(data.description || '');
+    $('#serialization').val(data.serialization || '');
+    $('#status').val(data.status);
+    $('#type').val(data.type);
+    $('#isPublished').val(data.isPublished.toString());
+
+    // ✅ chỉ set ảnh khi có dữ liệu
+    if (data.coverImage) {
+        $('#coverImage').attr('src', data.coverImage);
+    }
+
+    $('#comic-title-breadcrumb').text(data.title);
+}
+
 
             // Populate genres (mock API call)
             $.ajax({
@@ -844,31 +900,89 @@
             }
         }
 
-        // Handle image upload
-        $('#imageUpload').on('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#imagePreview').html(`<img src="${e.target.result}" style="max-width: 100%; height: auto;" />`);
-                };
-                reader.readAsDataURL(file);
+      // Handle image upload
+      // Handle image upload
+$('#imageUpload').on('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageUrl = e.target.result;
+            // Cập nhật hình ảnh trên giao diện và trong comicData
+            $('#coverImage').attr('src', imageUrl);
+            $('#imagePreview').html(`<img src="${imageUrl}" style="max-width: 100%; height: auto;" />`);
+            comicData.coverImage = imageUrl; // Lưu vào comicData
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Save image
+function saveImage() {
+    const src = $('#imagePreview img').attr('src');
+    if (src) {
+        $('#coverImage').attr('src', src); // Cập nhật lại để đảm bảo nhất quán
+        comicData.coverImage = src; // Cập nhật comicData
+        $('#modal-xl').modal('hide');
+        // Gửi AJAX để lưu ảnh lên server (nếu cần)
+        $.ajax({
+            url: `/api/comics/${comicData.id}/upload-cover`,
+            method: 'POST',
+            data: JSON.stringify({ coverImage: src }),
+            contentType: 'application/json',
+            success: function(response) {
+                console.log('Hình ảnh đã được lưu lên server!');
+            },
+            error: function() {
+                console.log('Lỗi khi lưu hình ảnh!');
             }
         });
-
-        // Save image
-        function saveImage() {
-            const src = $('#imagePreview img').attr('src');
-            if (src) {
-                $('#coverImage').attr('src', src);
-                $('#modal-xl').modal('hide');
-            } else {
-                alert('Vui lòng chọn hình ảnh!');
-            }
-        }
+    } else {
+        alert('Vui lòng chọn hình ảnh!');
+    }
+}
 
         // Initialize with comic data
         initData(comicData);
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+
+        function deleteChapter(chapterId) {
+            if (confirm('Bạn có chắc chắn muốn xóa chương này?')) {
+                // Implement AJAX call to delete chapter
+                $.ajax({
+                    url: '/asura/admin/comic/chapter/delete/' + chapterId,
+                    type: 'DELETE',
+                    success: function() {
+                        alert('Xóa chương thành công!');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Lỗi khi xóa chương!');
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script>
+        function loadChapters(slug, page, size = 5) {
+            fetch(`/asura/admin/comic/${slug}/chapters?page=${page}&size=${size}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("chapter-container").innerHTML =
+                        new DOMParser().parseFromString(html, "text/html")
+                                       .getElementById("chapter-container").innerHTML;
+                })
+                .catch(err => console.error("Lỗi load chapters:", err));
+        }
+    </script>
+
+
+
 </body>
 </html>
