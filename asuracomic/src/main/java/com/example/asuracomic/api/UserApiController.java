@@ -60,7 +60,7 @@ public class UserApiController {
         LocalDateTime now = LocalDateTime.now();
         user.setVipStartDate(now); // ngày bắt đầu VIP
         user.setVipExpiryDate(now.plusDays(vipConfig.getDurationDays())); // ngày hết hạn VIP
-        user.setVipStatus(true);
+        user.setVipStatus(true); // cập nhật trạng thía vip cho user
         user.setUpdatedAt(now);
         userRepository.save(user);
 
@@ -92,3 +92,28 @@ public class UserApiController {
         ));
     }
 }
+
+
+/*
+
+// Nếu một người dùng đang còn 15 ngày VIP và họ mua thêm gói 30 ngày,
+họ sẽ bị mất 15 ngày cũ và chỉ còn lại 30 ngày kể từ hôm nay
+// Cập nhật VIP - LOGIC ĐÚNG ĐỂ CỘNG DỒN NGÀY
+LocalDateTime now = LocalDateTime.now();
+LocalDateTime currentExpiryDate = user.getVipExpiryDate();
+LocalDateTime newExpiryDate;
+
+// Kiểm tra xem người dùng có đang là VIP không (ngày hết hạn còn hiệu lực)
+if (currentExpiryDate != null && currentExpiryDate.isAfter(now)) {
+// Nếu đang là VIP, cộng dồn vào ngày hết hạn hiện tại
+newExpiryDate = currentExpiryDate.plusDays(vipConfig.getDurationDays());
+        } else {
+        // Nếu đã hết hạn hoặc chưa từng là VIP, tính từ hôm nay
+        user.setVipStartDate(now); // Chỉ set ngày bắt đầu nếu họ chưa phải là VIP
+newExpiryDate = now.plusDays(vipConfig.getDurationDays());
+        }
+
+        user.setVipExpiryDate(newExpiryDate); // Cập nhật ngày hết hạn mới cho user
+user.setVipStatus(true);
+user.setUpdatedAt(now);
+userRepository.save(user);*/

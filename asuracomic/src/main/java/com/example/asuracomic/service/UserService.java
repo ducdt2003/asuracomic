@@ -52,24 +52,27 @@ public class UserService {
 
 
     public String registerUser(String username, String email, String password, String confirmPassword) {
+        // Kiểm tra xem mật khẩu và mật khẩu xác nhận có trùng nhau không
         if (!password.equals(confirmPassword)) {
             return "Mật khẩu xác nhận không khớp.";
         }
+        // Kiểm tra xem email đã tồn tại trong hệ thống chưa
         if (userRepository.findByEmail(email).isPresent()) {
             return "Email đã được sử dụng.";
         }
+        // Kiểm tra xem username đã có người dùng chưa
         if (userRepository.findByUsername(username).isPresent()) {
             return "Username đã được sử dụng.";
         }
-
+        // Nếu tất cả hợp lệ, tạo đối tượng User mới
         User user = User.builder()
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .role(Role.USER)
                 .coinBalance(BigDecimal.ZERO)
-                .vipStatus(false)
-                .isActive(true)
+                .vipStatus(false)  // Mặc định chưa phải là VIP
+                .isActive(true) // Trạng thái tài khoản là hoạt động
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

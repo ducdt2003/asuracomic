@@ -163,8 +163,8 @@
                                 <th>Vai trò</th>
                                 <th>VIP</th>
                                 <th>Số dư coin</th>
+                                <th>Ngày mua gói VIP</th>
                                 <th>Ngày hết hạn VIP</th>
-                                <th>Ngày đăng nhập cuối</th>
                                 <th>Thao tác</th>
                             </tr>
                             </thead>
@@ -176,8 +176,8 @@
                                 <td th:text="${user.role}"></td>
                                 <td th:text="${user.vipStatus ? 'Có' : 'Không'}"></td>
                                 <td th:text="${user.coinBalance}"></td>
+                                <td th:text="${user.vipStartDate != null ? #temporals.format(user.vipStartDate, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
                                 <td th:text="${user.vipExpiryDate != null ? #temporals.format(user.vipExpiryDate, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
-                                <td th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
                                 <td>
                                     <ul>
                                         <li th:each="txn : ${user.transactions}">

@@ -239,12 +239,10 @@ import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.Transaction;
 import com.example.asuracomic.entity.User;
+import com.example.asuracomic.entity.VipConfig;
 import com.example.asuracomic.exception.BadRequestException;
 import com.example.asuracomic.model.enums.TransactionType;
-import com.example.asuracomic.repository.ChapterRepository;
-import com.example.asuracomic.repository.TransactionRepository;
-import com.example.asuracomic.repository.UnlockedChapterRepository;
-import com.example.asuracomic.repository.UserRepository;
+import com.example.asuracomic.repository.*;
 import com.example.asuracomic.service.CoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -257,6 +255,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/asura")
 @RequiredArgsConstructor
@@ -266,6 +266,7 @@ public class CoinController {
     private final ChapterRepository chapterRepository;
     private final UserRepository userRepository;
     private final UnlockedChapterRepository unlockedChapterRepository;
+    private final VipConfigRepository vipConfigRepository;
 
     private final TransactionRepository transactionRepository;
 
@@ -282,6 +283,7 @@ public class CoinController {
         }
         return "web/web-coin/membership";
     }
+
 
     @GetMapping("/comic/{comicSlug}/chapter/{chapterSlug}/unlock")
     public String unlockChapterPage(@PathVariable String comicSlug,

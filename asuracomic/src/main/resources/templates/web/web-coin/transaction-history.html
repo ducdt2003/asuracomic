@@ -94,22 +94,33 @@
                                 <tbody>
                                 <tr th:each="txn : ${transactionsPage.content}">
                                     <td th:text="${txn.createdAt != null ? #temporals.format(txn.createdAt, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
-                                    <td th:switch="${txn.transactionType}">
-                                        <span th:case="'CHAPTER_UNLOCK'" th:text="'Mở khóa chương'"></span>
-                                        <span th:case="'VIP_PURCHASE'" th:text="'Mua VIP'"></span>
-                                        <span th:case="*" th:text="'Không xác định: ' + ${txn.transactionType ?: 'null'}"></span>
-                                    </td>
-                                    <td th:text="${txn.amount != null ? (txn.amount + ' coin') : 'N/A'}"></td>
-                                    <td th:switch="${txn.transactionType}">
-                                        <span th:case="'CHAPTER_UNLOCK'" th:text="'Chương: ' + ${txn.chapter?.title ?: 'N/A'}"></span>
-                                        <span th:case="'VIP_PURCHASE'" th:text="'Gói VIP: ' + ${txn.vipConfig?.name ?: 'N/A'}"></span>
-                                        <span th:case="*" th:text="'N/A'"></span>
-                                    </td>
-                                    <td th:text="${txn.transactionType == 'VIP_PURCHASE' and txn.vipStartDate != null ? #temporals.format(txn.vipStartDate, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
 
-                                    <td th:text="${user.vipExpiryDate != null ? #temporals.format(user.vipExpiryDate, 'dd/MM/yyyy HH:mm') : 'N/A'}"></td>
+                                    <td>
+                                        <span th:if="${txn.transactionType.name() == 'CHAPTER_UNLOCK'}" class="badge bg-primary">Mở Khóa Chương</span>
+                                        <span th:if="${txn.transactionType.name() == 'VIP_PURCHASE'}" class="badge bg-success">Mua Gói VIP</span>
+                                    </td>
 
-                                    <td th:text="${txn.status ?: 'N/A'}"></td>
+                                    <td class="text-danger fw-bold" th:text="'-' + ${#numbers.formatDecimal(txn.amount, 0, 'COMMA', 0, 'POINT')}"></td>
+
+                                    <td>
+                                        <div th:if="${txn.chapter != null}" th:text="${txn.chapter.comic.title + ' - ' + txn.chapter.title}"></div>
+                                        <div th:if="${txn.vipConfig != null}" th:text="${txn.vipConfig.name}"></div>
+                                    </td>
+
+                                    <td th:text="${#temporals.format(txn.createdAt, 'dd/MM/yyyy')}"></td>
+                                    <td>
+                                        <span th:if="${txn.transactionType.name() == 'VIP_PURCHASE'}"
+                                              th:text="${txn.vipEndDate != null ? #temporals.format(txn.vipEndDate, 'dd/MM/yyyy') : 'N/A'}">
+                                        </span>
+                                        <span th:if="${txn.transactionType.name() == 'CHAPTER_UNLOCK'}" class="text-success fw-bold">
+                                        Vĩnh viễn
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span th:if="${txn.status.name() == 'SUCCESS'}" class="badge bg-success">Thành công</span>
+                                        <span th:if="${txn.status.name() == 'FAILED'}" class="badge bg-danger">Thất bại</span>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

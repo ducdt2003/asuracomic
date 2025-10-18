@@ -20,9 +20,10 @@ public class AuthService {
     private final HttpSession session;
 
     public void login(LoginRequest request) {
+        // tim kiếm usser theo email
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException("Tài khoản hoặc mật khẩu không chính xác"));
-
+        // Kiểm tra xem mật khẩu người dùng nhập có trùng với mật khẩu đã mã hóa trong database không
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BadRequestException("Tài khoản hoặc mật khẩu không chính xác");
         }
@@ -37,55 +38,54 @@ public class AuthService {
 
 
     public void changePassword(ChangePasswordRequest request) {
-        // Get the current user from session
+        // Lấy thông tin người dùng hiện tại từ session (người đang đăng nhập)
         UserDTO currentUserDTO = (UserDTO) session.getAttribute("currentUser");
+        // Nếu chưa đăng nhập thì báo lỗi
         if (currentUserDTO == null) {
             throw new BadRequestException("Bạn chưa đăng nhập");
         }
 
-        // Find the user in the database
+        // Tìm người dùng trong cơ sở dữ liệu theo ID lấy từ session
         User user = userRepository.findById(currentUserDTO.getId())
                 .orElseThrow(() -> new BadRequestException("Người dùng không tồn tại"));
 
-        // Verify current password
+        // Kiểm tra xem mật khẩu hiện tại nhập vào có đúng với mật khẩu trong DB không
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
             throw new BadRequestException("Mật khẩu hiện tại không chính xác");
         }
 
-        // Validate new password and confirm password
+        // Kiểm tra xem mật khẩu mới và mật khẩu xác nhận có trùng nhau không
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new BadRequestException("Mật khẩu mới và xác nhận mật khẩu không khớp");
         }
 
-        // Validate password requirements
+        // Kiểm tra xem mật khẩu mới có đủ mạnh không (ví dụ: tối thiểu 8 ký tự, có chữ và số hoặc ký tự đặc biệt)
         if (!isValidPassword(request.getNewPassword())) {
             throw new BadRequestException("Mật khẩu mới không đáp ứng yêu cầu: tối thiểu 8 ký tự, ít nhất một chữ cái thường, một số hoặc ký tự đặc biệt");
         }
 
-        // Encode and update the new password
+        // Nếu mọi thứ hợp lệ → mã hóa mật khẩu mới và cập nhật vào DB
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
 
-        // Update session with the latest user data
+        // Cập nhật lại thông tin người dùng trong session (để session có dữ liệu mới nhất)
         session.setAttribute("currentUser", UserMapper.toDTO(user));
     }
 
     private boolean isValidPassword(String password) {
-        // Minimum 8 characters
+        // Kiểm tra độ dài tối thiểu: mật khẩu phải có ít nhất 8 ký tự
         if (password.length() < 8) {
             return false;
         }
-
-        // At least one lowercase letter
+        // Kiểm tra xem mật khẩu có chứa ít nhất một chữ cái thường (a–z) hay không
+        // Sử dụng biểu thức chính quy: ".*[a-z].*" nghĩa là chuỗi có chứa ít nhất một ký tự thường
         if (!password.matches(".*[a-z].*")) {
             return false;
         }
-
-        // At least one number, symbol, or whitespace
+        // Nếu thỏa cả 3 điều kiện trên, mật khẩu hợp lệ → trả về true
         if (!password.matches(".*[0-9\\W].*")) {
             return false;
         }
-
         return true;
     }
 }

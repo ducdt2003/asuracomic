@@ -616,17 +616,6 @@
                                             </div>
                                             <div class="card-body">
                                                 <table class="table table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Số chương</th>
-                                                        <th>Tiêu đề</th>
-                                                        <th>Lượt xem</th>
-                                                        <th>Miễn phí</th>
-                                                        <th>Giá coin</th>
-                                                        <th>Trạng thái</th>
-                                                        <th>Hành động</th>
-                                                    </tr>
-                                                    </thead>
                                                     <tbody>
                                                     <tr th:each="chapter : ${chapterPage.content}">
                                                         <td th:text="${chapter.chapterNumber}"></td>
@@ -646,26 +635,41 @@
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                                <div>
-                                                    <ul class="pagination">
-                                                        <!-- Nút Previous -->
-                                                        <li th:classappend="${chapterPage.hasPrevious()} ? '' : 'disabled'">
-                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number - 1}, size=${chapterPage.size})}">«</a>
+                                                <div th:if="${chapterPage.totalPages > 1}">
+                                                    <ul class="pagination"
+                                                        style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+
+                                                        <li class="page-item" th:classappend="${chapterPage.isFirst()} ? 'disabled'">
+                                                            <a class="page-link"
+                                                               style="color: #28a745; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
+                                                               th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number - 1}, size=${chapterPage.size})}"
+                                                               th:style="${chapterPage.isFirst()} ? 'color: #6c757d; background-color: #e9ecef; cursor: not-allowed;' : 'color: #28a745;'"
+                                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#218838';"
+                                                               onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#28a745';">«</a>
                                                         </li>
 
-                                                        <!-- Các trang -->
-                                                        <li th:each="i : ${#numbers.sequence(0, chapterPage.totalPages - 1)}"
-                                                            th:classappend="${i == chapterPage.number} ? 'active'">
-                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${i}, size=${chapterPage.size})}"
-                                                               th:text="${i + 1}">1</a>
+                                                        <li class="page-item"
+                                                            th:each="i : ${#numbers.sequence(0, chapterPage.totalPages - 1)}"
+                                                            th:classappend="${i == chapterPage.number} ? 'active'"
+                                                            style="margin: 0 5px;">
+                                                            <a class="page-link"
+                                                               style="color: #0d6efd; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
+                                                               th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${i}, size=${chapterPage.size})}"
+                                                               th:text="${i + 1}"
+                                                               th:style="${i == chapterPage.number} ? 'color: #fff; background-color: #0d6efd; border-color: #0d6efd;' : ''"
+                                                               onmouseover="if (!this.parentElement.classList.contains('active')) { this.style.backgroundColor='#e9ecef'; this.style.color='#0b5ed7'; }"
+                                                               onmouseout="if (!this.parentElement.classList.contains('active')) { this.style.backgroundColor='#f8f9fa'; this.style.color='#0d6efd'; }"></a>
                                                         </li>
 
-                                                        <!-- Nút Next -->
-                                                        <li th:classappend="${chapterPage.hasNext()} ? '' : 'disabled'">
-                                                            <a th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number + 1}, size=${chapterPage.size})}">»</a>
+                                                        <li class="page-item" th:classappend="${chapterPage.isLast()} ? 'disabled'">
+                                                            <a class="page-link"
+                                                               style="color: #28a745; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
+                                                               th:href="@{/asura/admin/comic/{slug}(slug=${comic.slug}, page=${chapterPage.number + 1}, size=${chapterPage.size})}"
+                                                               th:style="${chapterPage.isLast()} ? 'color: #6c757d; background-color: #e9ecef; cursor: not-allowed;' : 'color: #28a745;'"
+                                                               onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#218838';"
+                                                               onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#28a745';">»</a>
                                                         </li>
                                                     </ul>
-
                                                 </div>
 
                                             </div>

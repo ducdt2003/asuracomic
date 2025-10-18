@@ -18,6 +18,7 @@ public class AuthApi {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        //  Gọi service để xóa thông tin người dùng khỏi session
         authService.login(request);
         return ResponseEntity.ok().build();
     }

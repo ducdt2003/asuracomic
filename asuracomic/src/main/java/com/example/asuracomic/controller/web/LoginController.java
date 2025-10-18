@@ -31,12 +31,15 @@ public class LoginController {
     public String processLogin(@RequestParam String email,
                                @RequestParam String password,
                                Model model) {
+        // tạo một đối tượng LoginRequest để chứa dữ liệu đăng nhập từ form
         LoginRequest request = new LoginRequest();
         request.setEmail(email);
         request.setPassword(password);
 
         try {
+            // Nếu đúng, authService.login() sẽ lưu thông tin người dùng vào session
             authService.login(request);
+            // Nếu đăng nhập thành công → chuyển hướng người dùng về trang chủ "/asura"
             return "redirect:/asura";
         } catch (BadRequestException ex) {
             model.addAttribute("error", ex.getMessage());
@@ -51,7 +54,9 @@ public class LoginController {
     }
     @PostMapping("/forgot-password")
     public String handleForgotPassword(@RequestParam("email") String email, RedirectAttributes redirectAttributes) {
+        // Kiểm tra xem email người dùng nhập có tồn tại trong cơ sở dữ liệu hay không
         boolean exists = userRepository.existsByEmail(email);
+        // Nếu email không tồn tại → thêm thông báo lỗi và chuyển hướng lại trang quên mật khẩu
         if (!exists) {
             redirectAttributes.addFlashAttribute("error", "Email không tồn tại trong hệ thống");
             return "redirect:/asura/forgot-password";
@@ -70,6 +75,7 @@ public class LoginController {
     public String handleResetPassword(@RequestParam("email") String email,
                                       @RequestParam("newPassword") String newPassword,
                                       RedirectAttributes redirectAttributes) {
+        // tìm người dùng theo email trong cơ sở dữ liệu
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
@@ -97,6 +103,7 @@ public class LoginController {
                                @RequestParam String confirmPassword,
                                Model model) {
 
+       // Gọi service để xử lý logic đăng ký (kiểm tra trùng email, mã hóa mật khẩu, lưu vào DB,...)
         String message = userService.registerUser(username, email, password, confirmPassword);
         model.addAttribute("message", message);
 
