@@ -22,34 +22,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
-                    <div class="user-panel">
-                        <div class="image">
-                            <img src="/css/admin-assets/dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
-                        </div>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                    <a href="#" class="dropdown-item"><span class="text-muted">Trang chủ</span></a>
-                    <a href="#" class="dropdown-item"><span class="text-muted">Đăng xuất</span></a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
+    <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
     <!-- Sidebar -->
    <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="./index.html" class="brand-link">
@@ -149,7 +122,7 @@
             </nav>
         </div>
     </aside>-->
-    <th:block th:replace="~{admin-templ/fragments/sidebar :: sidebar}"></th:block>
+    <th:block th:replace="~{admin-templ/fragments/sidebar-content :: sidebar-content}"></th:block>
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <div class="content-header">
@@ -157,9 +130,9 @@
                 <div class="row mb-2">
                     <div class="col-sm-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="/admin/comics">Truyện</a></li>
-                            <li class="breadcrumb-item"><a id="comic-title-breadcrumb" href=""></a></li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:history.back()">Comic</a>
+                            </li>
                             <li class="breadcrumb-item active">Thêm chương</li>
                         </ol>
                     </div>

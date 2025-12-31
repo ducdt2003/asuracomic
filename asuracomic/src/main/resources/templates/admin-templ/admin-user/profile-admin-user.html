@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Admin Profile | Asura Comic</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"/>
+
+    <style>
+        /* Tùy chỉnh Layout Dark Mode */
+        .content-wrapper {
+            background-color: #0b0e11 !important; /* Nền tối sâu */
+            color: #ffffff;
+        }
+
+        .custom-card {
+            background-color: #15191d;
+            border: 1px solid #2b2f36;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Avatar & Role */
+        .profile-img-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 2px solid #9d4edd;
+        }
+
+        .admin-role-badge {
+            background-color: rgba(157, 78, 221, 0.15);
+            color: #9d4edd;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        /* Form styling */
+        .form-group label {
+            color: #848e9c;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background-color: #1e2329 !important;
+            border: 1px solid #2b2f36 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            border-color: #9d4edd !important;
+            box-shadow: none;
+        }
+
+        /* Buttons */
+        .btn-purple {
+            background-color: #9d4edd;
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            padding: 10px 20px;
+        }
+
+        .btn-purple:hover {
+            background-color: #7b2cbf;
+            color: white;
+        }
+
+        .btn-outline-danger-custom {
+            color: #f6465d;
+            border: 1px solid #f6465d;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-bottom: 1px solid #2b2f36;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .password-requirements {
+            background-color: #111417;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #848e9c;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
+
+    <!-- ================= SIDEBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/sidebar-user :: sidebar-user}"></th:block>
+
+    <div class="content-wrapper">
+        <section class="content pt-4">
+            <div class="container-fluid" style="max-width: 1100px;">
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        <div class="card custom-card">
+                            <div class="card-body text-center">
+                                <div class="profile-img-container">
+                                    <img src="https://via.placeholder.com/120" class="profile-img" alt="Avatar">
+                                </div>
+                                <h4 class="font-weight-bold mb-1">Hella Mitsuha</h4>
+                                <div class="admin-role-badge mb-3">ADMIN_CONTENT</div>
+
+                                <div class="mt-2">
+                                    <button class="btn btn-purple btn-sm btn-block mb-2">THAY ĐỔI ẢNH</button>
+                                    <button class="btn btn-outline-danger-custom btn-sm btn-block">XÓA ẢNH</button>
+                                </div>
+
+                                <hr style="border-color: #2b2f36">
+                                <div class="text-left small text-muted">
+                                    <p class="mb-1">Email: <span class="text-white">hella@asura.com</span></p>
+                                    <p class="mb-0">Đăng ký: <span class="text-white">31/12/2025</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <h5 class="section-title"><i class="fas fa-id-badge mr-2"></i> THÔNG TIN CƠ BẢN</h5>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Tên đăng nhập</label>
+                                        <input type="text" class="form-control" value="hella.mitsuha">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Địa chỉ Email</label>
+                                        <input type="email" class="form-control" value="jesusita.ernard@hotmail.com" readonly>
+                                    </div>
+                                </div>
+                                <button class="btn btn-purple mt-2">LƯU THAY ĐỔI</button>
+                            </div>
+                        </div>
+
+                        <div class="card custom-card">
+                            <div class="card-body">
+                                <h5 class="section-title"><i class="fas fa-lock mr-2"></i> THAY ĐỔI MẬT KHẨU</h5>
+                                <div class="form-group">
+                                    <label>Mật khẩu hiện tại</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Mật khẩu mới</label>
+                                        <input type="password" class="form-control" placeholder="••••••••">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Xác nhận mật khẩu</label>
+                                        <input type="password" class="form-control" placeholder="••••••••">
+                                    </div>
+                                </div>
+
+                                <div class="password-requirements mt-2">
+                                    <p class="font-weight-bold text-white mb-1">Yêu cầu bảo mật:</p>
+                                    <ul class="mb-0 pl-3">
+                                        <li>Tối thiểu 8 ký tự.</li>
+                                        <li>Bao gồm ít nhất 1 chữ thường và 1 ký tự đặc biệt.</li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-purple mt-4">CẬP NHẬT MẬT KHẨU</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer" style="background: #0b0e11; border-top: 1px solid #2b2f36; color: #848e9c;">
+        <strong>Asura Comic &copy; 2025.</strong>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>

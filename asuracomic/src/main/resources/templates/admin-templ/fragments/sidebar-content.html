@@ -6,7 +6,7 @@
        th:fragment="sidebar-content">
 
     <!-- Brand -->
-    <a th:href="@{/asura/admin/dashboard}" class="brand-link">
+    <a th:href="@{/asura/admin/comic/content/detail}" class="brand-link">
         <span class="brand-text font-weight-bold ml-3">
             CONTENT ADMIN
         </span>
@@ -24,7 +24,7 @@
                 <li class="nav-header">QUẢN LÝ TRUYỆN</li>
 
                 <li class="nav-item">
-                    <a th:href="@{/asura/admin/comic/detail}"
+                    <a th:href="@{/asura/admin/comic/content/detail}"
                        class="nav-link"
                        th:classappend="${activeMenu == 'comic-list'} ? 'active'">
                         <i class="nav-icon fas fa-book"></i>
@@ -33,7 +33,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a th:href="@{/asura/admin/comic/create}"
+                    <a th:href="@{/asura/admin/comic/content/create}"
                        class="nav-link"
                        th:classappend="${activeMenu == 'comic-create'} ? 'active'">
                         <i class="nav-icon fas fa-plus-circle"></i>
@@ -66,7 +66,7 @@
                 <li class="nav-header">TÀI KHOẢN</li>
 
                 <li class="nav-item">
-                    <a th:href="@{/asura/admin/comic/profile}"
+                    <a th:href="@{/asura/admin/comic/content/profile-admin-content}"
                        class="nav-link"
                        th:classappend="${activeMenu == 'profile'} ? 'active'">
                         <i class="nav-icon fas fa-id-card"></i>

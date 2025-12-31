@@ -37,12 +37,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         // Phân quyền theo module
-        if (path.startsWith("/asura/admin/comic/detail")) {
+        if (path.startsWith("/asura/admin/comic/content")) {
             return allow(role, Role.CONTENT_ADMIN, response);
         }
 
-        if (path.startsWith("/asura/admin/comic/comments")
-                || path.startsWith("/asura/admin/comic/reports")) {
+        if (path.startsWith("/asura/admin/comic/interact")) {
             return allow(role, Role.INTERACTION_ADMIN, response);
         }
 

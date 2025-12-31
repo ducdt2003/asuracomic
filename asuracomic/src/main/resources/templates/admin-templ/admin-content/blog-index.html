@@ -53,7 +53,7 @@
 		<section class="content">
 			<div class="container-fluid">
 				<div class="mb-3">
-					<a class="btn btn-success" th:href="@{/asura/admin/comic/create}">
+					<a class="btn btn-success" th:href="@{/asura/admin/comic/content/create}">
 						<i class="fas fa-upload"></i> Upload Truyện Mới
 					</a>
 					<button type="button" class="btn btn-outline-secondary ml-2" onclick="location.reload();">
@@ -77,13 +77,13 @@
 							<tr th:each="comic : ${comics}" th:id="'comic-row-' + ${comic.id}">
 								<td th:text="${comic.id}"></td>
 								<td>
-									<a th:href="@{'/asura/admin/comic/' + ${comic.slug}}"
+									<a th:href="@{'/asura/admin/comic/content/' + ${comic.slug}}"
 									   th:text="${comic.title}" class="font-weight-bold"></a>
 								</td>
 								<td><span class="badge badge-info" th:text="${comic.type}"></span></td>
 								<td th:text="${#numbers.formatInteger(comic.viewCount, 0, 'COMMA')}"></td>
 								<td class="action-buttons">
-									<a th:href="@{'/asura/admin/comic/edit/' + ${comic.slug}}" title="Chỉnh sửa">
+									<a th:href="@{'/asura/admin/comic/content/edit/' + ${comic.slug}}" title="Chỉnh sửa">
 										<i class="fas fa-edit text-primary"></i>
 									</a>
 									<a class="delete" th:onclick="'deleteComic(' + ${comic.id} + ')'" title="Xóa">
@@ -97,15 +97,15 @@
 
 					<div class="card-footer clearfix">
 						<div class="pagination" id="comicsPagination">
-							<a th:if="${currentPage > 0}" th:href="@{/asura/admin/comic/detail(page=${currentPage - 1})}">«</a>
+							<a th:if="${currentPage > 0}" th:href="@{/asura/admin/comic/content/detail(page=${currentPage - 1})}">«</a>
 							<span th:unless="${currentPage > 0}" class="disabled">«</span>
 
 							<a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
 							   th:classappend="${i == currentPage} ? 'active'"
-							   th:href="@{/asura/admin/comic/detail(page=${i})}"
+							   th:href="@{/asura/admin/comic/content/detail(page=${i})}"
 							   th:text="${i + 1}"></a>
 
-							<a th:if="${currentPage < totalPages - 1}" th:href="@{/asura/admin/comic/detail(page=${currentPage + 1})}">»</a>
+							<a th:if="${currentPage < totalPages - 1}" th:href="@{/asura/admin/comic/content/detail(page=${currentPage + 1})}">»</a>
 							<span th:unless="${currentPage < totalPages - 1}" class="disabled">»</span>
 						</div>
 					</div>
