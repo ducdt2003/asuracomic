@@ -1,23 +1,32 @@
 package com.example.asuracomic.controller.admin;
 
 import com.example.asuracomic.dto.admin.DashboardStatsDTO;
-import com.example.asuracomic.entity.Chapter;
-import com.example.asuracomic.entity.Comic;
-import com.example.asuracomic.entity.User;
+import com.example.asuracomic.entity.*;
+import com.example.asuracomic.model.enums.CommentStatus;
 import com.example.asuracomic.model.enums.Role;
+import com.example.asuracomic.model.enums.TransactionType;
+import com.example.asuracomic.repository.CommentRepository;
+import com.example.asuracomic.repository.ReportRepository;
+import com.example.asuracomic.repository.TransactionRepository;
 import com.example.asuracomic.service.DashboardService;
+import com.example.asuracomic.service.admin.RevenueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+// Trong file RevenueController.java
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -25,6 +34,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class adminComicController {
     private final DashboardService dashboardService;
+    private final CommentRepository commentRepository;
+    private final RevenueService revenueService;
+    private final TransactionRepository transactionRepository;
+    private final ReportRepository reportRepository;
     @GetMapping
     public String getIndexPage(Model model) {
         // Dashboard statistics
@@ -68,15 +81,18 @@ public class adminComicController {
     }
 
 
-
-
-
     // chỉnh sữa truyện
     @GetMapping("/edit/{slug}")
-    public String getEditPage(@PathVariable String slug, Model model) {
+    public String getEditPage(@PathVariable String slug,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "5") int size,
+                              Model model) {
         Comic comic = dashboardService.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện"));
+        // Lấy danh sách chương có phân trang
+        Page<Chapter> chapterPage = dashboardService.getChaptersByComic(comic, page, size);
         model.addAttribute("comic", comic);
+        model.addAttribute("chapterPage", chapterPage);
         return "admin-templ/blog-edit";
     }
 
@@ -147,6 +163,100 @@ public class adminComicController {
     public String getUserCreatePage() {
         return "admin-templ/create-user";
     }
+    @GetMapping("/profile")
+    public String getUserAdminProfile() {
+        return "admin-templ/USER_ADMIN_profile";
+    }
 
+    @GetMapping("/interact")
+    public String getInteractAdminProfile() {
+        return "admin-templ/interact";
+    }
 
+    // báo cáo
+    @GetMapping("/report")
+    public String getReport(Model model,
+                            @RequestParam(name = "page", defaultValue = "1") int page,
+                            @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        if (page < 1) page = 1;
+
+        // Sắp xếp theo trạng thái (PENDING lên đầu), sau đó là ngày tạo
+        Pageable pageable = PageRequest.of(page - 1, size,
+                Sort.by("status").ascending()
+                        .and(Sort.by("createdAt").descending()));
+
+        Page<Report> reportPage = reportRepository.findAll(pageable);
+
+        model.addAttribute("reportPage", reportPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", reportPage.getTotalPages());
+        model.addAttribute("activePage", "reports");
+        return "admin-templ/reports";
+    }
+    // bình luận
+    /*@GetMapping("/comments")
+    public String getComments(Model model) {
+        model.addAttribute("activePage", "comments");
+        return "admin-templ/comments";
+    }*/
+    // doah thu
+
+    @GetMapping("/revenues")
+    public String getRevenues(Model model,
+                              @RequestParam(name = "page", defaultValue = "1") int page,
+                              @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        model.addAttribute("activePage", "revenue");
+
+        // --- Logic Phân trang ---
+        if (page < 1) {
+            page = 1; // Đảm bảo trang không bị âm
+        }
+        // Sắp xếp theo ngày tạo, mới nhất lên đầu
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
+
+        // Lấy dữ liệu giao dịch theo trang
+        Page<Transaction> transactionsPage = transactionRepository.findAll(pageable);
+
+        // --- Logic Thống kê (giữ nguyên) ---
+        BigDecimal monthlyRevenue = revenueService.getMonthlyRevenue();
+        BigDecimal todayRevenue = revenueService.getTodayRevenue();
+        BigDecimal vipRevenue = revenueService.getVipRevenue();
+        BigDecimal chapterRevenue = revenueService.getChapterRevenue();
+
+        // --- Đưa dữ liệu vào Model ---
+        model.addAttribute("transactionsPage", transactionsPage); // <-- Thay "transactions"
+        model.addAttribute("monthlyRevenue", monthlyRevenue);
+        model.addAttribute("todayRevenue", todayRevenue);
+        model.addAttribute("vipRevenue", vipRevenue);
+        model.addAttribute("chapterRevenue", chapterRevenue);
+
+        // Thêm thông tin phân trang
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", transactionsPage.getTotalPages());
+        model.addAttribute("totalItems", transactionsPage.getTotalElements());
+
+        return "admin-templ/revenues";
+    }
+
+    /**
+     * Xử lý Xóa bình luận (Hard delete).
+     */
+    @GetMapping("/comments")
+    public String getComments(Model model,
+                              @RequestParam(name = "page", defaultValue = "1") int page,
+                              @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
+        Page<Comment> commentsPage = commentRepository.findAll(pageable);
+
+        model.addAttribute("activePage", "comments");
+        model.addAttribute("commentsPage", commentsPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", commentsPage.getTotalPages());
+        model.addAttribute("totalItems", commentsPage.getTotalElements());
+
+        return "admin-templ/comments";
+    }
 }

@@ -1,7 +1,4 @@
 package com.example.asuracomic.entity;
-
-
-
 import com.example.asuracomic.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;

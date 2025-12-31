@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "genres", indexes = @Index(name = "idx_slug", columnList = "slug", unique = true))
+@Table(name = "genres", indexes = @Index(name = "idx_slug",
+        columnList = "slug", unique = true))
 @Getter
 @Setter
 @NoArgsConstructor

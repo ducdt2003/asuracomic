@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Super Admin | Quản lý Doanh thu & Giao dịch</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+
+    <style>
+        .revenue-card { border-radius: 15px; border: none; transition: 0.3s; }
+        .revenue-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .text-coin { color: #28a745; font-weight: bold; }
+        .table-v-align td { vertical-align: middle !important; }
+        .bg-navy-custom { background-color: #001f3f; color: white; }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- ================= NAVBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
+    <!-- ================= SIDEBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/sidebar-interact :: sidebar-interact}"></th:block>
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 text-center">
+                    <div class="col-12">
+                        <h1 class="m-0 font-weight-bold text-navy">BÁO CÁO DOANH THU TỔNG THỂ</h1>
+                        <p class="text-muted">Cập nhật thời gian thực từ hệ thống giao dịch</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="small-box bg-white revenue-card p-3 shadow-sm border-left border-success">
+                            <div class="inner">
+                                <p class="text-muted mb-1">Tổng doanh thu (Xu)</p>
+                                <h3 class="font-weight-bold text-success" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')}">500,000</h3>
+                            </div>
+                            <div class="icon text-success opacity-25"><i class="fas fa-wallet"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small-box bg-white revenue-card p-3 shadow-sm border-left border-primary">
+                            <div class="inner">
+                                <p class="text-muted mb-1">Doanh thu từ VIP</p>
+                                <h3 class="font-weight-bold text-primary" th:text="${vipRevenue}">120,000</h3>
+                            </div>
+                            <div class="icon text-primary opacity-25"><i class="fas fa-crown"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small-box bg-white revenue-card p-3 shadow-sm border-left border-info">
+                            <div class="inner">
+                                <p class="text-muted mb-1">Doanh thu mở khóa chương</p>
+                                <h3 class="font-weight-bold text-info" th:text="${unlockRevenue}">380,000</h3>
+                            </div>
+                            <div class="icon text-info opacity-25"><i class="fas fa-book-open"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4" id="transaction-history">
+                    <div class="col-12">
+                        <div class="card card-navy card-outline">
+                            <div class="card-header border-0">
+                                <h3 class="card-title text-bold"><i class="fas fa-list-ul mr-2"></i>Biến động số dư gần đây</h3>
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 250px;">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Tìm Mã GD hoặc User...">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-hover table-v-align text-sm">
+                                    <thead class="bg-light">
+                                    <tr>
+                                        <th>Mã GD</th>
+                                        <th>Người dùng</th>
+                                        <th>Loại giao dịch</th>
+                                        <th>Số lượng (Xu)</th>
+                                        <th>Phương thức</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="tx : ${transactions}">
+                                        <td class="text-bold" th:text="${tx.transactionCode}">GD-100245</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user-circle mr-2 text-muted"></i>
+                                                <span th:text="${tx.user.username}">member_01</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span th:if="${tx.transactionType.name() == 'VIP_PURCHASE'}" class="badge badge-warning text-dark"><i class="fas fa-crown"></i> Mua VIP</span>
+                                            <span th:if="${tx.transactionType.name() == 'CHAPTER_UNLOCK'}" class="badge badge-info"><i class="fas fa-lock-open"></i> Mở chương</span>
+                                            <span th:if="${tx.transactionType.name() == 'COIN_PURCHASE'}" class="badge badge-success"><i class="fas fa-plus-circle"></i> Nạp Coin</span>
+                                        </td>
+                                        <td class="text-coin text-lg" th:text="'+' + ${tx.amount}">+5.00</td>
+                                        <td th:text="${tx.paymentMethod}">Momo / Bank</td>
+                                        <td th:text="${#temporals.format(tx.createdAt, 'dd/MM/yyyy HH:mm')}">30/12/2025 14:20</td>
+                                        <td>
+                                            <span class="badge badge-success" th:if="${tx.status.name() == 'SUCCESS'}">Thành công</span>
+                                            <span class="badge badge-danger" th:if="${tx.status.name() == 'FAILED'}">Thất bại</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-bold">GD-88219</td>
+                                        <td>member_vip_01</td>
+                                        <td><span class="badge badge-warning text-dark"><i class="fas fa-crown"></i> Mua VIP</span></td>
+                                        <td class="text-coin text-lg">+100.00</td>
+                                        <td>VNPAY</td>
+                                        <td>31/12/2025 09:30</td>
+                                        <td><span class="badge badge-success">Thành công</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer clearfix bg-white">
+                                <ul class="pagination pagination-sm m-0 float-right text-navy">
+                                    <li class="page-item"><a class="page-link" href="#">« Trước</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Tiếp »</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer text-center text-sm">
+        <strong>Asura Finance Reporting System &copy; 2025.</strong>
+    </footer>
+</div>
+
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.min.js"></script>
+
+</body>
+</html>

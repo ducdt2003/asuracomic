@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Tương tác & Doanh thu - AsuraComic Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css">
+    <style>
+        .comment-content { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+        .table-v-align td { vertical-align: middle; }
+        .badge { font-weight: 500; padding: 0.5em 0.8em; }
+        .nav-tabs .nav-link.active { border-top: 3px solid #007bff; font-weight: bold; }
+        .bg-revenue { background-color: #f4f6f9; border-left: 4px solid #28a745; }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- ================= NAVBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
+    <!-- ================= SIDEBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/sidebar-interact :: sidebar-interact}"></th:block>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1><i class="fas fa-bullhorn mr-2"></i>Quản lý Tương tác & Doanh thu</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-outline card-primary">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="interactionTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="comment-tab" data-toggle="pill" href="#comments-section" role="tab">
+                                    <i class="fas fa-comments mr-1"></i> Bình luận
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="report-tab" data-toggle="pill" href="#reports-section" role="tab">
+                                    <i class="fas fa-exclamation-triangle mr-1 text-danger"></i> Báo cáo vi phạm
+                                    <span class="badge badge-danger ml-1" id="reportCount">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="revenue-tab" data-toggle="pill" href="#revenue-section" role="tab">
+                                    <i class="fas fa-coins mr-1 text-success"></i> Thống kê Doanh thu
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="tab-content" id="interactionTabsContent">
+
+                            <div class="tab-pane fade show active" id="comments-section" role="tabpanel">
+                                <div class="row mb-3">
+                                    <div class="col-md-3"><input type="text" class="form-control" placeholder="Tìm người dùng..."></div>
+                                    <div class="col-md-2">
+                                        <select class="form-control">
+                                            <option value="">Tất cả trạng thái</option>
+                                            <option value="ACTIVE">Đã duyệt</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2"><button class="btn btn-primary">Lọc</button></div>
+                                </div>
+                                <table class="table table-hover table-v-align border">
+                                    <thead class="bg-light">
+                                    <tr>
+                                        <th>Người dùng</th>
+                                        <th>Truyện / Chương</th>
+                                        <th>Nội dung</th>
+                                        <th>Trạng thái</th>
+                                        <th class="text-center">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="comment : ${commentsPage.content}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img th:src="${comment.user.avatar ?: '/images/default-avatar.png'}" class="rounded-circle mr-2" width="30">
+                                                <span th:text="${comment.user.username}" class="font-weight-bold">lethuy</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <small class="d-block font-weight-bold" th:text="${comment.chapter.comic.title}">Titan</small>
+                                            <small class="text-muted" th:text="${comment.chapter.title}">Chương 1</small>
+                                        </td>
+                                        <td><div class="comment-content" th:text="${comment.content}">Nội dung...</div></td>
+                                        <td>
+                                            <span class="badge badge-success" th:if="${comment.status.name() == 'ACTIVE'}">Đã duyệt</span>
+                                            <span class="badge badge-warning" th:if="${comment.status.name() == 'REPORTED'}">Bị báo cáo</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tab-pane fade" id="reports-section" role="tabpanel">
+                                <table class="table table-hover table-v-align border">
+                                    <thead class="bg-warning text-dark">
+                                    <tr>
+                                        <th>Người gửi</th>
+                                        <th>Loại</th>
+                                        <th>Lý do</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>admin_member</td>
+                                        <td><span class="badge badge-secondary">COMMENT</span></td>
+                                        <td class="text-danger font-italic">Spam quảng cáo</td>
+                                        <td><span class="badge badge-warning text-dark">PENDING</span></td>
+                                        <td><button class="btn btn-sm btn-primary">Xử lý</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="tab-pane fade" id="revenue-section" role="tabpanel">
+                                <div class="row mb-4">
+                                    <div class="col-md-4">
+                                        <div class="info-box bg-revenue">
+                                            <span class="info-box-icon text-success"><i class="fas fa-wallet"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Tổng doanh thu hệ thống</span>
+                                                <span class="info-box-number" style="font-size: 1.5rem;">50.000 <small>Xu</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="mb-3 font-weight-bold"><i class="fas fa-history mr-2 text-success"></i>Lịch sử giao dịch gần đây</h5>
+                                <table class="table table-hover border table-striped">
+                                    <thead class="bg-success text-white">
+                                    <tr>
+                                        <th>Mã GD</th>
+                                        <th>Người dùng</th>
+                                        <th>Loại giao dịch</th>
+                                        <th>Số lượng</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>GD-100245</td>
+                                        <td class="font-weight-bold">member_01</td>
+                                        <td><span class="badge badge-info">CHAPTER_UNLOCK</span></td>
+                                        <td class="text-success font-weight-bold">+5.00 <i class="fas fa-coins"></i></td>
+                                        <td>30/12/2025 14:20</td>
+                                        <td><span class="badge badge-success">Thành công</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>GD-100246</td>
+                                        <td class="font-weight-bold">member_02</td>
+                                        <td><span class="badge badge-primary">VIP_PURCHASE</span></td>
+                                        <td class="text-success font-weight-bold">+100.00 <i class="fas fa-coins"></i></td>
+                                        <td>30/12/2025 15:10</td>
+                                        <td><span class="badge badge-success">Thành công</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer text-center">
+        <strong>© 2025 <a href="#">AsuraComic</a> Admin Panel.</strong>
+    </footer>
+</div>
+
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Xử lý giữ Tab khi tải lại trang
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#interactionTabs a[href="' + activeTab + '"]').tab('show');
+        }
+
+        // Xử lý khi click vào menu Sidebar để chuyển Tab
+        $('[data-tab-target]').click(function(e) {
+            e.preventDefault();
+            var target = $(this).data('tab-target');
+            $(target).tab('show');
+        });
+    });
+</script>
+
+</body>
+</html>

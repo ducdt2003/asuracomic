@@ -21,6 +21,8 @@ public class LoginController {
     private final AuthService authService;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     @GetMapping("/login")
     public String loginPage() {
@@ -71,7 +73,7 @@ public class LoginController {
         model.addAttribute("email", email);
         return "web/web-user/reset-password";
     }
-    @PostMapping("/reset-password")
+  /*  @PostMapping("/reset-password")
     public String handleResetPassword(@RequestParam("email") String email,
                                       @RequestParam("newPassword") String newPassword,
                                       RedirectAttributes redirectAttributes) {
@@ -83,13 +85,37 @@ public class LoginController {
 
         redirectAttributes.addFlashAttribute("message", "Đổi mật khẩu thành công! Hãy đăng nhập lại.");
         return "redirect:/asura/login";
-    }
+    }*/
+  @PostMapping("/reset-password")
+  public String handleResetPassword(@RequestParam("email") String email,
+                                    @RequestParam("newPassword") String newPassword,
+                                    @RequestParam("confirmPassword") String confirmPassword,
+                                    RedirectAttributes redirectAttributes) {
+
+      // 1. Kiểm tra mật khẩu khớp
+      if (!newPassword.equals(confirmPassword)) {
+          redirectAttributes.addFlashAttribute("error", "Mật khẩu xác nhận không khớp. Vui lòng thử lại.");
+          redirectAttributes.addAttribute("email", email);
+          return "redirect:/asura/reset-password";
+      }
+
+      // 2. Tìm người dùng
+      var user = userRepository.findByEmail(email)
+              .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+      user.setPassword(passwordEncoder.encode(newPassword)); // <-- SỬ DỤNG BEAN
+      userRepository.save(user);
+
+      // 4. Chuyển hướng
+      redirectAttributes.addFlashAttribute("message", "Đổi mật khẩu thành công! Hãy đăng nhập lại.");
+      return "redirect:/asura/login";
+  }
 
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         authService.logout();
-        return "redirect:/asura/login";
+        return "redirect:/asura/login"; // chuyển hướng trực tiếp sang khác
     }
 
     @GetMapping("/register")

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4"
+       th:fragment="sidebar-content">
+
+    <!-- Brand -->
+    <a th:href="@{/asura/admin/dashboard}" class="brand-link">
+        <span class="brand-text font-weight-bold ml-3">
+            CONTENT ADMIN
+        </span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false">
+
+                <!-- QUẢN LÝ TRUYỆN -->
+                <li class="nav-header">QUẢN LÝ TRUYỆN</li>
+
+                <li class="nav-item">
+                    <a th:href="@{/asura/admin/comic/detail}"
+                       class="nav-link"
+                       th:classappend="${activeMenu == 'comic-list'} ? 'active'">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>Tất cả truyện</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/asura/admin/comic/create}"
+                       class="nav-link"
+                       th:classappend="${activeMenu == 'comic-create'} ? 'active'">
+                        <i class="nav-icon fas fa-plus-circle"></i>
+                        <p>Đăng truyện mới</p>
+                    </a>
+                </li>
+
+                <!-- PHÂN LOẠI -->
+                <li class="nav-header">PHÂN LOẠI & TAGS</li>
+
+                <li class="nav-item">
+                    <a th:href="@{/asura/admin/genres}"
+                       class="nav-link"
+                       th:classappend="${activeMenu == 'genres'} ? 'active'">
+                        <i class="nav-icon fas fa-list-ul"></i>
+                        <p>Thể loại</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/asura/admin/artists}"
+                       class="nav-link"
+                       th:classappend="${activeMenu == 'artists'} ? 'active'">
+                        <i class="nav-icon fas fa-pen-nib"></i>
+                        <p>Tác giả / Nhóm dịch</p>
+                    </a>
+                </li>
+
+                <!-- TÀI KHOẢN -->
+                <li class="nav-header">TÀI KHOẢN</li>
+
+                <li class="nav-item">
+                    <a th:href="@{/asura/admin/comic/profile}"
+                       class="nav-link"
+                       th:classappend="${activeMenu == 'profile'} ? 'active'">
+                        <i class="nav-icon fas fa-id-card"></i>
+                        <p>Hồ sơ cá nhân</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/logout}"
+                       class="nav-link text-danger">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Đăng xuất</p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+</body>
+</html>

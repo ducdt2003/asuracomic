@@ -30,7 +30,7 @@ public class Author {
     private String avatar; // Thêm trường avatar
 
     @Column(columnDefinition = "TEXT")
-    private String description; // Thêm trường description
+    private String description; // Thêm trường description mô tả
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<ComicAuthor> comicAuthors; // Danh sách truyện của tác giả, hiển thị trên trang tác giả

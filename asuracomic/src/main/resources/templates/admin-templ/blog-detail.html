@@ -407,7 +407,7 @@
     </nav>
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!--<aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="./index.html" class="brand-link">
             <img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
             <span class="brand-text font-weight-light">Admin</span>
@@ -415,14 +415,14 @@
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Tổng quan -->
+                    &lt;!&ndash; Tổng quan &ndash;&gt;
                     <li class="nav-item">
                         <a href="/asura/admin/comic" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Tổng quan</p>
                         </a>
                     </li>
-                    <!-- Quản lý Truyện -->
+                    &lt;!&ndash; Quản lý Truyện &ndash;&gt;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
@@ -446,7 +446,7 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- Quản lý User -->
+                    &lt;!&ndash; Quản lý User &ndash;&gt;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
@@ -470,13 +470,43 @@
                             </li>
                         </ul>
                     </li>
+                    &lt;!&ndash; Quản lý Tương tác &ndash;&gt;
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>
+                                Quản lý Tương tác
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/comments" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bình luận</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/likes" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Doanh thu</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/reports" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Báo cáo vi phạm</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
             </nav>
         </div>
 
-    </aside>
-
+    </aside>-->
+    <th:block th:replace="~{admin-templ/fragments/sidebar :: sidebar}"></th:block>
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <!-- Content Header -->
@@ -502,10 +532,13 @@
                         <button type="button" class="btn btn-default" onclick="window.history.back()">
                             <i class="fas fa-chevron-left"></i> Quay lại
                         </button>
-                        <button type="button" class="btn btn-primary px-4"
-                                onclick="window.location.href='/asura/admin/comic/edit/${comicId}'">
+                        <a th:href="@{/asura/admin/comic/edit/{slug}(slug=${comic.slug})}"
+                           class="btn btn-primary px-4">
                             Sửa
-                        </button>
+                        </a>
+
+
+
 
                     </div>
                     <div class="col-6 d-flex justify-content-end">
@@ -610,12 +643,22 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h3 class="card-title">Danh sách chương</h3>
-                                                <div class="card-tools">
+                                                <!--<div class="card-tools">
                                                     <a th:href="@{/asura/admin/comic/chapter/update/{comicId}(comicId=${comic.id})}" class="btn btn-sm btn-primary">Thêm chương</a>
-                                                </div>
+                                                </div>-->
                                             </div>
                                             <div class="card-body">
                                                 <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Số chương</th>
+                                                        <th>Tiêu đề</th>
+                                                        <th>Lượt xem</th>
+                                                        <th>Miễn phí</th>
+                                                        <th>Giá coin</th>
+                                                        <th>Trạng thái</th>
+                                                    </tr>
+                                                    </thead>
                                                     <tbody>
                                                     <tr th:each="chapter : ${chapterPage.content}">
                                                         <td th:text="${chapter.chapterNumber}"></td>
@@ -624,11 +667,6 @@
                                                         <td th:text="${chapter.isFree} ? 'Có' : 'Không'"></td>
                                                         <td th:text="${chapter.coinPrice}"></td>
                                                         <td th:text="${chapter.isPublished} ? 'Công khai' : 'Ẩn'"></td>
-                                                        <td>
-                                                            <a th:href="@{/asura/admin/comic/chapter/update/{chapterId}(chapterId=${chapter.id})}"
-                                                               class="btn btn-sm btn-warning">Sửa</a>
-                                                            <button class="btn btn-sm btn-danger" th:onclick="'deleteChapter(' + ${chapter.id} + ')'">Xóa</button>
-                                                        </td>
                                                     </tr>
                                                     <tr th:if="${#lists.isEmpty(chapterPage.content)}">
                                                         <td colspan="7" class="text-center">Chưa có chương nào</td>

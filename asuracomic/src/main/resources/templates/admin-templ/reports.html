@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Super Admin | Trung tâm xử lý báo cáo vi phạm</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+
+    <style>
+        .report-card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .reason-text { color: #dc3545; font-style: italic; font-weight: 500; }
+        .table-v-align td { vertical-align: middle !important; }
+        .badge-content-type { min-width: 80px; font-weight: 600; text-transform: uppercase; font-size: 11px; }
+        .sidebar-dark-red { background-color: #343a40 !important; }
+        .sidebar-dark-red .nav-link.active { background-color: #dc3545 !important; color: #fff !important; }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- ================= NAVBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
+    <!-- ================= SIDEBAR ================= -->
+    <th:block th:replace="~{admin-templ/fragments/sidebar-interact :: sidebar-interact}"></th:block>
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 font-weight-bold">Danh sách báo cáo cần xử lý</h1>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="info-box shadow-sm">
+                            <span class="info-box-icon bg-danger"><i class="fas fa-comment-slash"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Báo cáo bình luận</span>
+                                <span class="info-box-number">45</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box shadow-sm">
+                            <span class="info-box-icon bg-warning text-white"><i class="fas fa-book-dead"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Báo cáo nội dung truyện</span>
+                                <span class="info-box-number">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card report-card">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h3 class="card-title text-bold"><i class="fas fa-exclamation-circle text-danger mr-2"></i>Hàng chờ kiểm duyệt</h3>
+                                <div class="card-tools">
+                                    <select class="form-control form-control-sm">
+                                        <option>Tất cả nội dung</option>
+                                        <option>Bình luận</option>
+                                        <option>Truyện / Chương</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-hover table-v-align mb-0 text-sm">
+                                    <thead class="bg-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Người gửi</th>
+                                        <th>Loại nội dung</th>
+                                        <th>ID Nội dung</th>
+                                        <th>Lý do vi phạm</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                        <th class="text-center">Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="report : ${reports}" th:id="'report-' + ${report.id}">
+                                        <td th:text="${report.id}">#1024</td>
+                                        <td class="text-bold" th:text="${report.user.username}">user_reporter_01</td>
+                                        <td>
+                                            <span th:if="${report.contentType.name() == 'COMMENT'}" class="badge badge-secondary badge-content-type">Bình luận</span>
+                                            <span th:if="${report.contentType.name() == 'COMIC'}" class="badge badge-primary badge-content-type">Truyện</span>
+                                            <span th:if="${report.contentType.name() == 'CHAPTER'}" class="badge badge-info badge-content-type">Chương</span>
+                                        </td>
+                                        <td th:text="${report.contentId}">5520</td>
+                                        <td class="reason-text" th:text="${report.reason}">Spam quảng cáo website cá độ</td>
+                                        <td th:text="${#temporals.format(report.createdAt, 'dd/MM/yyyy HH:mm')}">31/12/2025 10:15</td>
+                                        <td>
+                                            <span class="badge badge-warning" th:if="${report.status.name() == 'PENDING'}">Chờ xử lý</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-success" title="Phê duyệt - Xử lý vi phạm" th:onclick="'resolveReport(' + ${report.id} + ')'">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" title="Bác bỏ báo cáo" th:onclick="'rejectReport(' + ${report.id} + ')'">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-info" title="Xem nội dung gốc">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>#1025</td>
+                                        <td class="text-bold">member_007</td>
+                                        <td><span class="badge badge-secondary badge-content-type">Bình luận</span></td>
+                                        <td>442</td>
+                                        <td class="reason-text">Ngôn từ gây thù ghét, xúc phạm</td>
+                                        <td>31/12/2025 09:30</td>
+                                        <td><span class="badge badge-warning">Chờ xử lý</span></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
+                                                <button class="btn btn-sm btn-info"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-resolve">
+                    <div class="modal-dialog">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h3 class="card-title">Xác nhận xử lý báo cáo</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Ghi chú xử lý (Resolution Note):</label>
+                                    <textarea class="form-control" rows="3" placeholder="Lý do xóa nội dung hoặc cảnh cáo user..."></textarea>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success float-right">Hoàn tất xử lý</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer text-center text-sm">
+        <strong>Asura Report Center &copy; 2025.</strong>
+    </footer>
+</div>
+
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.min.js"></script>
+
+<script>
+    function resolveReport(id) {
+        // Mở modal hoặc gửi API POST trực tiếp
+        $('#modal-resolve').modal('show');
+    }
+
+    function rejectReport(id) {
+        if(confirm("Bác bỏ báo cáo này? Nội dung sẽ được giữ nguyên.")) {
+            // Gọi API REJECT
+            $('#report-' + id).fadeOut();
+        }
+    }
+</script>
+</body>
+</html>

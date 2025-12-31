@@ -22,10 +22,10 @@ public class AuthService {
     public void login(LoginRequest request) {
         // tim kiếm usser theo email
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadRequestException("Tài khoản hoặc mật khẩu không chính xác"));
+                .orElseThrow(() -> new BadRequestException("Tài khoản không chính xác"));
         // Kiểm tra xem mật khẩu người dùng nhập có trùng với mật khẩu đã mã hóa trong database không
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Tài khoản hoặc mật khẩu không chính xác");
+            throw new BadRequestException("Mật khẩu không chính xác");
         }
 
         // Luu lai: session, cookie, database, redis, ...

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | Tạo Truyện Mới</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <!-- EasyMDE for description editing -->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
+    <!-- Select2 for multi-select -->
+    <link rel="stylesheet" href="/css/admin-assets/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/style.css">
+</head>
+<body>
+<th:block th:fragment="sidebar">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/asura/admin/comic" class="brand-link">
+            <img src="/css/admin-assets/dist/img/AdminLTELogo.png"
+                 alt="Logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: 0.8" />
+            <span class="brand-text font-weight-light">Admin Truyện</span>
+        </a>
+
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column"
+                    data-widget="treeview" role="menu" data-accordion="false">
+
+                    <!-- Tổng quan -->
+                    <li class="nav-item">
+                        <a href="/asura/admin/comic" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Tổng quan</p>
+                        </a>
+                    </li>
+
+                    <!-- Quản lý Truyện -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Quản lý Truyện
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/detail" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tất cả Truyện</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm/Update Truyện</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Quản lý User -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Quản lý Người dùng
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách Người dùng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/users/create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tạo Người dùng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Quản lý Tương tác -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>
+                                Quản lý Tương tác
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/comments" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bình luận</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/revenues" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Doanh thu</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/comic/report" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Báo cáo vi phạm</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </aside>
+</th:block>
+</body>
+</html>

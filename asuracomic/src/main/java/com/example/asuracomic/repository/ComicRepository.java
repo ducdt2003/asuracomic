@@ -17,9 +17,10 @@ import java.util.Optional;
 
 @Repository
 public interface ComicRepository extends JpaRepository<Comic, Long> {
-
-
-    // 5 truyện có đánh giá cao nhất
+// Spring Data JPA, JPQl
+    // List<Comic> findAllByOrderByUpdatedAtDesc();
+    // 5 truyện có đánh giá cao nhất query methor truy vấn tựdđộng dựa trên tên phương thức
+    // Tên sau By và OrderBy
     List<Comic> findTop5ByIsPublishedTrueOrderByAverageRatingDesc();
 
     // Top 10 truyện phổ biến trong 7 ngày qua
@@ -68,6 +69,8 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
         LIMIT 10
     """, nativeQuery = true)
     List<Object[]> findTop10Weekly(@Param("startDate") LocalDateTime startDate);*/
+
+    // tất cả truyện, cùng số view trong tuần và rating tổng thể.
     @Query(value = """
     WITH ViewCounts AS (
         SELECT 
@@ -89,6 +92,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
         GROUP BY 
             c.id, c.title, c.cover_image, c.average_rating, c.slug
     ),
+    
     MaxViews AS (
         SELECT COALESCE(MAX(view_count), 1) AS max_views
         FROM ViewCounts
@@ -114,7 +118,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     ORDER BY 
         combined_score DESC
     LIMIT 10
-""", nativeQuery = true)
+    """, nativeQuery = true)
     List<Object[]> findTop10Weekly(@Param("startDate") LocalDateTime startDate);
 
     // Top 10 truyện tháng
@@ -205,7 +209,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     ORDER BY 
         combined_score DESC
     LIMIT 10
-""", nativeQuery = true)
+    """, nativeQuery = true)
     List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);
 
     // Không cần @Query, chỉ cần dùng method name
@@ -232,16 +236,21 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     Page<Comic> findByArtistSlug(@Param("artistSlug") String artistSlug, Pageable pageable);
 
     // New method for filtering comics
+    // Sửa đổi trong file ComicRepository.java của bạn
+
     @Query("SELECT DISTINCT c FROM Comic c " +
-            "LEFT JOIN c.comicGenres cg " +
-            "WHERE (:genre IS NULL OR cg.genre.slug = :genre) " +
+            "LEFT JOIN c.comicGenres cg " + // Dùng LEFT JOIN để vẫn lấy được truyện dù không có genre
+            "WHERE " +
+            "    (:genre IS NULL OR cg.genre.slug = :genre) " +
             "AND (:status IS NULL OR c.status = :status) " +
             "AND (:type IS NULL OR c.type = :type) " +
-            "AND c.isPublished = true " +
-            "GROUP BY c.id")
+            // Thêm điều kiện tìm kiếm theo title (searchQuery)
+            "AND (:searchQuery IS NULL OR c.title LIKE CONCAT('%', :searchQuery, '%'))")
+             // Xóa GROUP BY c.id vì đã có SELECT DISTINCT c "AND c.isPublished = true")
     Page<Comic> findComicsByFilters(@Param("genre") String genre,
                                     @Param("status") ComicStatus status,
                                     @Param("type") ComicType type,
+                                    @Param("searchQuery") String searchQuery, // Thêm tham số searchQuery
                                     Pageable pageable);
 
     // Fetch distinct genres with published comics

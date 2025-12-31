@@ -307,6 +307,7 @@ public class CoinService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BadRequestException("Người dùng không tồn tại."));
 
+        // lấy danh sách giao dịch
         Page<Transaction> transactions = transactionRepository.findByUserIdAndTransactionTypeIn(
                 userId,
                 List.of(TransactionType.CHAPTER_UNLOCK, TransactionType.VIP_PURCHASE),

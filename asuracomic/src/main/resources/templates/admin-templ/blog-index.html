@@ -1,351 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>AdminLTE 3 | Dashboard</title>
+	<title>Quản Lý Nội Dung | AdminLTE 3</title>
 
-	<!-- Google Font: Source Sans Pro -->
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
-	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
 	<link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-
-	<!-- Theme style -->
 	<link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
-	<!-- overlayScrollbars -->
 	<link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
 
 	<style>
+		/* Tối ưu bảng hiển thị nội dung */
+        #comicsTable { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; background-color: #fff; border-radius: 8px; overflow: hidden; }
+        #comicsTable thead { background-color: #f8f9fa; color: #333; }
+        #comicsTable th, #comicsTable td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        #comicsTable tbody tr:hover { background-color: #f1f7ff; transition: 0.2s; }
 
-#comicsTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 14px;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-}
+        .action-buttons a { margin: 0 5px; font-size: 16px; color: #6c757d; }
+        .action-buttons a:hover { color: #007bff; }
+        .action-buttons .delete:hover { color: #dc3545; }
 
-#comicsTable thead {
-    background-color: #f8f9fa;
-    color: #333;
-    text-align: left;
-}
-
-#comicsTable th,
-#comicsTable td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
-}
-
-#comicsTable tbody tr:hover {
-    background-color: #f1f7ff;
-    transition: 0.2s;
-}
-
-#comicsTable .action-buttons a {
-    margin: 0 6px;
-    color: #555;
-    font-size: 16px;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-#comicsTable .action-buttons a:hover {
-    color: #007bff;
-}
-
-#comicsTable .action-buttons .delete:hover {
-    color: #dc3545;
-}
-
-/* Pagination */
-.pagination {
-    margin-top: 20px;
-    display: flex;              /* dùng flexbox */
-    justify-content: center;    /* căn giữa ngang */
-    align-items: center;        /* căn giữa dọc */
-    gap: 6px;                   /* khoảng cách giữa các nút */
-}
-.pagination a,
-.pagination span {
-    display: inline-block;
-    margin: 0 4px;
-    padding: 8px 14px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.pagination a:hover {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
-
-.pagination .active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-    font-weight: bold;
-}
-
-.pagination .disabled {
-    color: #aaa;
-    border-color: #eee;
-    cursor: not-allowed;
-}
-
+        /* Pagination tinh gọn */
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 20px; }
+        .pagination a, .pagination span { padding: 7px 12px; border: 1px solid #dee2e6; border-radius: 4px; color: #007bff; text-decoration: none; }
+        .pagination .active { background-color: #007bff; color: #white; border-color: #007bff; color: #fff; }
+        .pagination .disabled { color: #6c757d; pointer-events: none; background-color: #fff; }
 	</style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-	<div class="wrapper">
-		<!-- Navbar -->
-		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-			<!-- Left navbar links -->
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-				</li>
-			</ul>
+<div class="wrapper">
 
-			<!-- Right navbar links -->
-			<ul class="navbar-nav ml-auto">
-				<!-- Notifications Dropdown Menu -->
-				<li class="nav-item dropdown">
-					<a class="nav-link py-0 d-flex align-items-center" data-toggle="dropdown" href="#">
-						<div class="user-panel">
-						  <div class="image">
-							<img src="../../dist/img/user2-160x160.jpg" class="img-circle border" alt="User Image">
-						  </div>
-						</div>
-					  </a>
-					<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-						<a href="#" class="dropdown-item">
-							<span class="text-muted">Trang chủ</span>
-						  </a>
-						<a href="#" class="dropdown-item">
-							<span class="text-muted">Đăng xuất</span>
-						</a>
-					</div>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-widget="fullscreen" href="#" role="button">
-						<i class="fas fa-expand-arrows-alt"></i>
-					</a>
-				</li>
-			</ul>
-		</nav>
+	<!-- ================= NAVBAR ================= -->
+	<th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
 
-		<!-- Main Sidebar Container -->
-		<aside class="main-sidebar sidebar-dark-primary elevation-4">
-			<a href="./index.html" class="brand-link">
-				<img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
-				<span class="brand-text font-weight-light">Admin Truyện</span>
-			</a>
-			<div class="sidebar">
-				<nav class="mt-2">
-					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-						<!-- Tổng quan -->
-						<li class="nav-item">
-							<a href="/asura/admin/comic" class="nav-link active">
-								<i class="nav-icon fas fa-tachometer-alt"></i>
-								<p>Tổng quan</p>
-							</a>
-						</li>
-						<!-- Quản lý Truyện -->
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon fas fa-book"></i>
-								<p>
-									Quản lý Truyện
-									<i class="right fas fa-angle-left"></i>
-								</p>
-							</a>
-							<ul class="nav nav-treeview">
-								<li class="nav-item">
-									<a href="/asura/admin/comic/detail" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>Tất cả Truyện</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="/asura/admin/comic/create" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>Thêm/Update Truyện</p>
-									</a>
-								</li>
-							</ul>
-						</li>
-						<!-- Quản lý User -->
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon fas fa-users"></i>
-								<p>
-									Quản lý Người dùng
-									<i class="fas fa-angle-left right"></i>
-								</p>
-							</a>
-							<ul class="nav nav-treeview">
-								<li class="nav-item">
-									<a href="/asura/admin/comic/users" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>Danh sách Người dùng</p>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="/asura/admin/comic/users/create" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>Tạo Người dùng</p>
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</aside>
+	<th:block th:replace="~{admin-templ/fragments/sidebar-content :: sidebar-content}"></th:block>
 
-		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
-			<!-- Content Header (Page header) -->
-			<div class="content-header">
-				<div class="container-fluid">
-					<div class="row mb-2">
-						<div class="col-sm-12">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item">
-									<a href="#">comic</a>
-								</li>
-								<li class="breadcrumb-item active">
-									detail
-								</li>
-							</ol>
-						</div>
+
+	<div class="content-wrapper">
+		<div class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1 class="m-0">Danh sách truyện</h1>
 					</div>
 				</div>
 			</div>
-
-			<!-- Main content -->
-			<section class="content">
-				<div class="container-fluid">
-					<div class="row py-2">
-						<div class="col-12">
-							<a class="btn btn-primary" th:href="@{/asura/admin/comic/create}">
-								<i class="fas fa-plus"></i> Upload Comic
-							</a>
-
-							<button type="button" class="btn btn-info">
-								<i class="fas fa-redo"></i> Refresh
-							</button>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									<table id="comicsTable">
-										<thead>
-										<tr>
-											<th>ID</th>
-											<th>Tiêu đề</th>
-											<th>Loại</th>
-											<th>Lượt xem</th>
-											<th>Thao tác</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr th:each="comic : ${comics}" th:id="'comic-row-' + ${comic.id}">
-											<td th:text="${comic.id}"></td>
-											<td>
-												<a th:href="@{'/asura/admin/comic/' + ${comic.slug}}"
-												   th:text="${comic.title}"></a>
-											</td>
-											<td th:text="${comic.type}"></td>
-											<td th:text="${comic.viewCount}"></td>
-											<td class="action-buttons">
-												<a th:href="@{'/asura/admin/comic/edit/' + ${comic.slug}}">
-													<i class="fas fa-edit"></i>
-												</a>
-
-												<a class="delete" th:onclick="'deleteComic(' + ${comic.id} + ')'">
-													<i class="fas fa-trash"></i>
-												</a>
-											</td>
-										</tr>
-
-										</tbody>
-									</table>
-
-
-									<div class="pagination" id="comicsPagination">
-										<!-- Nút Trước -->
-										<a th:if="${currentPage > 0}"
-										   th:href="@{/asura/admin/comic/detail(page=${currentPage - 1})}">« Trước</a>
-										<span th:if="${currentPage == 0}" class="disabled">« Trước</span>
-
-										<!-- Danh sách trang -->
-										<a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-										   th:classappend="${i == currentPage} ? 'active'"
-										   th:href="@{/asura/admin/comic/detail(page=${i})}"
-										   th:text="${i + 1}"></a>
-
-										<!-- Nút Tiếp -->
-										<a th:if="${currentPage < totalPages - 1}"
-										   th:href="@{/asura/admin/comic/detail(page=${currentPage + 1})}">Tiếp »</a>
-										<span th:if="${currentPage == totalPages - 1}" class="disabled">Tiếp »</span>
-									</div>
-
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
 		</div>
+
+		<section class="content">
+			<div class="container-fluid">
+				<div class="mb-3">
+					<a class="btn btn-success" th:href="@{/asura/admin/comic/create}">
+						<i class="fas fa-upload"></i> Upload Truyện Mới
+					</a>
+					<button type="button" class="btn btn-outline-secondary ml-2" onclick="location.reload();">
+						<i class="fas fa-sync"></i> Làm mới
+					</button>
+				</div>
+
+				<div class="card">
+					<div class="card-body p-0">
+						<table id="comicsTable">
+							<thead>
+							<tr>
+								<th style="width: 50px">ID</th>
+								<th>Tiêu đề truyện</th>
+								<th>Thể loại</th>
+								<th>Lượt xem</th>
+								<th style="width: 150px">Thao tác</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="comic : ${comics}" th:id="'comic-row-' + ${comic.id}">
+								<td th:text="${comic.id}"></td>
+								<td>
+									<a th:href="@{'/asura/admin/comic/' + ${comic.slug}}"
+									   th:text="${comic.title}" class="font-weight-bold"></a>
+								</td>
+								<td><span class="badge badge-info" th:text="${comic.type}"></span></td>
+								<td th:text="${#numbers.formatInteger(comic.viewCount, 0, 'COMMA')}"></td>
+								<td class="action-buttons">
+									<a th:href="@{'/asura/admin/comic/edit/' + ${comic.slug}}" title="Chỉnh sửa">
+										<i class="fas fa-edit text-primary"></i>
+									</a>
+									<a class="delete" th:onclick="'deleteComic(' + ${comic.id} + ')'" title="Xóa">
+										<i class="fas fa-trash-alt text-danger"></i>
+									</a>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="card-footer clearfix">
+						<div class="pagination" id="comicsPagination">
+							<a th:if="${currentPage > 0}" th:href="@{/asura/admin/comic/detail(page=${currentPage - 1})}">«</a>
+							<span th:unless="${currentPage > 0}" class="disabled">«</span>
+
+							<a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+							   th:classappend="${i == currentPage} ? 'active'"
+							   th:href="@{/asura/admin/comic/detail(page=${i})}"
+							   th:text="${i + 1}"></a>
+
+							<a th:if="${currentPage < totalPages - 1}" th:href="@{/asura/admin/comic/detail(page=${currentPage + 1})}">»</a>
+							<span th:unless="${currentPage < totalPages - 1}" class="disabled">»</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</div>
+</div>
 
-	<!-- jQuery -->
-	<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.js"></script>
 
-	<!-- Bootstrap 4 -->
-	<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- overlayScrollbars -->
-	<script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="/css/admin-assets/dist/js/adminlte.js"></script>
-
-
-	<script>
-		function deleteComic(comicId) {
-    if (confirm("Bạn có chắc chắn muốn xóa truyện này?")) {
-        $.ajax({
-            url: "/api/comics/" + comicId,
-            type: "DELETE",
-            success: function () {
-                // Xóa dòng comic khỏi bảng mà không cần reload
-
-               $("#comic-row-" + comicId).remove();
-
-            },
-            error: function (xhr) {
-                alert("Không thể xóa truyện: " + xhr.responseText);
-            }
-        });
+<script>
+	function deleteComic(comicId) {
+        if (confirm("Bạn có chắc chắn muốn xóa truyện này? Hành động này không thể hoàn tác.")) {
+            $.ajax({
+                url: "/api/comics/" + comicId,
+                type: "DELETE",
+                success: function () {
+                    $("#comic-row-" + comicId).fadeOut(400, function() { $(this).remove(); });
+                },
+                error: function (xhr) {
+                    alert("Lỗi: " + xhr.responseText);
+                }
+            });
+        }
     }
-}
-	</script>
-
+</script>
 </body>
-
 </html>

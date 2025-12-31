@@ -9,6 +9,8 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/web/web-main/home.css">
+    <link rel="stylesheet" href="/css/web/web-main/page.css">
+
 </head>
 <body>
 <!-- fragments cho header -->
@@ -27,7 +29,13 @@
                             <div class="carousel-slide" th:attr="data-id=${comic.id}">
                                 <div class="comic-info">
                                     <div class="rating">
-                                        <span class="star">⭐</span>
+                                        <span class="stars">
+                                        <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                        <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                        <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                        <i th:class="${comic.averageRating != null and comic.averageRating >= 4} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                        <i th:class="${comic.averageRating != null and comic.averageRating >= 5} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
+                                        </span>
                                         <span th:text="${comic.averageRating}"></span>
                                     </div>
                                     <h1><a th:href="@{'/asura/comic/' + ${comic.slug}}" class="card-title" style="text-decoration: none;" th:text="${comic.title}"></a></h1>                                    <h3 th:text="${comic.type}">MANHWA</h3>
@@ -41,7 +49,6 @@
                                     <a th:href="@{'/asura/comic/' + ${comic.slug}}">
                                         <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
                                     </a>
-
                                 </div>
                             </div>
                         </th:block>
@@ -68,7 +75,7 @@
                                     </p>
                                     <p   class="comic-rating">
                                     <div class="comic-rating">
-            <span class="stars">
+                                    <span class="stars">
                 <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
                 <i th:class="${comic.averageRating != null and comic.averageRating >= 2} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
                 <i th:class="${comic.averageRating != null and comic.averageRating >= 3} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>
@@ -105,9 +112,9 @@
                                        th:title="${comic.title}"></a>
 
                                     <div class="comic-meta">
-            <span class="rating" th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)} + ' '">
-                <i class="fas fa-star"></i>
-            </span>
+                                    <span class="rating" th:text="${#numbers.formatDecimal(comic.averageRating, 1, 1)} + ' '">
+                                        <i class="fas fa-star"></i>
+                                    </span>
                                         <span class="status" th:text="${comic.status}"></span>
                                     </div>
 
@@ -115,8 +122,8 @@
                                         <li class="chapter-item"
                                             th:each="chapter : ${comic.chapters}"
                                             th:attr="data-chapter=${chapter.chapterNumber},
-     data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},
-     data-is-free=${chapter.isFree}">
+                                             data-created-at=${#temporals.format(chapter.createdAt, 'yyyy-MM-dd HH:mm:ss')},
+                                             data-is-free=${chapter.isFree}">
 
                                             <!-- Link nếu chương miễn phí hoặc đã mở khóa -->
                                             <a th:if="${chapter.isFree or (session.currentUser != null and unlockedChapterIds.contains(chapter.id))}"
@@ -146,12 +153,10 @@
                                             <!-- Biểu tượng khóa nằm ở cuối dòng, sau thời gian -->
                                             <span class="lock-icon"
                                                   th:if="${!chapter.isFree and (session.currentUser == null or !unlockedChapterIds.contains(chapter.id))}">
-        🔒
-    </span>
+                                                🔒
+                                            </span>
                                         </li>
                                     </ul>
-
-
 
                                 </div>
                             </div>
@@ -165,10 +170,10 @@
 
                             <!-- Danh sách trang -->
                             <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-    <a th:href="@{'/asura?page=' + ${i}}"
-       th:classappend="${i == currentPage} ? 'active' : ''"
-       th:text="${i + 1}"></a>
-</span>
+                            <a th:href="@{'/asura?page=' + ${i}}"
+                               th:classappend="${i == currentPage} ? 'active' : ''"
+                               th:text="${i + 1}"></a>
+                            </span>
 
                             <!-- Trang sau -->
                             <a th:if="${currentPage < totalPages - 1}"
@@ -234,12 +239,12 @@
 
 <!-- JavaScript for Latest Updates -->
 <script>
+    // Chỉ lấy danh sách để xử lý ngày tháng, không can thiệp hiển thị
     const comicItems = document.querySelectorAll("#comicGrid .comic-item");
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(comicItems.length / itemsPerPage);
-    let currentPage = 1;
 
+    // Hàm tính toán thời gian (Giữ nguyên)
     function getTimeStatus(createdAt) {
+        if (!createdAt) return "";
         const createdDate = new Date(createdAt);
         const now = new Date();
         const diffTime = Math.abs(now - createdDate);
@@ -247,61 +252,28 @@
         return diffDays <= 1 ? "New" : `${diffDays} days`;
     }
 
+    // Vòng lặp cập nhật nhãn "New" hoặc ngày tháng (Giữ nguyên)
     comicItems.forEach(item => {
         const chapterItems = item.querySelectorAll(".chapter-item");
         chapterItems.forEach(chapter => {
             const createdAt = chapter.getAttribute("data-created-at");
-            const isFree = chapter.getAttribute("data-is-free") === "true";
+
+            // Logic hiển thị New tag
             const timeStatus = getTimeStatus(createdAt);
             const timeElement = chapter.querySelector(".chapter-time");
-            timeElement.innerHTML = `
-                ${timeStatus === "New" ? `<span class="new-tag">New</span>` : timeStatus}
-            `;
+
+            if (timeElement) {
+                timeElement.innerHTML = `
+                    ${timeStatus === "New" ? `<span class="new-tag" style="color: red; font-weight: bold; font-size: 0.8em; border: 1px solid red; padding: 0 4px; border-radius: 4px;">New</span>` : timeStatus}
+                `;
+            }
         });
     });
 
-    function displayComics(page) {
-        const comicGrid = document.getElementById("comicGrid");
-        comicItems.forEach((item, index) => {
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            item.style.display = (index >= start && index < end) ? "flex" : "none";
-        });
-        updatePagination();
-    }
-
-    function updatePagination() {
-        const pagination = document.getElementById("pagination");
-        pagination.innerHTML = "";
-
-        const prevBtn = document.createElement("button");
-        prevBtn.className = "prev-btn";
-        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.classList.toggle("disabled", currentPage === 1);
-        prevBtn.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayComics(currentPage);
-            }
-        });
-        pagination.appendChild(prevBtn);
-
-        const nextBtn = document.createElement("button");
-        nextBtn.className = "next-btn";
-        nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
-        nextBtn.disabled = currentPage === totalPages;
-        nextBtn.classList.toggle("disabled", currentPage === totalPages);
-        nextBtn.addEventListener("click", () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayComics(currentPage);
-            }
-        });
-        pagination.appendChild(nextBtn);
-    }
-
-    displayComics(currentPage);
+    // ĐÃ XÓA:
+    // - itemsPerPage, totalPages, currentPage
+    // - function displayComics()
+    // - function updatePagination() -> Thủ phạm xóa thanh phân trang của bạn
 </script>
 
 

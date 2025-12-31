@@ -1,0 +1,40 @@
+/* Container căn giữa */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa các nút */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* Style chung cho các nút link */
+.pagination a {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #252525; /* Nền tối */
+    color: #b0b0b0; /* Chữ màu xám nhạt */
+    text-decoration: none;
+    border-radius: 6px; /* Bo góc nhẹ */
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #333; /* Viền mỏng */
+    transition: all 0.3s ease; /* Hiệu ứng mượt */
+}
+
+/* Hiệu ứng khi di chuột vào */
+.pagination a:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #8e44ad; /* Viền tím khi hover */
+    transform: translateY(-2px); /* Nổi lên nhẹ */
+}
+
+/* Style cho trang hiện tại (Active) */
+.pagination a.active {
+    background-color: #8e44ad; /* Màu tím chủ đạo */
+    color: #fff;
+    border-color: #8e44ad;
+    pointer-events: none; /* Không cho bấm lại trang đang xem */
+    box-shadow: 0 4px 10px rgba(142, 68, 173, 0.4); /* Đổ bóng tím */
+}

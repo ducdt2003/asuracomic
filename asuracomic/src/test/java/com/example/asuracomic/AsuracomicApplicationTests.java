@@ -75,25 +75,44 @@ class AsuraComicApplicationTests {
 
 	@Test
 	void save_users() {
-		// Tạo 20 người dùng ngẫu nhiên
+
 		for (int i = 0; i < 20; i++) {
-			String displayName = faker.name().fullName(); // Tạo tên hiển thị ngẫu nhiên
-			User user = User.builder() // Sử dụng builder pattern để tạo đối tượng User
-					.email(faker.internet().emailAddress()) // Tạo email ngẫu nhiên
-					.username(faker.name().username()) // Tạo tên người dùng ngẫu nhiên
-					.avatar("https://placehold.co/600x400?text=" + displayName.substring(0, 1).toUpperCase()) // Tạo URL avatar
-					.password("123") // Đặt mật khẩu mặc định
-					.role(i < 1 ? Role.ADMIN : Role.USER) // Gán vai trò
-					.coinBalance(BigDecimal.valueOf(faker.number().numberBetween(0, 1000))) // Tạo số dư coin
-					.vipStatus(false) // Đặt trạng thái VIP
-					.isActive(true) // Đặt trạng thái hoạt động
-					.createdAt(LocalDateTime.now()) // Gán thời điểm tạo
-					.updatedAt(LocalDateTime.now()) // Gán thời điểm cập nhật
-					.lastLogin(LocalDateTime.now().minusDays(faker.number().numberBetween(0, 30))) // Gán thời điểm đăng nhập cuối ngẫu nhiên trong 30 ngày qua
+
+			String displayName = faker.name().fullName();
+
+			Role role;
+
+			// Gán role theo index
+			switch (i) {
+				case 0 -> role = Role.SUPER_ADMIN;
+				case 1 -> role = Role.CONTENT_ADMIN;
+				case 2 -> role = Role.USER_ADMIN;
+				case 3 -> role = Role.INTERACTION_ADMIN;
+				default -> role = Role.USER;
+			}
+
+			User user = User.builder()
+					.email(faker.internet().emailAddress())
+					.username(faker.name().username())
+					.avatar("https://placehold.co/600x400?text="
+							+ displayName.substring(0, 1).toUpperCase())
+					.password("123") // nhớ encode khi dùng thật
+					.role(role)
+					.coinBalance(BigDecimal.valueOf(
+							faker.number().numberBetween(0, 1000)))
+					.vipStatus(false)
+					.isActive(true)
+					.createdAt(LocalDateTime.now())
+					.updatedAt(LocalDateTime.now())
+					.lastLogin(
+							LocalDateTime.now().minusDays(
+									faker.number().numberBetween(0, 30)))
 					.build();
-			userRepository.save(user); // Lưu người dùng vào cơ sở dữ liệu
+
+			userRepository.save(user);
 		}
 	}
+
 
 	@Test
 	void update_user_password() {
@@ -138,24 +157,19 @@ class AsuraComicApplicationTests {
 	void save_genres() {
 		Set<String> addedSlugs = new HashSet<>();
 		int count = 0;
-
 		while (count < 10) {
 			String name = faker.book().genre();
 			String slug = slugify.slugify(name);
-
 			// Kiểm tra slug đã tồn tại trong DB hoặc trong vòng lặp
 			if (addedSlugs.contains(slug) || genreRepository.findBySlug(slug) != null) {
 				continue;
 			}
-
 			addedSlugs.add(slug);
-
 			Genre genre = Genre.builder()
 					.name(name)
 					.slug(slug)
 					.createdAt(LocalDateTime.now())
 					.build();
-
 			genreRepository.save(genre);
 			count++;
 		}

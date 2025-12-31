@@ -15,7 +15,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     // Trả về true nếu bản ghi tồn tại, false nếu không
     // Được sử dụng để tránh tạo trùng lặp dữ liệu trong bảng favorites
     boolean existsByUser_IdAndComic_Id(Long userId, Long comicId);
-
+    // kiểm tra trunùng lặp
     boolean existsByUserIdAndComicId(Long userId, Long comicId);
     List<Favorite> findByUserId(Long userId);
 

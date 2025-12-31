@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Hồ sơ cá nhân Admin | AsuraComic</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css"/>
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css"/>
+
+    <style>
+        .admin-profile-head { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 30px 0; border-radius: 0.25rem; }
+        .admin-avatar { width: 120px; height: 120px; border: 4px solid rgba(255,255,255,0.2); object-fit: cover; }
+        .stat-card { transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <th:block th:replace="~{admin-templ/fragments/admin-profile :: admin-profile}"></th:block>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="admin-profile-head shadow-sm mb-4">
+                    <div class="row px-4 align-items-center">
+                        <div class="col-auto">
+                            <img src="/css/admin-assets/dist/img/user2-160x160.jpg" class="img-circle admin-avatar" alt="Admin Avatar">
+                        </div>
+                        <div class="col">
+                            <h2 class="font-weight-bold mb-1">Chào quản trị viên, <span id="admin-name">Lê Văn Admin</span></h2>
+                            <p class="mb-0 opacity-75"><i class="fas fa-user-shield mr-2"></i>Cấp bậc: Hệ thống Quản trị cấp cao</p>
+                            <p class="mb-0 opacity-75"><i class="fas fa-envelope mr-2"></i>admin@asuracomic.com</p>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-outline-light btn-sm" data-toggle="modal" data-target="#modal-edit-profile">
+                                <i class="fas fa-edit mr-1"></i> Chỉnh sửa hồ sơ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-info stat-card">
+                            <div class="inner">
+                                <h3>150</h3>
+                                <p>Báo cáo đã xử lý</p>
+                            </div>
+                            <div class="icon"><i class="fas fa-check-double"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-success stat-card">
+                            <div class="inner">
+                                <h3>Active</h3>
+                                <p>Trạng thái hệ thống</p>
+                            </div>
+                            <div class="icon"><i class="fas fa-server"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-warning stat-card">
+                            <div class="inner">
+                                <h3>28/12/25</h3>
+                                <p>Đăng nhập lần cuối</p>
+                            </div>
+                            <div class="icon"><i class="fas fa-history"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-danger stat-card">
+                            <div class="inner">
+                                <h3>12</h3>
+                                <p>Báo cáo đang chờ</p>
+                            </div>
+                            <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title font-weight-bold"><i class="fas fa-info-circle mr-2"></i>Thông tin chi tiết</h3>
+                            </div>
+                            <div class="card-body">
+                                <strong><i class="fas fa-book mr-1"></i> Bio / Mô tả</strong>
+                                <p class="text-muted">Quản trị viên chuyên phụ trách kiểm duyệt nội dung và xử lý báo cáo người dùng khu vực Manhwa.</p>
+                                <hr>
+                                <strong><i class="fas fa-calendar-alt mr-1"></i> Ngày gia nhập ban quản trị</strong>
+                                <p class="text-muted">01 Tháng 01, 2024</p>
+                                <hr>
+                                <button class="btn btn-block btn-outline-primary shadow-sm mb-2">
+                                    <i class="fas fa-key mr-2"></i>Thay đổi mật khẩu
+                                </button>
+                                <button class="btn btn-block btn-outline-secondary shadow-sm">
+                                    <i class="fas fa-shield-alt mr-2"></i>Xác thực 2 lớp (2FA)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header border-transparent">
+                                <h3 class="card-title font-weight-bold"><i class="fas fa-tasks mr-2"></i>Nhật ký xử lý báo cáo gần đây</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table m-0 table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID Báo cáo</th>
+                                            <th>Người gửi</th>
+                                            <th>Loại vi phạm</th>
+                                            <th>Ngày xử lý</th>
+                                            <th>Kết quả</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><a href="#">#REP-4451</a></td>
+                                            <td>member_01</td>
+                                            <td>Bình luận thô tục</td>
+                                            <td>30/12/2025</td>
+                                            <td><span class="badge badge-success">Đã xóa nội dung</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="#">#REP-4450</a></td>
+                                            <td>user_abc</td>
+                                            <td>Lỗi ảnh chương 5</td>
+                                            <td>29/12/2025</td>
+                                            <td><span class="badge badge-info">Đã báo kỹ thuật</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="#">#REP-4448</a></td>
+                                            <td>haters_99</td>
+                                            <td>Spam quảng cáo</td>
+                                            <td>28/12/2025</td>
+                                            <td><span class="badge badge-danger">Khóa tài khoản</span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer clearfix text-center">
+                                <a href="javascript:void(0)" class="btn btn-sm btn-secondary">Xem tất cả lịch sử xử lý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="modal-edit-profile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cập nhật thông tin cá nhân</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên hiển thị</label>
+                        <input type="text" class="form-control" value="Lê Văn Admin">
+                    </div>
+                    <div class="form-group">
+                        <label>Giới thiệu ngắn</label>
+                        <textarea class="form-control" rows="3">Quản trị viên chuyên phụ trách kiểm duyệt nội dung...</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Link Avatar</label>
+                        <input type="text" class="form-control" placeholder="URL hình ảnh">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
+<script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/css/admin-assets/dist/js/adminlte.js"></script>
+</body>
+</html>

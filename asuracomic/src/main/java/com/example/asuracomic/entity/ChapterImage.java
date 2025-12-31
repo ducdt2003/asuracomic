@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ChapterImage {
-    @Id
+        @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // ID duy nhất của ảnh, dùng để tham chiếu trong cơ sở dữ liệu
 

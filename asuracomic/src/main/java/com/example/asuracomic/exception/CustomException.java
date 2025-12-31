@@ -1,6 +1,4 @@
 package com.example.asuracomic.exception;
-
-
 /**
  * Lớp xử lý lỗi tùy chỉnh cho ứng dụng.
  */

@@ -51,7 +51,7 @@
     </nav>
 
     <!-- Sidebar -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!--<aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="./index.html" class="brand-link">
             <img src="/css/admin-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
             <span class="brand-text font-weight-light">Admin</span>
@@ -59,14 +59,14 @@
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Tổng quan -->
+                    &lt;!&ndash; Tổng quan &ndash;&gt;
                     <li class="nav-item">
                         <a href="/asura/admin/comic" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Tổng quan</p>
                         </a>
                     </li>
-                    <!-- Quản lý Truyện -->
+                    &lt;!&ndash; Quản lý Truyện &ndash;&gt;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
@@ -90,7 +90,7 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- Quản lý User -->
+                    &lt;!&ndash; Quản lý User &ndash;&gt;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
@@ -114,12 +114,42 @@
                             </li>
                         </ul>
                     </li>
+                    &lt;!&ndash; Quản lý Tương tác &ndash;&gt;
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>
+                                Quản lý Tương tác
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/comments" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bình luận</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/likes" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Doanh thu</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/asura/admin/interactions/reports" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Báo cáo vi phạm</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
             </nav>
         </div>
-    </aside>
-
+    </aside>-->
+    <th:block th:replace="~{admin-templ/fragments/sidebar :: sidebar}"></th:block>
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <div class="content-header">

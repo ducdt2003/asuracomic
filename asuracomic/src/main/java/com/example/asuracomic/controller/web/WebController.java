@@ -47,7 +47,7 @@ public class WebController {
     // trang chủ
     @GetMapping
     public String homeLogin(@RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "30") int size,
+                            @RequestParam(defaultValue = "10") int size,
                             Model model) {
         // top comics rating
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
@@ -66,8 +66,8 @@ public class WebController {
 
         Page<Comic> comicPage = comicService.getComicPage(page, size);
         model.addAttribute("comics", comicPage.getContent());
-        model.addAttribute("totalPages", comicPage.getTotalPages());
-        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages()); // ttoongr số lượng trang để vẻ ra 123  100/30==> 3
+        model.addAttribute("currentPage", page); // số trang hiện taij ngươi dung đangở đâu
 
 
         // Lấy danh sách chương đã mở khóa nếu có người dùng đăng nhập
@@ -426,7 +426,7 @@ public class WebController {
 
 
     // template
-    @GetMapping("/series")
+    /*@GetMapping("/series")
     public String series(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -459,6 +459,47 @@ public class WebController {
         model.addAttribute("selectedType", type);
         model.addAttribute("selectedOrderBy", orderBy);
         model.addAttribute("query", query);
+        model.addAttribute("top10Weekly", top10Weekly);
+        model.addAttribute("top10Monthly", top10Monthly);
+        model.addAttribute("statuses", Arrays.asList(ComicStatus.values()));
+        model.addAttribute("types", Arrays.asList(ComicType.values()));
+        return "web/web-templates/series";
+    }*/
+    @GetMapping("/series")
+    public String series(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "", required = false) String genre,
+            @RequestParam(defaultValue = "ALL", required = false) String status,
+            @RequestParam(defaultValue = "ALL", required = false) String type,
+            @RequestParam(defaultValue = "lastUpdated", required = false) String orderBy,
+            @RequestParam(defaultValue = "", required = false) String query, // Giữ nguyên
+            Model model) {
+
+        List<Genre> genres = comicService.getAllGenres();
+
+        // === PHẦN SỬA ĐỔI CHÍNH ===
+        // Xóa bỏ khối if-else. Gọi MỘT phương thức service xử lý tất cả.
+        // Chúng ta sẽ truyền 'query' vào 'getComics'
+        Page<Comic> comicPage = comicService.getComics(genre, status, type, orderBy, query, page, size);
+        // ==========================
+
+        List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
+        List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
+
+        model.addAttribute("comics", comicPage.getContent());
+        model.addAttribute("currentPage", comicPage.getNumber());
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("genres", genres);
+
+        // Dùng các biến này để giữ trạng thái của form và cho link phân trang
+        model.addAttribute("selectedGenre", genre);
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("selectedType", type);
+        model.addAttribute("selectedOrderBy", orderBy);
+        model.addAttribute("query", query); // Thêm query vào model
+
         model.addAttribute("top10Weekly", top10Weekly);
         model.addAttribute("top10Monthly", top10Monthly);
         model.addAttribute("statuses", Arrays.asList(ComicStatus.values()));

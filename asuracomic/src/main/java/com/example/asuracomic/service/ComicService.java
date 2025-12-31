@@ -39,6 +39,7 @@ public class ComicService {
     }
 
     // xữ lý lấy 5 truyện hot đánh giá cao nhất
+    // .stream().map(...) cú pháp Java Stream API chuyển đổi danh sách đối tượng comic thành comicCarouselDTO
     public List<ComicCarouselDTO> getHotComicsForCarousel() {
         return comicRepository.findTop5ByIsPublishedTrueOrderByAverageRatingDesc()
                 .stream()
@@ -170,13 +171,13 @@ public class ComicService {
                 .orElse(null);
     }
 
-    // lấy all truyện trên database
+    // lấy all truyện trên database phân trang
     public Page<Comic> getComicPage(int page, int size) {
         Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
 
         comicPage.getContent().forEach(comic -> {
             List<Chapter> filteredChapters = comic.getChapters().stream()
-                    .filter(Chapter::isPublished)
+                    .filter(Chapter::isPublished) // ch llaaysys chater đã xuất hiện
                     .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
                     .limit(3)
                     .collect(Collectors.toList());
@@ -187,6 +188,7 @@ public class ComicService {
         return comicPage;
     }
     // New method for filtered comics
+/*
     public Page<Comic> getComics(String genre, String status, String type, String orderBy, int page, int size) {
         Sort sort = mapOrderByToSort(orderBy);
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -227,6 +229,41 @@ public class ComicService {
 
         return comicPage;
     }
+*/
+    // Trong ComicService.java
+
+    public Page<Comic> getComics(String genre, String status, String type, String orderBy, String query, int page, int size) {
+        Sort sort = mapOrderByToSort(orderBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // Chuẩn hóa các giá trị đầu vào
+        ComicStatus comicStatus = (status != null && !status.equals("ALL") && !status.isEmpty()) ? ComicStatus.valueOf(status) : null;
+        ComicType comicType = (type != null && !type.equals("ALL") && !type.isEmpty()) ? ComicType.valueOf(type) : null;
+        String genreSlug = (genre != null && !genre.isEmpty()) ? genre : null;
+        String searchQuery = (query != null && !query.trim().isEmpty()) ? query.trim() : null;
+
+        // === SỬA ĐỔI QUAN TRỌNG ===
+        // Loại bỏ khối 'if' kiểm tra filter mặc định.
+        // Gọi MỘT phương thức repository duy nhất có khả năng xử lý TẤT CẢ các tham số.
+        // Bạn sẽ cần phải cập nhật phương thức 'findComicsByFilters' trong ComicRepository
+        // để nó chấp nhận thêm tham số 'searchQuery'.
+        Page<Comic> comicPage = comicRepository.findComicsByFilters(genreSlug, comicStatus, comicType, searchQuery, pageable);
+
+        // Phần xử lý chapter này vẫn giữ nguyên, rất tốt
+        comicPage.getContent().forEach(comic -> {
+            List<Chapter> filteredChapters = comic.getChapters().stream()
+                    .filter(Chapter::isPublished)
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                    .limit(1) // Chỉ lấy chương mới nhất
+                    .collect(Collectors.toList());
+            comic.setChapters(filteredChapters);
+        });
+
+        return comicPage;
+    }
+
+// KHÔNG CẦN THAY ĐỔI GÌ THÊM (mapOrderByToSort, getAllGenres, v.v. giữ nguyên)
+// Bạn KHÔNG CÒN dùng đến phương thức 'findByTitleContainingIgnoreCase' trong Controller nữa.
 
     public List<Genre> getAllGenres() {
         return comicRepository.findGenresWithPublishedComics();

@@ -12,21 +12,58 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 @RequiredArgsConstructor
 public class AuthorizationInterceptor implements HandlerInterceptor {
+
     private final HttpSession session;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
+
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+
+        // Chưa login
         if (currentUser == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
-        if (!currentUser.getRole().equals(Role.ADMIN)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
-            return false;
+        Role role = currentUser.getRole();
+        String path = request.getRequestURI();
+
+        // SUPER_ADMIN có toàn quyền
+        if (role == Role.SUPER_ADMIN) {
+            return true;
         }
 
+        // Phân quyền theo module
+        if (path.startsWith("/asura/admin/comic/detail")) {
+            return allow(role, Role.CONTENT_ADMIN, response);
+        }
+
+        if (path.startsWith("/asura/admin/comic/comments")
+                || path.startsWith("/asura/admin/comic/reports")) {
+            return allow(role, Role.INTERACTION_ADMIN, response);
+        }
+
+        if (path.startsWith("/asura/admin/comic/users")) {
+            return allow(role, Role.USER_ADMIN, response);
+        }
+
+
+        // Các trang admin khác → cấm
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        return false;
+    }
+
+    private boolean allow(Role role,
+                          Role required,
+                          HttpServletResponse response) throws Exception {
+        if (role != required) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
         return true;
     }
 }
+

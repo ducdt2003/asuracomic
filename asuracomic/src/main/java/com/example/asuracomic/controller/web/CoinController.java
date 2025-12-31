@@ -296,12 +296,12 @@ public class CoinController {
             return "redirect:/asura/login?redirectUrl=" + redirectUrl;
         }
 
-        // Lấy ID người dùng từ session
+        // Lấy ID người dùng từ session thông tin user
         Long userId = ((UserDTO) currentUser).getId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại."));
 
-        // Tìm chapter theo slug
+        // Tìm chapter theo slug ()Optional
         Chapter chapter = chapterRepository.findByComicSlugAndChapterSlug(comicSlug, chapterSlug)
                 .orElseThrow(() -> new IllegalArgumentException("Chương không tồn tại."));
 
@@ -323,6 +323,7 @@ public class CoinController {
     public String unlockChapter(@PathVariable String comicSlug,
                                 @PathVariable String chapterSlug,
                                 HttpSession session,
+                                // thông báo tạm thoi như là số dư không dủ
                                 RedirectAttributes redirectAttributes) {
         try {
             // Tìm chapter theo slug
@@ -331,6 +332,7 @@ public class CoinController {
 
             // Kiểm tra số dư coin trước khi gọi service
             Object currentUser = session.getAttribute("currentUser");
+            // kiểm tra xe người dung đã đăng nhập chưa
             if (currentUser == null) {
                 String redirectUrl = "/asura/comic/" + comicSlug + "/chapter/" + chapterSlug + "/unlock";
                 return "redirect:/asura/login?redirectUrl=" + redirectUrl;

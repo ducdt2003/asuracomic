@@ -61,13 +61,13 @@
                     </div>
 
                     <div class="bookmarks-list">
-                        <div class="bookmark-item" th:each="comic : ${favoriteComics}">
+                        <div class="bookmark-item" th:each="comic : ${favoriteComics}" th:id="'bookmark-item-' + ${comic.id}">
                             <div class="image-container">
                                 <img th:src="${comic.coverImage}" th:alt="${comic.title}">
                                 <span class="status" th:text="${comic.status}">Ongoing</span>
                                 <span class="type" th:text="${comic.type}">Manhwa</span>
                             </div>
-                            <a th:href="@{/comic/{slug}(slug=${comic.slug})}" th:text="${comic.title}">Comic Title</a>
+                            <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${comic.title}">Comic Title</a>
                             <div class="chapter" th:text="'Chapter ' + ${#lists.size(comic.chapters)}">Chapter ?</div>
                             <div class="rating">
                                 <i class="fas fa-star"></i>
@@ -77,6 +77,12 @@
                                 <i class="fas fa-star"></i>
                                 <span th:text="${comic.averageRating}">9.9</span>
                             </div>
+
+                            <button class="btn btn-danger btn-sm remove-bookmark-btn"
+                                    th:data-comic-id="${comic.id}"
+                                    style="margin-top: 8px;">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
                         </div>
                     </div>
 
@@ -162,6 +168,76 @@
             tab.classList.add('active');
             const tabName = tab.getAttribute('data-tab');
             document.getElementById(`${tabName}List`).classList.add('active');
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Lắng nghe tất cả các nút có class .remove-bookmark-btn
+        document.querySelectorAll('.remove-bookmark-btn').forEach(button => {
+            button.addEventListener('click', function() {
+
+                // 2. Lấy ID của truyện từ attribute data-
+                const comicId = this.getAttribute('data-comic-id');
+                const comicItemElement = document.getElementById('bookmark-item-' + comicId);
+
+                // Lấy tên truyện để hiển thị trong thông báo xác nhận
+                const comicTitle = comicItemElement.querySelector('a').textContent;
+
+                // 3. Hỏi xác nhận
+                if (confirm(`Bạn có chắc muốn xóa "${comicTitle}" khỏi danh sách yêu thích?`)) {
+
+                    /* QUAN TRỌNG: Xử lý CSRF Token (nếu bạn dùng Spring Security)
+                       Nếu bạn dùng Spring Security, hãy thêm 2 thẻ meta này vào <head> của file HTML:
+                       <meta name="_csrf" th:content="${_csrf.token}">
+                       <meta name="_csrf_header" th:content="${_csrf.headerName}">
+                    */
+                    const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+                    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+
+                    const headers = {
+                        'Content-Type': 'application/json',
+                    };
+
+                    // Thêm header CSRF nếu có
+                    if (csrfToken && csrfHeader) {
+                        headers[csrfHeader] = csrfToken;
+                    }
+
+                    // 4. Gửi yêu cầu DELETE bằng Fetch API
+                    fetch(`/asura/api/bookmarks/${comicId}`, {
+                        method: 'DELETE',
+                        headers: headers
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // Nếu response không OK (ví dụ: 404, 500)
+                            throw new Error('Lỗi mạng hoặc máy chủ');
+                        }
+                        return response.text(); // API của bạn trả về text ("removed", "error", "login_required")
+                    })
+                    .then(data => {
+                        // 5. Xử lý kết quả trả về từ API
+                        if (data === 'removed') {
+                            // Xóa thành công, loại bỏ phần tử HTML khỏi trang
+                            comicItemElement.remove();
+                            // alert('Đã xóa thành công.'); // Bạn có thể bỏ comment này nếu muốn
+                        } else if (data === 'login_required') {
+                            alert('Vui lòng đăng nhập để thực hiện hành động này.');
+                            window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
+                        } else {
+                            // Các lỗi khác
+                            alert('Đã xảy ra lỗi: ' + data);
+                        }
+                    })
+                    .catch(error => {
+                        // 6. Xử lý lỗi kết nối
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi kết nối. Vui lòng thử lại.');
+                    });
+                }
+            });
         });
     });
 </script>

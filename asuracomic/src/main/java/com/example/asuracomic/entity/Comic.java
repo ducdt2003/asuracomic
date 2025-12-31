@@ -1,5 +1,4 @@
 package com.example.asuracomic.entity;
-
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import jakarta.persistence.*;
@@ -7,9 +6,9 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
 @Entity
-@Table(name = "comics", indexes = @Index(name = "idx_slug", columnList = "slug", unique = true))
+@Table(name = "comics", indexes = @Index(name = "idx_slug",
+        columnList = "slug", unique = true))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,10 +23,10 @@ public class Comic {
     private String title; // Tiêu đề truyện, hiển thị trên danh sách truyện, trang chi tiết, và tìm kiếm
 
     @Column(unique = true, nullable = false, length = 255)
-    private String slug; // Chuỗi thân thiện với URL (VD: one-piece), dùng để tạo link truy cập, tối ưu SEO
+    private String slug; // không trùng Chuỗi thân thiện với URL (VD: one-piece), dùng để tạo link truy cập, tối ưu SEO
 
     @Column(columnDefinition = "TEXT")
-    private String description; // Mô tả truyện, hiển thị trên trang chi tiết, cung cấp thông tin tổng quan
+    private String description; //kiểu dữ liệu Mô tả truyện, hiển thị trên trang chi tiết, cung cấp thông tin tổng quan
 
     @Column(length = 255)
     private String coverImage; // Đường dẫn ảnh bìa, hiển thị trên danh sách truyện, trang chi tiết, thu hút người đọc
@@ -39,7 +38,7 @@ public class Comic {
     private Long followCount = 0L; // Số người theo dõi, hiển thị mức độ yêu thích, hỗ trợ thông báo chương mới
 
     @Column(nullable = false, precision = 3, scale = 1)
-    private BigDecimal averageRating = BigDecimal.ZERO; // Điểm đánh giá trung bình (VD: 4.5/5), tính từ ratings, hiển thị trên trang chi tiết
+    private BigDecimal averageRating = BigDecimal.ZERO; //toong số chữ Điểm đánh giá trung bình (VD: 4.5/5), tính từ ratings, hiển thị trên trang chi tiết
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -18,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/asura/bookmarks");
 
-//        registry.addInterceptor(authorizationInterceptor)
-//                .addPathPatterns("/api/admin/**", "/admin/**", "/phim-bo", "/api/favorites", "/api/favorites/**");
+        registry.addInterceptor(authorizationInterceptor)
+                .addPathPatterns("/asura/admin/**", "/admin/**");
+
     }
 }

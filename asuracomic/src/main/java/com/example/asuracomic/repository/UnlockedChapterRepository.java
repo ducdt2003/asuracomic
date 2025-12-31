@@ -16,6 +16,8 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     // Được sử dụng để kiểm tra xem một người dùng đã mở khóa một chương cụ thể nào chưa
     Optional<UnlockedChapter> findByUser_IdAndChapter_Id(Long userId, Long chapterId); // Tham số userId và chapterId là các giá trị cần tìm kiếm
 
+
+    //người dùng đã từng mua chương hay chưa
     boolean existsByUserIdAndChapterId(Long userId, Long chapterId);
 
     // b khóa
