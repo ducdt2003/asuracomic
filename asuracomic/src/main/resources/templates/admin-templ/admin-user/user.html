@@ -51,6 +51,18 @@
                                oninput="filterTable(this.value)">
                     </div>
 
+                    <div class="container-fluid">
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                            <span th:text="${success}"></span>
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                            <span th:text="${error}"></span>
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+
+                    </div>
                     <div class="card-body p-0">
                         <table id="usersTable" class="table table-bordered table-hover">
                             <thead>
@@ -82,9 +94,13 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button class="btn btn-sm btn-danger"
-                                            th:onclick="'deleteUser(' + ${user.id} + ')'">
+                                            th:onclick="|confirmDelete(this, ${user.id})|">
                                         <i class="fas fa-trash"></i>
                                     </button>
+
+                                    <form id="deleteForm" method="post" style="display: none;">
+                                    </form>
+                                    <form id="hiddenDeleteForm" method="post" style="display: none;"></form>
                                 </td>
                             </tr>
                             </tbody>
@@ -131,7 +147,7 @@
 <script src="/css/admin-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="/css/admin-assets/dist/js/adminlte.js"></script>
 
-<script>
+<!--<script>
     function filterTable(query) {
         query = query.toLowerCase();
         const rows = document.querySelectorAll("#usersTable tbody tr");
@@ -148,7 +164,71 @@
         if (!confirm("Bạn có chắc muốn xóa người dùng này?")) return;
         alert("Demo xóa user ID: " + id);
     }
-</script>
+</script>-->
+<!--<script>
+    function confirmDelete(id) {
+        // 1. Xác nhận với người dùng
+        if (confirm("Bạn có chắc chắn muốn xóa người dùng có ID: " + id + "?")) {
 
+            // 2. Lấy form ẩn đã tạo
+            const form = document.getElementById('hiddenDeleteForm');
+
+            // 3. Gán URL xóa (Phải khớp với @PostMapping của bạn)
+            // Nếu Controller của bạn là @PostMapping("/users/delete/{id}")
+            // Bạn cần thêm tiền tố nếu có @RequestMapping ở đầu class
+            form.action = '/asura/admin/comic/users/delete/' + id;
+
+            // 4. Gửi form đi
+            form.submit();
+        }
+    }
+
+    // Giữ nguyên hàm filterTable cũ của bạn
+    function filterTable(query) {
+        query = query.toLowerCase();
+        const rows = document.querySelectorAll("#usersTable tbody tr");
+        rows.forEach(row => {
+            const username = row.cells[1].innerText.toLowerCase();
+            const email = row.cells[2].innerText.toLowerCase();
+            row.style.display =
+                username.includes(query) || email.includes(query) ? "" : "none";
+        });
+    }
+</script>-->
+<script>
+    function confirmDelete(btn, id) {
+        if (!confirm("Bạn có chắc chắn muốn xóa người dùng có ID: " + id + "?")) return;
+
+        // Sử dụng AJAX của jQuery (vì trang của bạn đã có jQuery)
+        $.ajax({
+            url: '/asura/admin/comic/users/delete/' + id,
+            type: 'POST',
+            success: function(response) {
+                // Hiển thị thông báo nhanh (tùy chọn)
+                console.log(response);
+
+                // Hiệu ứng biến mất và xóa dòng đó khỏi bảng
+                $(btn).closest('tr').fadeOut(400, function() {
+                    $(this).remove();
+                });
+            },
+            error: function(xhr) {
+                alert("Lỗi khi xóa: " + xhr.responseText);
+            }
+        });
+    }
+
+    // Hàm tìm kiếm giữ nguyên
+    function filterTable(query) {
+        query = query.toLowerCase();
+        const rows = document.querySelectorAll("#usersTable tbody tr");
+        rows.forEach(row => {
+            const username = row.cells[1].innerText.toLowerCase();
+            const email = row.cells[2].innerText.toLowerCase();
+            row.style.display =
+                username.includes(query) || email.includes(query) ? "" : "none";
+        });
+    }
+</script>
 </body>
 </html>

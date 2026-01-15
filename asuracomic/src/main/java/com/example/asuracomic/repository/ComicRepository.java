@@ -218,7 +218,7 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     // chi tieets truyện và chapter
     Optional<Comic> findBySlug(String slug);
 
-    // truyện liên quan
+    // truyện liên quan Chỉ lấy truyện có ít nhất một thể loại giống truyện hiện tại Bỏ truyện đang xem ra khỏi kết quả
     @Query("SELECT DISTINCT c FROM Comic c " +
             "JOIN c.comicGenres cg " +
             "WHERE cg.genre.id IN (SELECT cg2.genre.id FROM ComicGenre cg2 WHERE cg2.comic.id = :comicId) " +

@@ -1,31 +1,42 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Tạo người dùng - AsuraComic Admin</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
-    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet"
+          href="/css/admin-assets/dist/css/adminlte.min.css"/>
+    <link rel="stylesheet"
+          href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"/>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-    <!-- ================= NAVBAR ================= -->
 
-
+    <!-- SIDEBAR -->
     <th:block th:replace="~{admin-templ/fragments/sidebar-user :: sidebar-user}"></th:block>
 
     <div class="content-wrapper">
+
+        <!-- HEADER -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark"><i class="fas fa-user-plus mr-2"></i>Tạo người dùng mới</h1>
+                        <h1 class="m-0 text-dark">
+                            <i class="fas fa-user-plus mr-2"></i>Tạo người dùng mới
+                        </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/asura/admin/comic/users">Quản lý người dùng</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="/asura/admin/comic/users">Quản lý người dùng</a>
+                            </li>
                             <li class="breadcrumb-item active">Tạo người dùng</li>
                         </ol>
                     </div>
@@ -33,27 +44,57 @@
             </div>
         </div>
 
+        <!-- CONTENT -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
+
                         <div class="card card-primary card-outline">
                             <div class="card-header">
                                 <h3 class="card-title">Thông tin tài khoản</h3>
                             </div>
+
                             <div class="card-body">
-                                <form id="createUserForm">
+
+                                <!-- ERROR MESSAGE -->
+                                <div th:if="${error}" class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                    <span th:text="${error}"></span>
+                                </div>
+
+                                <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Tạo tài khoản thành công!
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span>&times;</span>
+                                    </button>
+                                </div>
+
+                                <!-- FORM -->
+                                <form th:action="@{/asura/admin/comic/users/create}"
+                                      th:object="${user}"
+                                      method="post">
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Tên đăng nhập (Username) <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="username" placeholder="Ví dụ: asura_reader" required maxlength="50">
+                                                <label>Username <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control"
+                                                       th:field="*{username}"
+                                                       placeholder="asura_reader"
+                                                       maxlength="50"
+                                                       required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" name="email" placeholder="example@gmail.com" required>
+                                                <input type="email" class="form-control"
+                                                       th:field="*{email}"
+                                                       placeholder="example@gmail.com"
+                                                       required>
                                             </div>
                                         </div>
                                     </div>
@@ -62,15 +103,18 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Mật khẩu <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu bảo mật" required>
+                                                <input type="password" class="form-control"
+                                                       th:field="*{password}"
+                                                       required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Vai trò <span class="text-danger">*</span></label>
-                                                <select class="form-control" name="role" required>
-                                                    <option value="USER" selected>Người dùng (USER)</option>
-                                                    <option value="ADMIN">Quản trị viên (ADMIN)</option>
+                                                <label>Vai trò</label>
+                                                <select class="form-control" th:field="*{role}">
+                                                    <option value="USER">Người dùng</option>
+                                                    <option value="ADMIN">Quản trị viên</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -79,13 +123,16 @@
                                     <hr>
 
                                     <div class="form-group">
-                                        <label>Ảnh đại diện (URL)</label>
-                                        <input type="text" class="form-control" name="avatar" placeholder="https://link-to-image.com/avatar.png">
+                                        <label>Avatar (URL)</label>
+                                        <input type="text" class="form-control"
+                                               th:field="*{avatar}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Giới thiệu bản thân</label>
-                                        <textarea class="form-control" name="description" rows="3" placeholder="Mô tả ngắn về người dùng..."></textarea>
+                                        <label>Giới thiệu</label>
+                                        <textarea class="form-control"
+                                                  th:field="*{description}"
+                                                  rows="3"></textarea>
                                     </div>
 
                                     <hr>
@@ -95,47 +142,68 @@
                                             <div class="form-group">
                                                 <label>Số dư Coin</label>
                                                 <div class="input-group">
-                                                    <input type="number" step="0.01" class="form-control" name="coinBalance" value="0.00">
+                                                    <input type="number" step="0.01"
+                                                           class="form-control"
+                                                           th:field="*{coinBalance}">
                                                     <div class="input-group-append">
-                                                        <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-coins"></i>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Trạng thái VIP</label>
-                                                <select class="form-control" name="vipStatus" id="vipStatus">
-                                                    <option value="false" selected>Thường</option>
-                                                    <option value="true">Thành viên VIP</option>
+                                                <label>VIP</label>
+                                                <select class="form-control"
+                                                        th:field="*{vipStatus}"
+                                                        id="vipStatus">
+                                                    <option value="false">Thường</option>
+                                                    <option value="true">VIP</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4" id="vipExpiryGroup" style="display: none;">
+
+                                        <div class="col-md-4" id="vipExpiryGroup" style="display:none;">
                                             <div class="form-group">
                                                 <label>Ngày hết hạn VIP</label>
-                                                <input type="date" class="form-control" name="vipExpiryDate">
+                                                <input type="date" class="form-control"
+                                                       th:field="*{vipExpiryDate}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Trạng thái tài khoản</label>
+                                        <label>Trạng thái</label>
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="isActiveSwitch" name="isActive" checked>
-                                            <label class="custom-control-label" for="isActiveSwitch">Kích hoạt tài khoản</label>
+                                            <input type="checkbox"
+                                                   class="custom-control-input"
+                                                   id="isActiveSwitch"
+                                                   th:field="*{isActive}">
+                                            <label class="custom-control-label"
+                                                   for="isActiveSwitch">
+                                                Kích hoạt tài khoản
+                                            </label>
                                         </div>
                                     </div>
 
                                     <div class="card-footer bg-transparent px-0">
-                                        <button type="submit" class="btn btn-primary shadow-sm">
+                                        <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-save mr-1"></i> Lưu người dùng
                                         </button>
-                                        <a href="/asura/admin/users" class="btn btn-default float-right">Hủy bỏ</a>
+
+                                        <a href="/asura/admin/comic/users"
+                                           class="btn btn-default float-right">
+                                            Hủy
+                                        </a>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -148,42 +216,23 @@
 <script src="/css/admin-assets/dist/js/adminlte.js"></script>
 
 <script>
-    $(document).ready(function() {
-        // Ẩn/hiện ngày hết hạn VIP khi thay đổi trạng thái
-        $('#vipStatus').change(function() {
+    $(function () {
+        $('#vipStatus').change(function () {
             if ($(this).val() === 'true') {
                 $('#vipExpiryGroup').fadeIn();
             } else {
                 $('#vipExpiryGroup').fadeOut();
             }
-        });
-
-        function showNotification(message, type) {
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
-            const notification = document.createElement('div');
-            notification.className = `alert alert-${type} alert-dismissible fade show`;
-            notification.style = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 250px;';
-            notification.innerHTML = `
-                <i class="fas ${icon} mr-2"></i> ${message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            `;
-            document.body.appendChild(notification);
-            setTimeout(() => { $(notification).alert('close'); }, 3000);
-        }
-
-        $('#createUserForm').on('submit', function(e) {
-            e.preventDefault();
-
-            // Logic xử lý gửi dữ liệu về Controller ở đây (Dùng Ajax/Fetch)
-
-            showNotification('Đang khởi tạo tài khoản...', 'success');
-            setTimeout(() => {
-                window.location.href = '/asura/admin/users';
-            }, 1000);
-        });
+        }).trigger('change');
     });
 </script>
+<!--tạo thành công-->
+<script>
+    setTimeout(function () {
+        $('.alert-success').fadeOut('slow');
+    }, 3000);
+</script>
+
+
 </body>
 </html>

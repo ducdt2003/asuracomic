@@ -302,78 +302,109 @@
                                 <h3 class="card-title">Chỉnh sửa truyện</h3>
                             </div>
                             <div class="card-body">
-                                <form id="comic-form">
+                                <!-- SUCCESS -->
+                                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span th:text="${successMessage}"></span>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                </div>
+
+                                <!-- ERROR -->
+                                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span th:text="${errorMessage}"></span>
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                </div>
+
+                                <form id="comic-form" th:action="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug})}" method="post">
+                                    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label>Tiêu đề <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="title" name="title" required />
+                                                <input type="text" class="form-control" id="title" name="title"
+                                                       th:value="${comic.title}" required />
                                             </div>
                                             <div class="form-group">
                                                 <label>Slug <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="slug" name="slug" required />
+                                                <input type="text" class="form-control" id="slug" name="slug"
+                                                       th:value="${comic.slug}" required />
                                             </div>
                                             <div class="form-group">
                                                 <label>Mô tả</label>
-                                                <textarea id="description" name="description"></textarea>
+                                                <textarea id="description" name="description" th:text="${comic.description}"></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Serialization</label>
-                                                <input type="text" class="form-control" id="serialization" name="serialization" />
+                                                <input type="text" class="form-control" id="serialization" name="serialization"
+                                                       th:value="${comic.serialization}" />
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Trạng thái</label>
                                                 <select id="status" name="status" class="form-control">
-                                                    <option value="ONGOING">Đang tiến hành</option>
-                                                    <option value="COMPLETED">Hoàn thành</option>
+                                                    <option value="ONGOING" th:selected="${comic.status == 'ONGOING'}">Đang tiến hành</option>
+                                                    <option value="COMPLETED" th:selected="${comic.status == 'COMPLETED'}">Hoàn thành</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Loại truyện</label>
                                                 <select id="type" name="type" class="form-control">
-                                                    <option value="MANHWA">Manhwa</option>
-                                                    <option value="MANGA">Manga</option>
-                                                    <option value="MANHUA">Manhua</option>
+                                                    <option value="MANHWA" th:selected="${comic.type == 'MANHWA'}">Manhwa</option>
+                                                    <option value="MANGA" th:selected="${comic.type == 'MANGA'}">Manga</option>
+                                                    <option value="MANHUA" th:selected="${comic.type == 'MANHUA'}">Manhua</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Thể loại</label>
                                                 <select class="select2 form-control" multiple id="genres" name="genreIds">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="genre : ${allGenres}"
+                                                            th:value="${genre.id}"
+                                                            th:text="${genre.name}"
+                                                            th:selected="${#lists.contains(selectedGenreIds, genre.id)}"></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Tác giả</label>
                                                 <select class="select2 form-control" multiple id="authors" name="authorIds">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="author : ${allAuthors}"
+                                                            th:value="${author.id}"
+                                                            th:text="${author.name}"
+                                                            th:selected="${#lists.contains(selectedAuthorIds, author.id)}"></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Họa sĩ</label>
                                                 <select class="select2 form-control" multiple id="artists" name="artistIds">
-                                                    <!-- Populated dynamically -->
+                                                    <option th:each="artist : ${allArtists}"
+                                                            th:value="${artist.id}"
+                                                            th:text="${artist.name}"
+                                                            th:selected="${#lists.contains(selectedArtistIds, artist.id)}"></option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Hình bìa</label>
                                                 <div class="thumbnail-preview-container mb-3">
-                                                    <img src="" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
+                                                    <img th:src="${comic.coverImage}" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
                                                 </div>
                                                 <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
                                                     Chọn hình ảnh
                                                 </button>
+                                                <input type="hidden" name="coverImage" id="coverImageInput" th:value="${comic.coverImage}">
                                             </div>
                                             <div class="form-group">
                                                 <label>Trạng thái xuất bản</label>
                                                 <select id="isPublished" name="isPublished" class="form-control">
-                                                    <option value="true">Công khai</option>
-                                                    <option value="false">Ẩn</option>
+                                                    <option value="true" th:selected="${comic.isPublished == true}">Công khai</option>
+                                                    <option value="false" th:selected="${comic.isPublished == false}">Ẩn</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- Chapters Section -->
                                     <div class="row">
                                         <div class="col-12">
@@ -381,8 +412,12 @@
                                                 <div class="card-header">
                                                     <h3 class="card-title">Danh sách chương</h3>
                                                     <div class="card-tools">
-                                                        <a th:href="@{/asura/admin/comic/content/chapter/update/{comicId}(comicId=${comic.id})}" class="btn btn-sm btn-primary">Thêm chương</a>
+                                                        <a th:href="@{/asura/admin/comic/content/chapter/update/{id}(id=${comic.id})}"
+                                                           class="btn btn-sm btn-primary">
+                                                            Thêm chương
+                                                        </a>
                                                     </div>
+
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="table table-bordered">
@@ -406,7 +441,7 @@
                                                             <td th:text="${chapter.coinPrice}"></td>
                                                             <td th:text="${chapter.isPublished} ? 'Công khai' : 'Ẩn'"></td>
                                                             <td>
-                                                                <a th:href="@{/asura/admin/comic/content/chapter/update/{chapterId}(chapterId=${chapter.id})}"
+                                                                <a th:href="@{/asura/admin/comic/content/chapter/edit/{chapterId}(chapterId=${chapter.id})}"
                                                                    class="btn btn-sm btn-warning">Sửa</a>
                                                                 <button class="btn btn-sm btn-danger" th:onclick="'deleteChapter(' + ${chapter.id} + ')'">Xóa</button>
                                                             </td>
@@ -503,210 +538,23 @@
     <script src="/css/admin-assets/plugins/select2/js/select2.full.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Initialize Select2
             $('.select2').select2();
 
-            // Initialize EasyMDE for description
-            const easyMDE = new EasyMDE({
+            new EasyMDE({
                 element: document.getElementById('description'),
                 spellChecker: false,
                 maxHeight: '300px',
                 renderingConfig: { codeSyntaxHighlighting: true }
             });
-
-            // Mock comic data (replace with API call in production)
-            const comicData = {
-                id: 1,
-                title: "One Piece",
-                slug: "one-piece",
-                description: "The story follows the adventures of Monkey D. Luffy and his pirate crew...",
-                coverImage: "https://example.com/one-piece-cover.jpg",
-                viewCount: 1000000,
-                followCount: 500000,
-                averageRating: 4.8,
-                status: "ONGOING",
-                type: "MANGA",
-                isPublished: true,
-                serialization: "Weekly Shonen Jump",
-                createdAt: "2020-01-01T00:00:00",
-                updatedAt: "2025-08-14T14:57:00",
-                genres: [{ id: 1, name: "Action" }, { id: 2, name: "Adventure" }],
-                authors: [{ id: 1, name: "Eiichiro Oda" }],
-                artists: [{ id: 1, name: "Eiichiro Oda" }],
-                chapters: [
-                    { id: 1, chapterNumber: 1, title: "Romance Dawn", slug: "chapter-1", isFree: true, coinPrice: 0, viewCount: 50000, isPublished: true },
-                    { id: 2, chapterNumber: 2, title: "The Man in the Straw Hat", slug: "chapter-2", isFree: false, coinPrice: 5.00, viewCount: 45000, isPublished: true }
-                ]
-            };
-
-            // Initialize form data
-            function initData(data) {
-                $('#title').val(data.title);
-                $('#slug').val(data.slug);
-                easyMDE.value(data.description || '');
-                $('#serialization').val(data.serialization || '');
-                $('#status').val(data.status);
-                $('#type').val(data.type);
-                $('#isPublished').val(data.isPublished.toString());
-                $('#coverImage').attr('src', data.coverImage || '');
-                $('#comic-title-breadcrumb').text(data.title);
-
-                // Populate genres (mock API call)
-                $.ajax({
-                    url: '/api/genres',
-                    success: function(genres) {
-                        $('#genres').empty();
-                        genres.forEach(genre => {
-                            const selected = data.genres.some(g => g.id === genre.id) ? 'selected' : '';
-                            $('#genres').append(`<option value="${genre.id}" ${selected}>${genre.name}</option>`);
-                        });
-                        $('#genres').trigger('change');
-                    }
-                });
-
-                // Populate authors (mock API call)
-                $.ajax({
-                    url: '/api/authors',
-                    success: function(authors) {
-                        $('#authors').empty();
-                        authors.forEach(author => {
-                            const selected = data.authors.some(a => a.id === author.id) ? 'selected' : '';
-                            $('#authors').append(`<option value="${author.id}" ${selected}>${author.name}</option>`);
-                        });
-                        $('#authors').trigger('change');
-                    }
-                });
-
-                // Populate artists (mock API call)
-                $.ajax({
-                    url: '/api/artists',
-                    success: function(artists) {
-                        $('#artists').empty();
-                        artists.forEach(artist => {
-                            const selected = data.artists.some(a => a.id === artist.id) ? 'selected' : '';
-                            $('#artists').append(`<option value="${artist.id}" ${selected}>${artist.name}</option>`);
-                        });
-                        $('#artists').trigger('change');
-                    }
-                });
-
-                // Populate chapters
-                $('#chapters-table').empty();
-                data.chapters.forEach(chapter => {
-                    $('#chapters-table').append(`
-                        <tr>
-                            <td>${chapter.chapterNumber}</td>
-                            <td>${chapter.title}</td>
-                            <td>${chapter.viewCount}</td>
-                            <td>${chapter.isFree ? 'Miễn phí' : 'Trả phí'}</td>
-                            <td>${chapter.coinPrice}</td>
-                            <td>${chapter.isPublished ? 'Công khai' : 'Ẩn'}</td>
-                            <td>
-                                <a href="./chapters-edit.html?chapterId=${chapter.id}" class="btn btn-sm btn-primary">Sửa</a>
-                                <button class="btn btn-sm btn-danger" onclick="deleteChapter(${chapter.id})">Xóa</button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            }
-
-            // Form submission
-            $('#comic-form').on('submit', function(e) {
-                e.preventDefault();
-                const comic = {
-                    id: comicData.id,
-                    title: $('#title').val(),
-                    slug: $('#slug').val(),
-                    description: easyMDE.value(),
-                    serialization: $('#serialization').val(),
-                    status: $('#status').val(),
-                    type: $('#type').val(),
-                    isPublished: $('#isPublished').val() === 'true',
-                    genres: $('#genres').val().map(id => ({ id: parseInt(id) })),
-                    authors: $('#authors').val().map(id => ({ id: parseInt(id) })),
-                    artists: $('#artists').val().map(id => ({ id: parseInt(id) })),
-                    coverImage: $('#coverImage').attr('src')
-                };
-                $.ajax({
-                    url: `/api/comics/${comic.id}`,
-                    method: 'PUT',
-                    data: JSON.stringify(comic),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        alert('Lưu thành công!');
-                        window.location.href = '/admin/comics';
-                    },
-                    error: function() {
-                        alert('Lưu thất bại!');
-                    }
-                });
-            });
-
-            // Delete comic
-            function deleteComic() {
-                if (confirm('Bạn có chắc muốn xóa truyện này?')) {
-                    $.ajax({
-                        url: `/api/comics/${comicData.id}`,
-                        method: 'DELETE',
-                        success: function() {
-                            alert('Xóa thành công!');
-                            window.location.href = '/admin/comics';
-                        },
-                        error: function() {
-                            alert('Xóa thất bại!');
-                        }
-                    });
-                }
-            }
-
-            // Delete chapter
-            function deleteChapter(chapterId) {
-                if (confirm('Bạn có chắc muốn xóa chương này?')) {
-                    $.ajax({
-                        url: `/api/chapters/${chapterId}`,
-                        method: 'DELETE',
-                        success: function() {
-                            alert('Xóa chương thành công!');
-                            location.reload();
-                        },
-                        error: function() {
-                            alert('Xóa chương thất bại!');
-                        }
-                    });
-                }
-            }
-
-            // Handle image upload
-            $('#imageUpload').on('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreview').html(`<img src="${e.target.result}" style="max-width: 100%; height: auto;" />`);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Save image
-            function saveImage() {
-                const src = $('#imagePreview img').attr('src');
-                if (src) {
-                    $('#coverImage').attr('src', src);
-                    $('#modal-xl').modal('hide');
-                } else {
-                    alert('Vui lòng chọn hình ảnh!');
-                }
-            }
-
-            // Add chapter button (mock navigation)
-            $('#add-chapter-btn').on('click', function() {
-                window.location.href = `./chapters-create.html?comicId=${comicData.id}`;
-            });
-
-            // Initialize with comic data
-            initData(comicData);
         });
     </script>
+
+    <script>
+        setTimeout(() => {
+            $('.alert').fadeOut('slow');
+        }, 3000);
+    </script>
+
+
 </body>
 </html>

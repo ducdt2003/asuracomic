@@ -425,84 +425,130 @@
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Tiêu đề</label>
-                                            <input type="text" class="form-control" id="title" th:value="${comic.title}" required />
+                                            <input type="text" class="form-control" id="title" th:value="${comic.title}" readonly />
                                         </div>
                                         <div class="form-group">
                                             <label for="description"><b>Mô tả</b></label>
-                                            <textarea id="description" name="description" rows="6" cols="60" class="form-control">
-    [[${comic.description}]]
-</textarea>
+                                            <label for="description"><b>Mô tả</b></label>
+                                            <textarea id="description"
+                                                      class="form-control"
+                                                      rows="6"
+                                                      readonly>[[${comic.description}]]</textarea>
 
                                         </div>
                                         <div class="form-group">
                                             <label>Serialization</label>
-                                            <input type="text" class="form-control" id="serialization" th:value="${comic.serialization}" />
+                                            <input type="text" class="form-control" id="serialization" th:value="${comic.serialization}" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Trạng thái</label>
-                                            <select id="status" class="form-control" th:value="${comic.status}">
-                                                <option value="ONGOING" th:selected="${comic.status == 'ONGOING'}">Đang tiến hành</option>
-                                                <option value="COMPLETED" th:selected="${comic.status == 'COMPLETED'}">Hoàn thành</option>
+                                            <select id="status"
+                                                    class="form-control"
+                                                    th:value="${comic.status}"
+                                                    disabled>
+                                                <option value="ONGOING"
+                                                        th:selected="${comic.status == 'ONGOING'}">
+                                                    Đang tiến hành
+                                                </option>
+                                                <option value="COMPLETED"
+                                                        th:selected="${comic.status == 'COMPLETED'}">
+                                                    Hoàn thành
+                                                </option>
                                             </select>
+
                                         </div>
                                         <div class="form-group">
                                             <label>Loại truyện</label>
-                                            <select id="type" class="form-control" th:value="${comic.type}">
-                                                <option value="MANHWA" th:selected="${comic.type == 'MANHWA'}">Manhwa</option>
-                                                <option value="MANGA" th:selected="${comic.type == 'MANGA'}">Manga</option>
-                                                <option value="MANHUA" th:selected="${comic.type == 'MANHUA'}">Manhua</option>
+                                            <select id="type"
+                                                    class="form-control"
+                                                    th:value="${comic.type}"
+                                                    disabled>
+                                                <option value="MANHWA"
+                                                        th:selected="${comic.type == 'MANHWA'}">
+                                                    Manhwa
+                                                </option>
+                                                <option value="MANGA"
+                                                        th:selected="${comic.type == 'MANGA'}">
+                                                    Manga
+                                                </option>
+                                                <option value="MANHUA"
+                                                        th:selected="${comic.type == 'MANHUA'}">
+                                                    Manhua
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Thể loại</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple" id="genres">
+                                                <select class="select2 form-control"
+                                                        multiple="multiple"
+                                                        id="genres"
+                                                        disabled>
                                                     <option th:each="comicGenre : ${comic.comicGenres}"
                                                             th:value="${comicGenre.genre.id}"
                                                             th:text="${comicGenre.genre.name}"
-                                                            th:selected="${comicGenre.genre.id}"></option>
+                                                            th:selected="${comicGenre.genre.id}">
+                                                    </option>
                                                 </select>
                                             </div>
+
                                         </div>
                                         <div class="form-group">
                                             <label>Tác giả</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple" id="authors">
+                                                <select class="select2 form-control"
+                                                        multiple="multiple"
+                                                        id="authors"
+                                                        disabled>
                                                     <option th:each="comicAuthor : ${comic.comicAuthors}"
                                                             th:value="${comicAuthor.author.id}"
                                                             th:text="${comicAuthor.author.name}"
-                                                            th:selected="${comicAuthor.author.id}"></option>
+                                                            th:selected="${comicAuthor.author.id}">
+                                                    </option>
                                                 </select>
                                             </div>
+
                                         </div>
                                         <div class="form-group">
                                             <label>Họa sĩ</label>
                                             <div class="select2-purple">
-                                                <select class="select2 form-control" multiple="multiple" id="artists">
+                                                <select class="select2 form-control"
+                                                        multiple="multiple"
+                                                        id="artists"
+                                                        disabled>
                                                     <option th:each="comicArtist : ${comic.comicArtists}"
                                                             th:value="${comicArtist.artist.id}"
                                                             th:text="${comicArtist.artist.name}"
-                                                            th:selected="${comicArtist.artist.id}"></option>
+                                                            th:selected="${comicArtist.artist.id}">
+                                                    </option>
                                                 </select>
                                             </div>
+
                                         </div>
                                         <div class="form-group">
                                             <label>Hình bìa</label>
                                             <div class="thumbnail-preview-container mb-3">
                                                 <img th:src="${comic.coverImage}" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
                                             </div>
-                                            <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
-                                                Chọn hình ảnh
-                                            </button>
                                         </div>
                                         <div class="form-group">
                                             <label>Trạng thái xuất bản</label>
-                                            <select id="isPublished" class="form-control" th:value="${comic.isPublished}">
-                                                <option value="true" th:selected="${comic.isPublished == true}">Công khai</option>
-                                                <option value="false" th:selected="${comic.isPublished == false}">Ẩn</option>
+                                            <select id="isPublished"
+                                                    class="form-control"
+                                                    th:value="${comic.isPublished}"
+                                                    disabled>
+                                                <option value="true"
+                                                        th:selected="${comic.isPublished == true}">
+                                                    Công khai
+                                                </option>
+                                                <option value="false"
+                                                        th:selected="${comic.isPublished == false}">
+                                                    Ẩn
+                                                </option>
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>

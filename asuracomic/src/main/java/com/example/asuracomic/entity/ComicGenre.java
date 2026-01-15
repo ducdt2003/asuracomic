@@ -17,7 +17,7 @@ public class ComicGenre {
 
     @ManyToOne
     @JoinColumn(name = "comic_id", nullable = false)
-    private Comic comic; // Truyện liên kết, xác định truyện thuộc thể loại nào
+    private Comic comic; // nhiều ComicGenre liên kết với 1 comic
 
     @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)

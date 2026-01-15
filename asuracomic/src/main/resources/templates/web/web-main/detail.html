@@ -53,15 +53,14 @@
                         </button>
 
                         <div class="stats">
-            <span>
-                <strong>Followed by:</strong>
-                <span th:text="${comic.followCount} + ' people'">0 people</span>
-            </span>
                             <span>
-                <strong>Views:</strong>
-                <span th:text="${comic.viewCount} + ' views'">0 views</span>
-            </span>
-
+                                <strong>Followed by:</strong>
+                                <span th:text="${comic.followCount} + ' people'">0 people</span>
+                            </span>
+                            <span>
+                                <strong>Views:</strong>
+                                <span th:text="${comic.viewCount} + ' views'">0 views</span>
+                            </span>
                             <div class="rating-row">
                                 <div class="rating-stars">
                                     <strong>Rating:</strong>
@@ -74,16 +73,14 @@
                                 </div>
                                 <button class="rate-btn">Rate</button>
                             </div>
-
                             <span>
-                <strong>Status:</strong>
-                <span th:text="${comic.status != null} ? ${comic.status} : 'Unknown'">Unknown</span>
-            </span>
-
+                                <strong>Status:</strong>
+                                <span th:text="${comic.status != null} ? ${comic.status} : 'Unknown'">Unknown</span>
+                             </span>
                             <span>
-                <strong>Type:</strong>
-                <span th:text="${comic.type != null} ? ${comic.type} : 'Unknown'">Unknown</span>
-            </span>
+                                <strong>Type:</strong>
+                                <span th:text="${comic.type != null} ? ${comic.type} : 'Unknown'">Unknown</span>
+                             </span>
                         </div>
                     </div>
 
@@ -159,13 +156,13 @@
                         <button th:if="${firstChapter != null}"
                                 class="btn btn-primary me-2"
                                 th:onclick="'location.href=\'' +
-                (${firstChapter.isFree} ?
-                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
-                    (${isLoggedIn} ?
-                        @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
-                        @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${firstChapter.slug} + '/unlock')}
-                    )
-                ) + '\''">
+                                (${firstChapter.isFree} ?
+                                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
+                                    (${isLoggedIn} ?
+                                    @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${firstChapter.slug})} :
+                                    @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${firstChapter.slug} + '/unlock')}
+                                    )
+                                ) + '\''">
                             <span>First Chapter</span><br>
                             <span th:text="'Chapter ' + ${firstChapter.chapterNumber}">Chapter 1</span>
                         </button>
@@ -174,13 +171,13 @@
                         <button th:if="${latestChapter != null}"
                                 class="btn btn-primary"
                                 th:onclick="'location.href=\'' +
-                (${latestChapter.isFree} ?
-                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
-                    (${isLoggedIn} ?
-                        @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
-                        @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${latestChapter.slug} + '/unlock')}
-                    )
-                ) + '\''">
+                                (${latestChapter.isFree} ?
+                                    @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
+                                    (${isLoggedIn} ?
+                                    @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${latestChapter.slug})} :
+                                    @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${latestChapter.slug} + '/unlock')}
+                                     )
+                                ) + '\''">
                             <span>New Chapter</span><br>
                             <span th:text="${latestChapter.title != null and !latestChapter.title.isEmpty()} ? ${latestChapter.title} : 'New Chapter'">New Chapter</span>
                         </button>
@@ -216,10 +213,10 @@
                                 th:each="chapter : ${chapters}">
                                 <a class="text-decoration-none"
                                    th:href="${chapter.isFree} ?
-                   @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
-                   (${isLoggedIn} ?
-                       @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
-                       @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock')})">
+                                   @{/asura/comic/{slug}/chapter/{chapterSlug}(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                                   (${isLoggedIn} ?
+                                   @{/asura/comic/{slug}/chapter/{chapterSlug}/unlock(slug=${comic.slug}, chapterSlug=${chapter.slug})} :
+                                   @{/asura/login(redirectUrl='/asura/comic/' + ${comic.slug} + '/chapter/' + ${chapter.slug} + '/unlock')})">
                                     <span th:text="'Chapter ' + ${chapter.chapterNumber}"></span>
 
                                     <!-- 🔒 Chỉ hiển thị nếu chương chưa mở khóa -->

@@ -21,5 +21,6 @@ public class UserUpdateDto {
     private String newPassword;
     private String vipStartDate;
     private String vipExpiryDate;
+
 }
 

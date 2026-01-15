@@ -38,7 +38,7 @@ public class ComicService {
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy truyện với ID: " + id));
     }
 
-    // xữ lý lấy 5 truyện hot đánh giá cao nhất
+    // xữ lý lấy 5 truyện hot đánh giá cao nhất      Entity → DTO
     // .stream().map(...) cú pháp Java Stream API chuyển đổi danh sách đối tượng comic thành comicCarouselDTO
     public List<ComicCarouselDTO> getHotComicsForCarousel() {
         return comicRepository.findTop5ByIsPublishedTrueOrderByAverageRatingDesc()
@@ -60,7 +60,7 @@ public class ComicService {
                                 .orElse("Unknown"))
                         .slug(comic.getSlug())
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); // Stream ComicCarouselDTO thành List<ComicCarouselDTO> để trả về
     }
 
     public List<Comic> getTopViewedComicsToday(int limit) {
@@ -139,7 +139,7 @@ public class ComicService {
                 .orElseThrow(() -> new RuntimeException("No chapter found"));
     }
 
-    // truyện liên quan
+    // truyện liên quan biến list thành stream
     public List<RelatedComicDTO> getRelatedComics(Long comicId, int limit) {
         List<Comic> comics = comicRepository.findRelatedComics(comicId, PageRequest.of(0, limit));
         return comics.stream().map(comic -> {
@@ -171,18 +171,18 @@ public class ComicService {
                 .orElse(null);
     }
 
-    // lấy all truyện trên database phân trang
+    // lấy all truyện trên database phân trang đc từ requestPram
     public Page<Comic> getComicPage(int page, int size) {
         Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
 
         comicPage.getContent().forEach(comic -> {
             List<Chapter> filteredChapters = comic.getChapters().stream()
-                    .filter(Chapter::isPublished) // ch llaaysys chater đã xuất hiện
-                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                    .filter(Chapter::isPublished) // chỉ lấy chapter đã xuất bản
+                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed()) // sắp xếp
                     .limit(3)
                     .collect(Collectors.toList());
 
-            comic.setChapters(filteredChapters);
+            comic.setChapters(filteredChapters); // gán lại cho comic
         });
 
         return comicPage;

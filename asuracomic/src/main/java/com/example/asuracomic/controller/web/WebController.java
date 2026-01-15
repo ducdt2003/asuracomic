@@ -44,12 +44,12 @@ public class WebController {
     private final UserService userService;
 
 
-    // trang chủ
+    // trang chủ pramsau dấu hỏu
     @GetMapping
     public String homeLogin(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int size,
                             Model model) {
-        // top comics rating
+        // top comics rating lưu vào biến hco
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
         // top comics views today
@@ -92,14 +92,14 @@ public class WebController {
         return "web/web-main/home";
     }
 
-    // trang chi tiết
+    // trang chi tiết tền tham số lêurl
     @GetMapping("/comic/{slug}")
     public String detail(@PathVariable String slug,
                          @RequestParam(required = false) String redirectToAuthor,
                          Model model, HttpSession session) {
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
-        if (comicDetail == null) {
+        /*if (comicDetail == null) {
             return "redirect:/error"; // Hoặc chuyển hướng đến trang lỗi
         }
 
@@ -113,7 +113,7 @@ public class WebController {
                 String authorSlug = authors.get(0).getSlug(); // Get the first author's slug
                 return "redirect:/asura/authors/" + authorSlug;
             }
-        }
+        }*/
 
         // Existing logic for the detail page
         model.addAttribute("comic", comicDetail);
@@ -306,7 +306,7 @@ public class WebController {
         return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
     }
 
-    // Thêm bình luận mới (AJAX)
+    // Thêm bình luận mới (AJAX) tra về json
     @PostMapping(value = "/comic/{comicSlug}/chapter/{chapterSlug}/comment/ajax", produces = "application/json")
     @ResponseBody
     public ResponseEntity<CommentResponseDTO> createCommentAjax(@PathVariable String comicSlug,

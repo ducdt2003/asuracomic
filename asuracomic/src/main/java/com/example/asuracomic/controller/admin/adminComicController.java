@@ -1,16 +1,16 @@
 package com.example.asuracomic.controller.admin;
 
-import com.example.asuracomic.dto.admin.DashboardStatsDTO;
-import com.example.asuracomic.dto.admin.UserUpdateDto;
+import com.example.asuracomic.dto.admin.*;
 import com.example.asuracomic.entity.*;
 import com.example.asuracomic.model.enums.Role;
-import com.example.asuracomic.repository.CommentRepository;
-import com.example.asuracomic.repository.ReportRepository;
-import com.example.asuracomic.repository.TransactionRepository;
-import com.example.asuracomic.repository.UserRepository;
+import com.example.asuracomic.repository.*;
 import com.example.asuracomic.service.DashboardService;
+import com.example.asuracomic.service.admin.admincomic.AdminChapterService;
+import com.example.asuracomic.service.admin.admincomic.AdminComicService;
 import com.example.asuracomic.service.admin.adminuser.AdminUser;
 import com.example.asuracomic.service.admin.RevenueService;
+import com.example.asuracomic.service.admin.adminuser.UserDelete;
+import com.example.asuracomic.service.admin.adminuser.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,18 @@ public class adminComicController {
     private final TransactionRepository transactionRepository;
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
+    private final ComicRepository comicRepository;
     private final AdminUser adminUser;
+    private final UserService createUser;
+    private final UserDelete userDelete;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
+    private final ArtistRepository artistRepository;
+    private final AdminComicService adminComicService;
+    private final AdminChapterService adminChapterService;
+    private final ChapterImageRepository chapterImageRepository;
+
+    /* <!-- ================= Comic ================= -->*/
     @GetMapping
     public String getIndexPage(Model model) {
         // Dashboard statistics
@@ -89,25 +103,143 @@ public class adminComicController {
                               Model model) {
         Comic comic = dashboardService.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện"));
+        // Lấy toàn bộ danh sách để đổ vào các ô Select
+        model.addAttribute("allGenres", genreRepository.findAll());
+        model.addAttribute("allAuthors", authorRepository.findAll());
+        model.addAttribute("allArtists", artistRepository.findAll());
+
+        // Lấy danh sách ID đã chọn để Thymeleaf check "selected"
+        model.addAttribute("selectedGenreIds", comic.getComicGenres().stream().map(cg -> cg.getGenre().getId()).toList());
+        model.addAttribute("selectedAuthorIds", comic.getComicAuthors().stream().map(ca -> ca.getAuthor().getId()).toList());
+        model.addAttribute("selectedArtistIds", comic.getComicArtists().stream().map(ca -> ca.getArtist().getId()).toList());
         // Lấy danh sách chương có phân trang
         Page<Chapter> chapterPage = dashboardService.getChaptersByComic(comic, page, size);
         model.addAttribute("comic", comic);
         model.addAttribute("chapterPage", chapterPage);
         return "admin-templ/admin-content/blog-edit";
     }
+    @PostMapping("/content/edit/{slug}")
+    public String handleUpdateComic(@PathVariable String slug,
+                                    @ModelAttribute("comicForm") ComicUpdateForm form,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            adminComicService.updateComic(slug, form);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thông tin truyện thành công!");
+
+            // Điều hướng theo slug mới để tránh lỗi 404
+            return "redirect:/asura/admin/comic/content/edit/" + form.getSlug();
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi ra console để debug
+            redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
+            return "redirect:/asura/admin/comic/content/edit/" + slug;
+        }
+    }
+
+
 
     // Trang cập nhật nội dung chương
     @GetMapping("/content/chapter/update/{id}")
-    public String getChapterUpdatePage() {
+    public String getChapterUpdatePage(@PathVariable("id") Long comicId,
+                                       Model model) {
+        Comic comic = comicRepository.findById(comicId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện"));
+
+        model.addAttribute("comic", comic);
         return "admin-templ/admin-content/chapter-update";
     }
 
+
+    @PostMapping("/content/chapter/update/{comicId}")
+    public String handleCreateChapter(
+            @PathVariable("comicId") Long comicId,
+            @ModelAttribute ChapterUpdateForm chapterRequest,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            adminChapterService.createChapter(comicId, chapterRequest);
+            redirectAttributes.addFlashAttribute("success", "Tải lên chương mới thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
+        }
+
+        return "redirect:/asura/admin/comic/content/chapter/update/" + comicId;
+    }
+
+
+
+
+
+
     // Trang chỉnh sửa metadata / thông tin chương
     @GetMapping("/content/chapter/edit/{id}")
-    public String getChapterEditPage() {
+    public String getChapterEditPage(@PathVariable Long id, Model model) {
+        Chapter chapter = adminChapterService.getChapterById(id);
+        model.addAttribute("chapter", chapter);
+        // Sắp xếp ảnh theo thứ tự trang trước khi gửi ra View
+        chapter.getChapterImages().sort((a, b) -> a.getOrderIndex().compareTo(b.getOrderIndex()));
         return "admin-templ/admin-content/chapters-edit";
     }
 
+    @PostMapping("/content/chapter/edit/{id}")
+    public String handleUpdateChapter(@PathVariable Long id,
+                                      @ModelAttribute ChapterEditFormDTO form,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            adminChapterService.updateChapter(id, form);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật chương thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
+        }
+        return "redirect:/asura/admin/comic/content/chapter/edit/" + id;
+    }
+
+    @PostMapping("/content/chapter/edit/delete-image/{imageId}")
+    public String deleteImage(@PathVariable Long imageId,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            Long chapterId = adminChapterService.deleteImageAndReorder(imageId);
+
+            redirectAttributes.addFlashAttribute(
+                    "success", "Đã xóa trang truyện thành công!");
+
+            return "redirect:/asura/admin/comic/content/chapter/edit/" + chapterId;
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(
+                    "error", "Lỗi: " + e.getMessage());
+            return "redirect:/asura/admin/comic";
+        }
+    }
+
+    @PostMapping("/content/chapter/edit/add-images/{chapterId}")
+    public String addChapterImages(
+            @PathVariable Long chapterId,
+            @RequestParam("images") List<MultipartFile> images,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            adminChapterService.addImagesToChapter(chapterId, images);
+
+            redirectAttributes.addFlashAttribute(
+                    "success", "Đã thêm ảnh vào chương thành công!");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(
+                    "error", "Lỗi: " + e.getMessage());
+        }
+
+        // Quay lại đúng trang chỉnh sửa chapter
+        return "redirect:/asura/admin/comic/content/chapter/edit/" + chapterId;
+    }
+
+
+
+
+
+
+
+
+    /* <!-- ================= USER ================= -->*/
     /*@GetMapping("/users")
     public String getUserPage(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(required = false) String search,
@@ -203,9 +335,36 @@ public class adminComicController {
     }
 
     @GetMapping("/users/create")
-    public String getUserCreatePage() {
+    public String getUserCreatePage(Model model) {
+        model.addAttribute("user", new UserCreateRequest());
         return "admin-templ/admin-user/create-user";
     }
+    @PostMapping("/users/create")
+    public String createUser(
+            @ModelAttribute("user") UserCreateRequest request,
+            Model model) {
+        try {
+            createUser.createUser(request);
+            return "redirect:/asura/admin/comic/users/create?success";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "admin-templ/admin-user/create-user";
+        }
+    }
+    @PostMapping("/users/delete/{id}")
+    @ResponseBody // Thêm cái này để trả về dữ liệu thay vì tìm giao diện HTML
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            userDelete.deleteUser(id);
+            // Trả về mã 200 OK kèm thông báo
+            return ResponseEntity.ok("Xóa người dùng thành công");
+        } catch (Exception e) {
+            // Trả về mã lỗi 500 nếu có lỗi xảy ra
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi: " + e.getMessage());
+        }
+    }
+
 
     @GetMapping("/users/revenues")
     public String getRevenues(Model model,
@@ -247,6 +406,7 @@ public class adminComicController {
 
 
 
+    /* <!-- ================= interact ================= -->*/
 
     @GetMapping("/interact")
     public String getInteractAdmin() {

@@ -17,10 +17,10 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     Optional<UnlockedChapter> findByUser_IdAndChapter_Id(Long userId, Long chapterId); // Tham số userId và chapterId là các giá trị cần tìm kiếm
 
 
-    //người dùng đã từng mua chương hay chưa
+    //người dùng đã từng mua chương hay chưa existsBy tồn tịa hay không
     boolean existsByUserIdAndChapterId(Long userId, Long chapterId);
 
-    // b khóa
+    // lấy danh sách các chapter mà người dùng đã mở khóa cầu nối giữa tên biến trong method và tên biến trong query.
     @Query("SELECT uc.chapter.id FROM UnlockedChapter uc WHERE uc.user.id = :userId")
     List<Long> findChapterIdsByUserId(@Param("userId") Long userId);
 }

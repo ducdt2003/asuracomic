@@ -17,7 +17,7 @@ import java.util.List;
 public class Comic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ID duy nhất của truyện, dùng để tham chiếu trong các bảng khác (VD: chương, đánh giá)
+    private Long id; // ID duy nhất của truyện, dùng để tham chiếu trong các bảng khác (VD: chương, đánh giá) unique k úng nhua
 
     @Column(nullable = false, length = 255)
     private String title; // Tiêu đề truyện, hiển thị trên danh sách truyện, trang chi tiết, và tìm kiếm
@@ -63,13 +63,13 @@ public class Comic {
     @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
     private List<Chapter> chapters; // Danh sách chương, hiển thị trên trang chi tiết truyện, hỗ trợ điều hướng đọc
 
-    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
-    private List<ComicGenre> comicGenres; // Danh sách thể loại của truyện, hỗ trợ lọc và hiển thị thẻ thể loại
+    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true) // nếu xóa hoặc cập nhật Comic, các ComicGenre liên quan cũng bị xóa/cập nhật theo.
+    private List<ComicGenre> comicGenres; // 1 comic liên kết vcowis nhiều genre, bảng comic liên kết với bảng comicgener qua thuộc tính comic
 
-    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComicAuthor> comicAuthors; // Danh sách tác giả, hiển thị trên trang chi tiết, liên kết đến trang tác giả
 
-    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComicArtist> comicArtists; // Danh sách họa sĩ, hiển thị trên trang chi tiết, liên kết đến trang họa sĩ
 
     @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL)
