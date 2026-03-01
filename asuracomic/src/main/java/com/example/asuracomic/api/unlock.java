@@ -19,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/coin")
 @RequiredArgsConstructor
-public class CoinApi {
+public class unlock {
 
     private final CoinService coinService;
     private final ChapterRepository chapterRepository;

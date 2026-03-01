@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
-@RequestMapping("/asura/api/bookmarks")
+@RequestMapping("/api/bookmarks")
 @RequiredArgsConstructor
 public class BookmarksApi {
 

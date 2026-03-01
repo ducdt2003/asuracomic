@@ -226,6 +226,19 @@ public class AdminChapterService {
     }
 
 
+    @Transactional
+    public String deleteChapter(Long chapterId) {
+        Chapter chapter = chapterRepository.findById(chapterId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chương"));
+
+        String slug = chapter.getComic().getSlug();
+
+        chapterRepository.delete(chapter);
+
+        return slug;
+    }
+
+
 
 
 

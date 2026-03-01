@@ -41,6 +41,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         Page<User> findAll(Pageable pageable);
 
     Page<User> findByVipStatusAndVipExpiryDateBefore(boolean vipStatus, LocalDateTime expiryDate, Pageable pageable);
+    // Đổi findByUserName thành findByUsername (chữ n viết thường)
 
 
 

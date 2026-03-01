@@ -121,50 +121,6 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     """, nativeQuery = true)
     List<Object[]> findTop10Weekly(@Param("startDate") LocalDateTime startDate);
 
-    // Top 10 truyện tháng
-    /*@Query(value = """
-        WITH ViewCounts AS (
-            SELECT 
-                c.id, 
-                c.title, 
-                c.cover_image, 
-                COALESCE(c.average_rating, 0) AS average_rating, 
-                COUNT(cv.id) AS view_count,
-                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres,
-                c.slug
-            FROM 
-                comics c
-                LEFT JOIN comic_views cv ON c.id = cv.comic_id 
-                    AND cv.viewed_at >= :startDate
-                LEFT JOIN comic_genres cg ON c.id = cg.comic_id
-                LEFT JOIN genres g ON cg.genre_id = g.id
-            WHERE 
-                c.is_published = TRUE
-            GROUP BY 
-                c.id, c.title, c.cover_image, c.average_rating, c.slug
-        ),
-        MaxViews AS (
-            SELECT COALESCE(MAX(view_count), 1) AS max_views
-            FROM ViewCounts
-        )
-        SELECT 
-            vc.id,
-            vc.title,
-            vc.cover_image,
-            vc.average_rating,
-            vc.view_count,
-            vc.genres,
-            (0.7 * (vc.view_count / NULLIF(mv.max_views, 0)) * 100) + 
-            (0.3 * (vc.average_rating / 5.0) * 100) AS combined_score,
-            vc.slug
-        FROM 
-            ViewCounts vc
-            CROSS JOIN MaxViews mv
-        ORDER BY 
-            combined_score DESC
-        LIMIT 10
-    """, nativeQuery = true)
-    List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);*/
     @Query(value = """
     WITH ViewCounts AS (
         SELECT 
@@ -211,9 +167,55 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     LIMIT 10
     """, nativeQuery = true)
     List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);
+    // Top 10 truyện tháng
+    /*@Query(value = """
+        WITH ViewCounts AS (
+            SELECT 
+                c.id, 
+                c.title, 
+                c.cover_image, 
+                COALESCE(c.average_rating, 0) AS average_rating, 
+                COUNT(cv.id) AS view_count,
+                GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres,
+                c.slug
+            FROM 
+                comics c
+                LEFT JOIN comic_views cv ON c.id = cv.comic_id 
+                    AND cv.viewed_at >= :startDate
+                LEFT JOIN comic_genres cg ON c.id = cg.comic_id
+                LEFT JOIN genres g ON cg.genre_id = g.id
+            WHERE 
+                c.is_published = TRUE
+            GROUP BY 
+                c.id, c.title, c.cover_image, c.average_rating, c.slug
+        ),
+        MaxViews AS (
+            SELECT COALESCE(MAX(view_count), 1) AS max_views
+            FROM ViewCounts
+        )
+        SELECT 
+            vc.id,
+            vc.title,
+            vc.cover_image,
+            vc.average_rating,
+            vc.view_count,
+            vc.genres,
+            (0.7 * (vc.view_count / NULLIF(mv.max_views, 0)) * 100) + 
+            (0.3 * (vc.average_rating / 5.0) * 100) AS combined_score,
+            vc.slug
+        FROM 
+            ViewCounts vc
+            CROSS JOIN MaxViews mv
+        ORDER BY 
+            combined_score DESC
+        LIMIT 10
+    """, nativeQuery = true)
+    List<Object[]> findTop10Monthly(@Param("startDate") LocalDateTime startDate);*/
+
 
     // Không cần @Query, chỉ cần dùng method name
-    Page<Comic> findAllByOrderByUpdatedAtDesc(Pageable pageable);
+    Page<Comic> findAllByIsPublishedTrueOrderByUpdatedAtDesc(Pageable pageable);
+
 
     // chi tieets truyện và chapter
     Optional<Comic> findBySlug(String slug);
@@ -262,5 +264,16 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     List<Comic> findByTitleContainingIgnoreCase(String title);
 
 
+
+
+    boolean existsBySlug(String slug);
+
+    // ComicRepository.java
+    Page<Comic> findByType(ComicType type, Pageable pageable);
+
+    long countByType(ComicType type);
+
+    Page<Comic> findAllByOrderByAverageRatingDesc(Pageable pageable);
+    Page<Comic> findAllByOrderByViewCountDesc(Pageable pageable);
 
 }

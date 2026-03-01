@@ -51,8 +51,9 @@
         <div class="report-container">
             <h1 class="report-title">Báo Cáo Vi Phạm</h1>
             <form class="report-form" th:action="@{/asura/report/submit}" method="post">
-                <input type="hidden" name="commentId" th:value="${commentId}" th:if="${commentId != null}" />
-                <input type="hidden" name="chapterId" th:value="${chapterId}" th:if="${chapterId != null}" />
+                <input type="hidden" name="commentId" th:value="${commentId}">
+                <input type="hidden" name="comicSlug" th:value="${comicSlug}">
+                <input type="hidden" name="chapterSlug" th:value="${chapterSlug}">
 
                 <div class="form-group">
                     <label for="reason">Lý do vi phạm:</label>

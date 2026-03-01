@@ -1,10 +1,14 @@
 package com.example.asuracomic.dto;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@Data
 public class ComicDTO {
     private String title;
     private String slug;

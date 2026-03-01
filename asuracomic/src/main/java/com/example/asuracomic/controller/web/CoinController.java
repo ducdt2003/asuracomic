@@ -236,14 +236,14 @@ public class CoinController {
 package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.dto.UserDTO;
-import com.example.asuracomic.entity.Chapter;
-import com.example.asuracomic.entity.Transaction;
-import com.example.asuracomic.entity.User;
-import com.example.asuracomic.entity.VipConfig;
+import com.example.asuracomic.entity.*;
 import com.example.asuracomic.exception.BadRequestException;
+import com.example.asuracomic.mapper.UserMapper;
 import com.example.asuracomic.model.enums.TransactionType;
 import com.example.asuracomic.repository.*;
-import com.example.asuracomic.service.CoinService;
+import com.example.asuracomic.service.*;
+import com.paypal.orders.LinkDescription;
+import com.paypal.orders.Order;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -255,6 +255,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -267,12 +270,24 @@ public class CoinController {
     private final UserRepository userRepository;
     private final UnlockedChapterRepository unlockedChapterRepository;
     private final VipConfigRepository vipConfigRepository;
-
     private final TransactionRepository transactionRepository;
+    private final VipService vipService;
+    private final CoinPackageRepository coinPackageRepository;
+    private final PayCoinService payCoinService;
 
-    @GetMapping("/purchase")
-    public String purchase() {
-        return "web/web-coin/shop";
+    private final PayPalService payPalService;
+    private final UserService userService;
+
+    @GetMapping("/coin") // ĐƯỜNG DẪN NÀY PHẢI CÓ
+    public String showCoinShop(Model model, Principal principal) {
+        model.addAttribute("coinPackages", coinPackageRepository.findAll());
+
+        if (principal != null) {
+            // Đảm bảo hàm này trả về User có chứa field bạn gọi ở HTML
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("currentUser", user);
+        }
+        return "web/web-coin/shop"; // Tên file HTML của bạn (không có .html)
     }
 
     @GetMapping("/membership")
@@ -282,6 +297,34 @@ public class CoinController {
             model.addAttribute("currentUser", currentUser);
         }
         return "web/web-coin/membership";
+    }
+    @PostMapping("/pay")
+    public String pay(@RequestParam Long packageId) {
+        try {
+            CoinPackage pkg = coinPackageRepository.findById(packageId)
+                    .orElseThrow(() -> new RuntimeException("Gói coin không tồn tại"));
+
+            BigDecimal priceVnd = pkg.getPrice();
+            BigDecimal rate = new BigDecimal("25000");
+            BigDecimal usdValue = priceVnd.divide(rate, 2, RoundingMode.HALF_UP);
+
+            Order order = payPalService.createOrder(
+                    usdValue.doubleValue(),
+                    "http://localhost:9090/asura/paypal/success?packageId=" + packageId,
+                    "http://localhost:9090/asura/paypal/cancel"
+            );
+
+            // QUAN TRỌNG: Tìm link approve trong response của PayPal để chuyển hướng người dùng
+            for (LinkDescription link : order.links()) {
+                if (link.rel().equalsIgnoreCase("approve")) {
+                    return "redirect:" + link.href(); // Chuyển sang trang đăng nhập PayPal
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/asura/coin?error";
     }
 
 
@@ -377,6 +420,48 @@ public class CoinController {
         model.addAttribute("user", user); // Ensure user is added
 
         return "web/web-coin/transaction-history";
+    }
+
+
+
+    // na coin
+  /*  @GetMapping("/shop") // Đường dẫn đến trang nạp coin của bạn
+    public String showShopPage(Model model, Principal principal) {
+        // 1. Lấy danh sách gói coin (để tránh lỗi danh sách trống)
+        List<CoinPackage> packages = payPalService.findAll();
+        model.addAttribute("coinPackages", packages);
+
+        // 2. Xử lý người dùng hiện tại
+        if (principal != null) {
+            // Nếu đã đăng nhập, tìm user từ DB và gửi sang View
+            User user = payPalService.findByUserName(principal.getName());
+            model.addAttribute("currentUser", user);
+        } else {
+            // Nếu chưa đăng nhập, gửi một đối tượng rỗng hoặc null
+            // để HTML không bị lỗi khi truy cập currentUser.userName
+            model.addAttribute("currentUser", null);
+        }
+
+        return "web/web-coin/shop"; // Đường dẫn file HTML của bạn
+    }*/
+    // Xử lý nạp coin tiên
+    @PostMapping("/topup")
+    public String topUp(@RequestParam Long packageId,
+                        HttpSession session,
+                        RedirectAttributes ra) {
+
+        if (session.getAttribute("currentUser") == null) {
+            return "redirect:/asura/login";
+        }
+
+        try {
+            payCoinService.topUpCoin(packageId, session);
+            ra.addFlashAttribute("successMessage", "Nạp coin thành công 🎉");
+        } catch (Exception e) {
+            ra.addFlashAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/asura/coin"; // ❗ KHÔNG phải /purchase
     }
 
 

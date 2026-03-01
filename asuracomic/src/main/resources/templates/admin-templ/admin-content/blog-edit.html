@@ -316,90 +316,100 @@
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                 </div>
 
-                                <form id="comic-form" th:action="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug})}" method="post">
-                                    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                                <form id="comic-form"
+                                      th:action="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug})}"
+                                      th:object="${comicForm}"
+                                      method="post"
+                                      enctype="multipart/form-data">
+                                <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
                                     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label>Tiêu đề <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="title" name="title"
-                                                       th:value="${comic.title}" required />
+                                                <input type="text" class="form-control" th:field="*{title}" required />
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Slug <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="slug" name="slug"
-                                                       th:value="${comic.slug}" required />
+                                                <input type="text" class="form-control" th:field="*{slug}" required />
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Mô tả</label>
-                                                <textarea id="description" name="description" th:text="${comic.description}"></textarea>
+                                                <textarea id="description" th:field="*{description}"></textarea>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Serialization</label>
-                                                <input type="text" class="form-control" id="serialization" name="serialization"
-                                                       th:value="${comic.serialization}" />
+                                                <input type="text" class="form-control" th:field="*{serialization}" />
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Trạng thái</label>
-                                                <select id="status" name="status" class="form-control">
-                                                    <option value="ONGOING" th:selected="${comic.status == 'ONGOING'}">Đang tiến hành</option>
-                                                    <option value="COMPLETED" th:selected="${comic.status == 'COMPLETED'}">Hoàn thành</option>
+                                                <select th:field="*{status}" class="form-control">
+                                                    <option value="ONGOING">Đang tiến hành</option>
+                                                    <option value="COMPLETED">Hoàn thành</option>
                                                 </select>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Loại truyện</label>
-                                                <select id="type" name="type" class="form-control">
-                                                    <option value="MANHWA" th:selected="${comic.type == 'MANHWA'}">Manhwa</option>
-                                                    <option value="MANGA" th:selected="${comic.type == 'MANGA'}">Manga</option>
-                                                    <option value="MANHUA" th:selected="${comic.type == 'MANHUA'}">Manhua</option>
+                                                <select th:field="*{type}" class="form-control">
+                                                    <option value="MANHWA">Manhwa</option>
+                                                    <option value="MANGA">Manga</option>
+                                                    <option value="MANHUA">Manhua</option>
                                                 </select>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Thể loại</label>
-                                                <select class="select2 form-control" multiple id="genres" name="genreIds">
+                                                <select class="select2 form-control" multiple th:field="*{genreIds}">
                                                     <option th:each="genre : ${allGenres}"
                                                             th:value="${genre.id}"
-                                                            th:text="${genre.name}"
-                                                            th:selected="${#lists.contains(selectedGenreIds, genre.id)}"></option>
+                                                            th:text="${genre.name}"></option>
                                                 </select>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Tác giả</label>
-                                                <select class="select2 form-control" multiple id="authors" name="authorIds">
+                                                <select class="select2 form-control" multiple th:field="*{authorIds}">
                                                     <option th:each="author : ${allAuthors}"
                                                             th:value="${author.id}"
-                                                            th:text="${author.name}"
-                                                            th:selected="${#lists.contains(selectedAuthorIds, author.id)}"></option>
+                                                            th:text="${author.name}"></option>
                                                 </select>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Họa sĩ</label>
-                                                <select class="select2 form-control" multiple id="artists" name="artistIds">
+                                                <select class="select2 form-control" multiple th:field="*{artistIds}">
                                                     <option th:each="artist : ${allArtists}"
                                                             th:value="${artist.id}"
-                                                            th:text="${artist.name}"
-                                                            th:selected="${#lists.contains(selectedArtistIds, artist.id)}"></option>
+                                                            th:text="${artist.name}"></option>
                                                 </select>
                                             </div>
+
                                             <div class="form-group">
-                                                <label>Hình bìa</label>
-                                                <div class="thumbnail-preview-container mb-3">
-                                                    <img th:src="${comic.coverImage}" alt="Hình bìa" id="coverImage" style="max-width: 100%; height: auto;" />
+                                                <label>Hình bìa hiện tại</label>
+                                                <div class="thumbnail-preview-container mb-3 text-center">
+                                                    <img th:src="${comic.coverImage}" id="previewImg" class="img-thumbnail" style="max-height: 200px;" />
                                                 </div>
-                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-xl">
-                                                    Chọn hình ảnh
-                                                </button>
-                                                <input type="hidden" name="coverImage" id="coverImageInput" th:value="${comic.coverImage}">
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="coverImageFile" class="custom-file-input" id="coverImageFile" onchange="previewFile(this)">
+                                                        <label class="custom-file-label" for="coverImageFile">Chọn file ảnh mới...</label>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" th:field="*{coverImage}">
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Trạng thái xuất bản</label>
-                                                <select id="isPublished" name="isPublished" class="form-control">
-                                                    <option value="true" th:selected="${comic.isPublished == true}">Công khai</option>
-                                                    <option value="false" th:selected="${comic.isPublished == false}">Ẩn</option>
+                                                <select th:field="*{published}" class="form-control">
+                                                    <option value="true">Công khai</option>
+                                                    <option value="false">Ẩn</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -443,7 +453,11 @@
                                                             <td>
                                                                 <a th:href="@{/asura/admin/comic/content/chapter/edit/{chapterId}(chapterId=${chapter.id})}"
                                                                    class="btn btn-sm btn-warning">Sửa</a>
-                                                                <button class="btn btn-sm btn-danger" th:onclick="'deleteChapter(' + ${chapter.id} + ')'">Xóa</button>
+                                                                <button type="button"
+                                                                        class="btn btn-sm btn-danger"
+                                                                        th:onclick="'deleteChapter(' + ${chapter.id} + ')'">
+                                                                    Xóa
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                         <tr th:if="${#lists.isEmpty(chapterPage.content)}">
@@ -458,7 +472,7 @@
                                                             <li class="page-item" th:classappend="${chapterPage.isFirst()} ? 'disabled'">
                                                                 <a class="page-link"
                                                                    style="color: #28a745; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
-                                                                   th:href="@{/asura/admin/comic/content/{slug}(slug=${comic.slug}, page=${chapterPage.number - 1}, size=${chapterPage.size})}"
+                                                                   th:href="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug}, page=${chapterPage.number - 1}, size=${chapterPage.size})}"
                                                                    th:style="${chapterPage.isFirst()} ? 'color: #6c757d; background-color: #e9ecef; cursor: not-allowed;' : 'color: #28a745;'"
                                                                    onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#218838';"
                                                                    onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#28a745';">«</a>
@@ -470,7 +484,7 @@
                                                                 style="margin: 0 5px;">
                                                                 <a class="page-link"
                                                                    style="color: #0d6efd; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
-                                                                   th:href="@{/asura/admin/comic/content/{slug}(slug=${comic.slug}, page=${i}, size=${chapterPage.size})}"
+                                                                   th:href="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug}, page=${i}, size=${chapterPage.size})}"
                                                                    th:text="${i + 1}"
                                                                    th:style="${i == chapterPage.number} ? 'color: #fff; background-color: #0d6efd; border-color: #0d6efd;' : ''"
                                                                    onmouseover="if (!this.parentElement.classList.contains('active')) { this.style.backgroundColor='#e9ecef'; this.style.color='#0b5ed7'; }"
@@ -480,7 +494,7 @@
                                                             <li class="page-item" th:classappend="${chapterPage.isLast()} ? 'disabled'">
                                                                 <a class="page-link"
                                                                    style="color: #28a745; border: 1px solid #dee2e6; padding: 6px 12px; text-decoration: none; border-radius: 5px; background-color: #f8f9fa; transition: color 0.3s, background-color 0.3s;"
-                                                                   th:href="@{/asura/admin/comic/content/{slug}(slug=${comic.slug}, page=${chapterPage.number + 1}, size=${chapterPage.size})}"
+                                                                   th:href="@{/asura/admin/comic/content/edit/{slug}(slug=${comic.slug}, page=${chapterPage.number + 1}, size=${chapterPage.size})}"
                                                                    th:style="${chapterPage.isLast()} ? 'color: #6c757d; background-color: #e9ecef; cursor: not-allowed;' : 'color: #28a745;'"
                                                                    onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#218838';"
                                                                    onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#28a745';">»</a>
@@ -495,7 +509,12 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                                         <a th:href="@{/asura/admin/comic/content/{slug}(slug=${comic.slug})}" class="btn btn-default">Hủy</a>
-                                        <button type="button" class="btn btn-danger" onclick="deleteComic()">Xóa truyện</button>
+
+                                        <button type="button"
+                                                class="btn btn-danger"
+                                                th:onclick="'deleteComic(' + ${comic.id} + ')'">
+                                            Xóa truyện
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -555,6 +574,49 @@
         }, 3000);
     </script>
 
+    // xóa chyuwonng
+    <script>
+        function deleteChapter(chapterId) {
+            if (!confirm("Bạn có chắc muốn xóa chương này?")) return;
 
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/asura/admin/comic/content/chapter/delete/" + chapterId;
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+    // xóa truyênlk
+    <script>
+        function deleteComic(comicId) {
+            if (!confirm("Bạn có chắc muốn xóa TOÀN BỘ truyện này không?")) return;
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/asura/admin/comic/content/delete/" + comicId;
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+ <!--thêm ảnh bìa -->
+    <script>
+        function previewFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#previewImg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+
+                // Hiển thị tên file lên label
+                var fileName = input.files[0].name;
+                $(input).next('.custom-file-label').html(fileName);
+            }
+        }
+    </script>
 </body>
 </html>

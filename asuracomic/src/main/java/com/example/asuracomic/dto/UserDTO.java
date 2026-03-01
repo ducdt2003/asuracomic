@@ -25,5 +25,4 @@ public class UserDTO {
     boolean isVip;
     LocalDateTime vipStartDate;
     LocalDateTime vipExpireAt;
-
 }

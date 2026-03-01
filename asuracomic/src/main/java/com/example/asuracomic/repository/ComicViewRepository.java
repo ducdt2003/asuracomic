@@ -12,14 +12,29 @@ import java.util.List;
 public interface ComicViewRepository extends JpaRepository<ComicView, Long> {
     // top comic view trong ngay
     // truy vấn trên entity
-    @Query("""
+    /*@Query("""
         SELECT cv.comic, COUNT(cv.id) as views 
         FROM ComicView cv 
         WHERE cv.viewedAt >= :startOfDay AND cv.viewedAt <= :endOfDay
         GROUP BY cv.comic 
         ORDER BY views DESC
         """)
-    List<Object[]> findTopViewedComicsToday(LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);
+    List<Object[]> findTopViewedComicsToday(LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable);*/
+    @Query("""
+    SELECT cv.comic, COUNT(cv.id) as views
+    FROM ComicView cv
+    JOIN cv.comic c
+    WHERE c.isPublished = true
+      AND cv.viewedAt BETWEEN :startOfDay AND :endOfDay
+    GROUP BY cv.comic
+    ORDER BY views DESC
+    """)
+    List<Object[]> findTopViewedPublishedComicsToday(
+            @Param("startOfDay") LocalDateTime startOfDay,
+            @Param("endOfDay") LocalDateTime endOfDay,
+            Pageable pageable
+    );
+
 
 
 
@@ -30,4 +45,7 @@ public interface ComicViewRepository extends JpaRepository<ComicView, Long> {
     // Thêm: Lấy lượt xem trong tháng
     @Query("SELECT cv.comic, COUNT(cv) as viewCount FROM ComicView cv WHERE cv.viewedAt >= :start GROUP BY cv.comic ORDER BY viewCount DESC")
     List<Object[]> findTopViewedComicsMonthly(@Param("start") LocalDateTime start, Pageable pageable);
+
+    void deleteByComicId(Long comicId);
+
 }

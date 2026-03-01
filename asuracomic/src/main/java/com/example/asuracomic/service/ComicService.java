@@ -1,10 +1,12 @@
 package com.example.asuracomic.service;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
+import com.example.asuracomic.dto.ComicDTO;
 import com.example.asuracomic.dto.ComicTopDTO;
 import com.example.asuracomic.dto.RelatedComicDTO;
 import com.example.asuracomic.entity.*;
 import com.example.asuracomic.exception.CustomException;
+import com.example.asuracomic.mapper.ComicMapper;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.CommentStatus;
@@ -67,7 +69,7 @@ public class ComicService {
         LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999_999_999);
 
-        List<Object[]> result = comicViewRepository.findTopViewedComicsToday(startOfDay, endOfDay, PageRequest.of(0, limit));
+        List<Object[]> result = comicViewRepository.findTopViewedPublishedComicsToday(startOfDay, endOfDay, PageRequest.of(0, limit));
 
         return result.stream()
                 .map(r -> (Comic) r[0])
@@ -131,12 +133,12 @@ public class ComicService {
 
     public Chapter getFirstChapter(Comic comic) {
         return chapterRepository.findTopByComicOrderByChapterNumberAsc(comic)
-                .orElseThrow(() -> new RuntimeException("No chapter found"));
+                .orElse(null); // Trả về null nếu không thấy, không quăng lỗi
     }
 
     public Chapter getLatestChapter(Comic comic) {
         return chapterRepository.findTopByComicOrderByChapterNumberDesc(comic)
-                .orElseThrow(() -> new RuntimeException("No chapter found"));
+                .orElse(null); // Trả về null nếu không thấy, không quăng lỗi
     }
 
     // truyện liên quan biến list thành stream
@@ -173,7 +175,7 @@ public class ComicService {
 
     // lấy all truyện trên database phân trang đc từ requestPram
     public Page<Comic> getComicPage(int page, int size) {
-        Page<Comic> comicPage = comicRepository.findAllByOrderByUpdatedAtDesc(PageRequest.of(page, size));
+        Page<Comic> comicPage = comicRepository.findAllByIsPublishedTrueOrderByUpdatedAtDesc(PageRequest.of(page, size));
 
         comicPage.getContent().forEach(comic -> {
             List<Chapter> filteredChapters = comic.getChapters().stream()
@@ -232,34 +234,57 @@ public class ComicService {
 */
     // Trong ComicService.java
 
-    public Page<Comic> getComics(String genre, String status, String type, String orderBy, String query, int page, int size) {
+    public Page<ComicDTO> getComics(
+            String genre,
+            String status,
+            String type,
+            String orderBy,
+            String query,
+            int page,
+            int size
+    ) {
+
         Sort sort = mapOrderByToSort(orderBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        // Chuẩn hóa các giá trị đầu vào
-        ComicStatus comicStatus = (status != null && !status.equals("ALL") && !status.isEmpty()) ? ComicStatus.valueOf(status) : null;
-        ComicType comicType = (type != null && !type.equals("ALL") && !type.isEmpty()) ? ComicType.valueOf(type) : null;
+        ComicStatus comicStatus =
+                (status != null && !status.equals("ALL") && !status.isEmpty())
+                        ? ComicStatus.valueOf(status)
+                        : null;
+
+        ComicType comicType =
+                (type != null && !type.equals("ALL") && !type.isEmpty())
+                        ? ComicType.valueOf(type)
+                        : null;
+
         String genreSlug = (genre != null && !genre.isEmpty()) ? genre : null;
-        String searchQuery = (query != null && !query.trim().isEmpty()) ? query.trim() : null;
+        String searchQuery =
+                (query != null && !query.trim().isEmpty()) ? query.trim() : null;
 
-        // === SỬA ĐỔI QUAN TRỌNG ===
-        // Loại bỏ khối 'if' kiểm tra filter mặc định.
-        // Gọi MỘT phương thức repository duy nhất có khả năng xử lý TẤT CẢ các tham số.
-        // Bạn sẽ cần phải cập nhật phương thức 'findComicsByFilters' trong ComicRepository
-        // để nó chấp nhận thêm tham số 'searchQuery'.
-        Page<Comic> comicPage = comicRepository.findComicsByFilters(genreSlug, comicStatus, comicType, searchQuery, pageable);
+        Page<Comic> comicPage =
+                comicRepository.findComicsByFilters(
+                        genreSlug,
+                        comicStatus,
+                        comicType,
+                        searchQuery,
+                        pageable
+                );
 
-        // Phần xử lý chapter này vẫn giữ nguyên, rất tốt
+        // 🔥 CHỈ xử lý business: lấy chapter mới nhất
         comicPage.getContent().forEach(comic -> {
-            List<Chapter> filteredChapters = comic.getChapters().stream()
-                    .filter(Chapter::isPublished)
-                    .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
-                    .limit(1) // Chỉ lấy chương mới nhất
-                    .collect(Collectors.toList());
-            comic.setChapters(filteredChapters);
+            if (comic.getChapters() != null) {
+                List<Chapter> latestChapter = comic.getChapters().stream()
+                        .filter(Chapter::isPublished)
+                        .sorted(Comparator.comparing(Chapter::getChapterNumber).reversed())
+                        .limit(1)
+                        .toList();
+
+                comic.setChapters(latestChapter);
+            }
         });
 
-        return comicPage;
+        // 🔥 ENTITY → DTO qua Mapper
+        return comicPage.map(ComicMapper::fromEntity);
     }
 
 // KHÔNG CẦN THAY ĐỔI GÌ THÊM (mapOrderByToSort, getAllGenres, v.v. giữ nguyên)

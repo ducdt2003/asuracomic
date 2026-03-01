@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +38,10 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
     List<Chapter> findByComicId(Long comicId);
     Page<Chapter> findByComic(Comic comic, Pageable pageable);
+
+    void deleteByComicId(Long comicId);
+
+    @Query("select c.id from Chapter c where c.comic.id = :comicId")
+    List<Long> findIdsByComicId(@Param("comicId") Long comicId);
+
 }

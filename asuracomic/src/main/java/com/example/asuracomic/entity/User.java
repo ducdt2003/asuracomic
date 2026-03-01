@@ -80,4 +80,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> ratings; // Danh sách đánh giá truyện của người dùng, góp phần tính điểm trung bình cho truyện
 
+    // Trong class User
+    private String resetToken;
+    private LocalDateTime tokenExpiration;
 }

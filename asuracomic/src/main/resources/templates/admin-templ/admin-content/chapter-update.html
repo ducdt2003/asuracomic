@@ -150,87 +150,169 @@
                                 <h3 class="card-title">Thêm chương mới</h3>
                             </div>
                             <div class="card-body">
-                                <form id="chapter-form">
+                                <form th:action="@{/asura/admin/comic/content/chapter/update/{id}(id=${comic.id})}"
+                                      method="post"
+                                      enctype="multipart/form-data">
+
                                     <div class="row">
+                                        <!-- LEFT -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Tiêu đề <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="title" name="title" required maxlength="255" />
-                                                <small class="form-text text-muted">Tối đa 255 ký tự.</small>
+                                                <input type="text" class="form-control" name="title" required maxlength="255">
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Slug <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="slug" name="slug" required maxlength="255" pattern="[a-z0-9-]+" />
-                                                <small class="form-text text-muted">Chỉ chứa chữ thường, số, và dấu gạch ngang (VD: chapter-1).</small>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Số chương <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" id="chapterNumber" name="chapterNumber" min="1" required />
-                                                <small class="form-text text-muted">Truyện hiện có <span id="currentChapterCount">0</span> chương.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Miễn phí</label>
-                                                <select id="isFree" name="isFree" class="form-control">
-                                                    <option value="true" selected>Miễn phí</option>
-                                                    <option value="false">Trả phí</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Giá coin</label>
-                                                <input type="number" class="form-control" id="coinPrice" name="coinPrice" min="0" step="0.01" value="0"  />
-                                                <small class="form-text text-muted">Giá coin chỉ áp dụng khi chương không miễn phí.</small>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Trạng thái chương <span class="text-danger">*</span></label>
-                                                <select id="status" name="status" class="form-control" required>
-                                                    <option value="PUBLISHED" selected>Xuất bản</option>
-                                                    <option value="DRAFT">Nháp</option>
-                                                    <option value="HIDDEN">Ẩn</option>
-                                                </select>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="slug"
+                                                       required
+                                                       pattern="[a-z0-9-]+">
                                                 <small class="form-text text-muted">
-                                                    Nháp: chỉ admin thấy · Ẩn: không hiển thị · Xuất bản: hiển thị cho người dùng
+                                                    Chỉ chứa chữ thường, số và dấu gạch ngang (vd: chapter-1)
                                                 </small>
                                             </div>
 
-                                        </div>
-                                    </div>
-                                    <!-- Chapter Images Section -->
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">Nội dung chương (Hình ảnh) <span class="text-danger">*</span></h3>
-                                                    <div class="card-tools">
-                                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#image-modal">
-                                                            Thêm hình ảnh
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                        <tr>
-                                                            <th style="width: 10%;">Thứ tự</th>
-                                                            <th style="width: 70%;">Hình ảnh</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="images-table">
-                                                        <!-- Populated dynamically -->
-                                                        </tbody>
-                                                    </table>
-                                                    <small class="form-text text-muted mt-2">Thêm ít nhất một hình ảnh để hiển thị nội dung chương.</small>
-                                                </div>
+                                            <div class="form-group">
+                                                <label>Số chương <span class="text-danger">*</span></label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       name="chapterNumber"
+                                                       min="1"
+                                                       required>
                                             </div>
                                         </div>
+
+                                        <!-- RIGHT -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Miễn phí</label>
+                                                <select name="isFree" class="form-control">
+                                                    <option value="true">Miễn phí</option>
+                                                    <option value="false">Trả phí</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Giá coin</label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       name="coinPrice"
+                                                       min="0"
+                                                       step="0.01">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Trạng thái chương <span class="text-danger">*</span></label>
+                                                <select name="isPublished" class="form-control" required>
+                                                    <option value="true">Công khai</option>
+                                                    <option value="false">Ẩn</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Tải Lên</button>
-                                        <a id="cancel-btn" class="btn btn-default">Hủy</a>
+
+                                    <!-- IMAGES -->
+                                    <div class="form-group mt-3">
+                                        <label>Hình ảnh chương <span class="text-danger">*</span></label>
+                                        <input type="file"
+                                               name="images"
+                                               class="form-control"
+                                               accept="image/*"
+                                               multiple
+                                               required>
+                                        <small class="form-text text-muted">
+                                            Mỗi ảnh tương ứng một trang truyện
+                                        </small>
                                     </div>
+                                    <div class="card mt-3">
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10%;">Thứ tự</th>
+                                                    <th style="width: 70%;">Hình ảnh</th>
+                                                    <th style="width: 20%;">Hành động</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <!-- DỮ LIỆU TĨNH DEMO -->
+                                                <tr>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">
+                                                        <img src="/images/demo/page1.jpg"
+                                                             style="max-height:120px">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm"
+                                                                disabled>
+                                                            <i class="fas fa-trash"></i> Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">
+                                                        <img src="/images/demo/page2.jpg"
+                                                             style="max-height:120px">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm"
+                                                                disabled>
+                                                            <i class="fas fa-trash"></i> Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="text-center">3</td>
+                                                    <td class="text-center">
+                                                        <img src="/images/demo/page3.jpg"
+                                                             style="max-height:120px">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm"
+                                                                disabled>
+                                                            <i class="fas fa-trash"></i> Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <small class="form-text text-muted mt-2">
+                                                Danh sách hình ảnh chương (nút Xóa hiện tại chỉ hiển thị giao diện).
+                                            </small>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- PREVIEW -->
+                                    <div id="preview" class="d-flex flex-wrap mt-2"></div>
+
+                                    <!-- ACTION -->
+                                    <div class="form-group mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-upload"></i> Tải lên
+                                        </button>
+
+                                        <a th:href="@{/asura/admin/comic/content/{id}(id=${comic.id})}"
+                                           class="btn btn-default">
+                                            Hủy
+                                        </a>
+                                    </div>
+
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -276,202 +358,18 @@
     <script src="/css/admin-assets/dist/js/adminlte.js"></script>
     <script src="/css/admin-assets/plugins/select2/js/select2.full.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Get comic ID from URL query parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            const comicId = urlParams.get('comicId');
-
-            // Fetch comic data and last chapter number
-            $.ajax({
-                url: `/api/comics/${comicId}`,
-                method: 'GET',
-                success: function(comicData) {
-                    $('#comic-title-breadcrumb').text(comicData.title).attr('href', `/admin/comics/edit/${comicId}`);
-                    $('#cancel-btn').attr('href', `/admin/comics/edit/${comicId}`);
-                    // Get last chapter number
-                    $.ajax({
-                        url: `/api/chapters/last?comicId=${comicId}`,
-                        method: 'GET',
-                        success: function(response) {
-                            const nextChapterNumber = (response.lastChapterNumber || 0) + 1;
-                            $('#chapterNumber').val(nextChapterNumber);
-                            $('#currentChapterCount').text(response.lastChapterNumber || 0);
-                        },
-                        error: function() {
-                            $('#chapterNumber').val(1);
-                            $('#currentChapterCount').text(0);
-                        }
-                    });
-                },
-                error: function() {
-                    $('#comic-title-breadcrumb').text('Unknown Comic').attr('href', `/admin/comics/edit/${comicId}`);
-                    $('#cancel-btn').attr('href', `/admin/comics/edit/${comicId}`);
-                }
-            });
-
-            // Initialize images array
-            let images = [];
-
-            // Auto-generate slug based on title
-            $('#title').on('input', function() {
-                const title = $(this).val().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                $('#slug').val(`chapter-${title}`);
-            });
-
-            // Validate form on submission
-            $('#chapter-form').on('submit', function(e) {
-                e.preventDefault();
-                if (images.length === 0) {
-                    alert('Vui lòng thêm ít nhất một hình ảnh cho nội dung chương!');
-                    return;
-                }
-                const chapter = {
-                    comic: { id: parseInt(comicId) },
-                    title: $('#title').val(),
-                    slug: $('#slug').val(),
-                    chapterNumber: parseInt($('#chapterNumber').val()),
-                    isFree: $('#isFree').val() === 'true',
-                    coinPrice: parseFloat($('#coinPrice').val()) || 0,
-                    chapterImages: images.map(img => ({
-                        imageUrl: img.imageUrl,
-                        orderIndex: img.orderIndex
-                    }))
-                };
-                $.ajax({
-                    url: '/api/chapters',
-                    method: 'POST',
-                    data: JSON.stringify(chapter),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        alert('Thêm chương thành công!');
-                        window.location.href = `/admin/comics/edit/${comicId}`;
-                    },
-                    error: function(xhr) {
-                        const errorMsg = xhr.responseJSON?.message || 'Thêm chương thất bại!';
-                        alert(errorMsg);
-                    }
-                });
-            });
-
-            // Handle image upload
-            $('#imageUpload').on('change', function(e) {
-                const files = e.target.files;
-                $('#imagePreview').empty();
-                Array.from(files).forEach(file => {
-                    if (file.size > 10 * 1024 * 1024) {
-                        alert(`Hình ảnh ${file.name} vượt quá 10MB!`);
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreview').append(`<img src="${e.target.result}" style="max-width: 200px; height: auto; margin: 5px;" />`);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
-
-            // Add image to table
-            function addImage() {
-                const files = $('#imageUpload')[0].files;
-                const orderIndex = parseInt($('#orderIndex').val());
-                if (files.length === 0) {
-                    alert('Vui lòng chọn ít nhất một hình ảnh!');
-                    return;
-                }
-                Array.from(files).forEach(file => {
-                    if (file.size > 10 * 1024 * 1024) return; // Skip oversized files
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        images.push({ imageUrl: e.target.result, orderIndex: orderIndex });
-                        updateImagesTable();
-                    };
-                    reader.readAsDataURL(file);
-                });
-                $('#image-modal').modal('hide');
-                $('#imageUpload').val('');
-                $('#imagePreview').empty();
-                $('#orderIndex').val(orderIndex + 1);
-            }
-
-            // Update images table
-            function updateImagesTable() {
-                $('#images-table').empty();
-                images.sort((a, b) => a.orderIndex - b.orderIndex); // Sort by orderIndex
-                images.forEach((image, index) => {
-                    $('#images-table').append(`
-                        <tr>
-                            <td>${image.orderIndex}</td>
-                            <td><img src="${image.imageUrl}" style="max-width: 100px; height: auto;" /></td>
-                            <td>
-                                <button class="btn btn-sm btn-danger" onclick="removeImage(${index})">Xóa</button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            }
-
-            // Remove image
-            function removeImage(index) {
-                images.splice(index, 1);
-                updateImagesTable();
-            }
-
-            // Enable/disable coin price input based on isFree
-            $('#isFree').on('change', function() {
-                const isFree = $(this).val() === 'true';
-                $('#coinPrice').prop('disabled', isFree);
-                if (isFree) {
-                    $('#coinPrice').val(0);
-                }
-            });
-
-            // Validate slug format
-            $('#slug').on('input', function() {
-                const slug = $(this).val();
-                if (!/^[a-z0-9-]+$/.test(slug)) {
-                    $(this).addClass('is-invalid');
-                    $(this).next('.invalid-feedback').remove();
-                    $(this).after('<div class="invalid-feedback">Slug chỉ chứa chữ thường, số, và dấu gạch ngang.</div>');
-                } else {
-                    $(this).removeClass('is-invalid');
-                    $(this).next('.invalid-feedback').remove();
-                    // Check slug uniqueness
-                    $.ajax({
-                        url: `/api/chapters/checkSlug?comicId=${comicId}&slug=${slug}`,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.exists) {
-                                $('#slug').addClass('is-invalid');
-                                $('#slug').next('.invalid-feedback').remove();
-                                $('#slug').after('<div class="invalid-feedback">Slug đã tồn tại!</div>');
-                            } else {
-                                $('#slug').removeClass('is-invalid');
-                                $('#slug').next('.invalid-feedback').remove();
-                            }
-                        }
-                    });
-                }
-            });
-
-            // Validate chapter number uniqueness
-            $('#chapterNumber').on('change', function() {
-                const chapterNumber = $(this).val();
-                $.ajax({
-                    url: `/api/chapters/check?comicId=${comicId}&chapterNumber=${chapterNumber}`,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.exists) {
-                            $('#chapterNumber').addClass('is-invalid');
-                            $('#chapterNumber').next('.invalid-feedback').remove();
-                            $('#chapterNumber').after('<div class="invalid-feedback">Số chương đã tồn tại!</div>');
-                        } else {
-                            $('#chapterNumber').removeClass('is-invalid');
-                            $('#chapterNumber').next('.invalid-feedback').remove();
-                        }
-                    }
-                });
+        document.querySelector('input[name="images"]').addEventListener('change', function (e) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            [...e.target.files].forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.height = '120px';
+                img.style.margin = '5px';
+                preview.appendChild(img);
             });
         });
     </script>
+
 </body>
 </html>

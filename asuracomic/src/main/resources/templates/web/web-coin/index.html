@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nạp Coin</title>
+</head>
+<body>
+
+<h2>Nạp Coin</h2>
+
+<p th:if="${successMessage}" style="color: green" th:text="${successMessage}"></p>
+<p th:if="${errorMessage}" style="color: red" th:text="${errorMessage}"></p>
+
+<div>
+    <p>
+        Coin hiện tại:
+        <span th:text="${currentUser != null ? currentUser.coinBalance : 0}"></span>
+    </p>
+</div>
+
+<hr>
+
+<div th:each="pkg : ${coinPackages}">
+    <form th:action="@{/asura/coin/topup}" method="post">
+        <input type="hidden" name="packageId" th:value="${pkg.id}"/>
+
+        <p>
+            <b th:text="${pkg.name}"></b> -
+            Giá: <span th:text="${pkg.price}"></span> VNĐ -
+            Nhận: <span th:text="${pkg.coin}"></span> coin
+        </p>
+
+        <button type="submit">Nạp</button>
+    </form>
+    <hr>
+</div>
+
+</body>
+</html>

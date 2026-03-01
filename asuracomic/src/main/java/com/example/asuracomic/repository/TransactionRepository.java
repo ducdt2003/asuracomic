@@ -33,4 +33,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @EntityGraph(attributePaths = {"chapter", "vipConfig", "user"})
     Page<Transaction> findByUserIdAndTransactionType(Long userId, TransactionType transactionType, Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE Transaction t SET t.chapter = null WHERE t.chapter.id = :chapterId")
+    void setChapterNullByChapterId(@Param("chapterId") Long chapterId);
 }

@@ -292,10 +292,21 @@ public class CoinService {
         transactionRepository.save(transaction);
         unlockedChapterRepository.save(unlockedChapter);
 
+        refreshSession(user, session);
+
+
         // Trả về URL chương để chuyển hướng
         return "/asura/comic/" + chapter.getComic().getSlug() + "/chapter/" + chapter.getSlug();
     }
 
+    private void refreshSession(User user, HttpSession session) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            // Đồng bộ số dư mới từ Entity vào DTO trong session
+            currentUser.setCoinBalance(user.getCoinBalance());
+            session.setAttribute("currentUser", currentUser);
+        }
+    }
 
     @Transactional(readOnly = true)
     public Page<Transaction> getUserTransactionHistory(Pageable pageable) {

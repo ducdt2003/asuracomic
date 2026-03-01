@@ -26,28 +26,44 @@
                         <form th:action="@{/asura/series}" method="get">
                             <!-- Dropdown Genre -->
                             <select name="genre">
-                                <option value="" th:selected="${currentGenre == ''}">Genre All</option>
-                                <option th:each="genre : ${genres}" th:value="${genre.slug}" th:text="${genre.name}" th:selected="${currentGenre == genre.slug}"></option>
+                                <option value="" th:selected="${selectedGenre == ''}">Genre All</option>
+                                <option th:each="g : ${genres}"
+                                        th:value="${g.slug}"
+                                        th:text="${g.name}"
+                                        th:selected="${selectedGenre == g.slug}">
+                                </option>
                             </select>
+
 
                             <!-- Dropdown Status -->
                             <select name="status">
-                                <option value="" th:selected="${currentStatus == ''}">Status All</option>
-                                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}" th:selected="${currentStatus == status}"></option>
+                                <option value="ALL" th:selected="${selectedStatus == 'ALL'}">Status All</option>
+                                <option th:each="s : ${statuses}"
+                                        th:value="${s}"
+                                        th:text="${s}"
+                                        th:selected="${selectedStatus == s}">
+                                </option>
                             </select>
+
 
                             <!-- Dropdown Type -->
                             <select name="type">
-                                <option value="" th:selected="${currentType == ''}">Type All</option>
-                                <option th:each="type : ${types}" th:value="${type}" th:text="${type}" th:selected="${currentType == type}"></option>
+                                <option value="ALL" th:selected="${selectedType == 'ALL'}">Type All</option>
+                                <option th:each="t : ${types}"
+                                        th:value="${t}"
+                                        th:text="${t}"
+                                        th:selected="${selectedType == t}">
+                                </option>
                             </select>
+
 
                             <!-- Dropdown Order By -->
                             <select name="orderBy">
-                                <option value="lastUpdated" th:selected="${currentOrderBy == 'lastUpdated'}">Last Updated</option>
-                                <option value="rating" th:selected="${currentOrderBy == 'rating'}">Rating</option>
-                                <option value="name" th:selected="${currentOrderBy == 'name'}">Name</option>
+                                <option value="lastUpdated" th:selected="${selectedOrderBy == 'lastUpdated'}">Last Updated</option>
+                                <option value="rating" th:selected="${selectedOrderBy == 'rating'}">Rating</option>
+                                <option value="name" th:selected="${selectedOrderBy == 'name'}">Name</option>
                             </select>
+
 
                             <!-- Search Button -->
                             <button type="submit" class="search-btn">
@@ -64,29 +80,55 @@
                                 <span class="status" th:text="${comic.status}"></span>
                                 <span class="type" th:text="${comic.type}"></span>
                             </div>
-                            <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${#strings.abbreviate(comic.title, 30)}"></a>
 
-                            <div class="chapter" th:if="${comic.chapters != null and !comic.chapters.isEmpty()}" th:text="'Chapter ' + ${comic.chapters[0].chapterNumber}"></div>
+                            <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}"
+                               th:text="${#strings.abbreviate(comic.title, 30)}"></a>
+
+                            <div class="chapter"
+                                 th:if="${comic.latestChapterNumber != null}"
+                                 th:text="'Chapter ' + ${comic.latestChapterNumber}">
+                            </div>
+
                             <div class="rating">
-                                <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
+                                <i th:each="i : ${#numbers.sequence(1, 5)}"
+                                   th:class="'fas fa-star' + (${comic.averageRating >= i} ? '' : ' fa-star-o')"></i>
                                 <span th:text="${comic.averageRating}"></span>
                             </div>
                         </div>
                     </div>
                     <!-- Pagination -->
                     <div class="pagination" th:if="${totalPages > 0}">
-                        <button class="prev-btn" th:disabled="${currentPage == 0}"
-                                th:onclick="'location.href=\'' + @{/asura/series(page=${currentPage - 1})} + '\''"
-                                style="background-color: #a060ff;">
-                            <i th:if="${currentPage == 0}" ></i>
+                        <button class="prev-btn"
+                                th:disabled="${currentPage == 0}"
+                                th:onclick="'location.href=\'' +
+        @{/asura/series(
+            page=${currentPage - 1},
+            size=${size},
+            genre=${selectedGenre},
+            status=${selectedStatus},
+            type=${selectedType},
+            orderBy=${selectedOrderBy},
+            query=${query}
+        )} + '\''">
                             <i class="fas fa-chevron-left"></i> Previous
                         </button>
+
                         <span th:text="'Page ' + ${currentPage + 1} + ' of ' + ${totalPages}"></span>
-                        <button class="next-btn" th:disabled="${currentPage >= totalPages - 1}"
-                                th:onclick="'location.href=\'' + @{/asura/series(page=${currentPage + 1})} + '\''">
+                        <button class="next-btn"
+                                th:disabled="${currentPage >= totalPages - 1}"
+                                th:onclick="'location.href=\'' +
+        @{/asura/series(
+            page=${currentPage + 1},
+            size=${size},
+            genre=${selectedGenre},
+            status=${selectedStatus},
+            type=${selectedType},
+            orderBy=${selectedOrderBy},
+            query=${query}
+        )} + '\''">
                             Next <i class="fas fa-chevron-right"></i>
-                            <i th:if="${currentPage >= totalPages - 1}" ></i>
                         </button>
+
                     </div>
                     <div th:if="${totalPages == 0}">
                         <p>Không có truyện để hiển thị.</p>

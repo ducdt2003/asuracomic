@@ -99,21 +99,6 @@ public class WebController {
                          Model model, HttpSession session) {
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
-        /*if (comicDetail == null) {
-            return "redirect:/error"; // Hoặc chuyển hướng đến trang lỗi
-        }
-
-        // Check if redirect to author is requested
-        if (redirectToAuthor != null && !redirectToAuthor.isEmpty()) {
-            // Assuming the comic has a primary author, get the first author's slug
-            List<Author> authors = comicDetail.getComicAuthors().stream()
-                    .map(comicAuthor -> comicAuthor.getAuthor())
-                    .collect(Collectors.toList());
-            if (!authors.isEmpty()) {
-                String authorSlug = authors.get(0).getSlug(); // Get the first author's slug
-                return "redirect:/asura/authors/" + authorSlug;
-            }
-        }*/
 
         // Existing logic for the detail page
         model.addAttribute("comic", comicDetail);
@@ -255,17 +240,16 @@ public class WebController {
         model.addAttribute("totalCommentPages", commentPageData.getTotalPages());
         model.addAttribute("commentSize", commentSize);
 
-        // Dữ liệu khác (không thay đổi)
+        // Dữ liệu khác
         model.addAttribute("comic", comic);
         model.addAttribute("chapter", chapter);
         model.addAttribute("relatedComics", relatedComics);
         model.addAttribute("sortedChapters", sortedChapters);
         model.addAttribute("previousChapter", previousChapter);
         model.addAttribute("nextChapter", nextChapter);
-/*        model.addAttribute("isLoggedIn", getCurrentUserId() != null);*/
+        /*model.addAttribute("isLoggedIn", getCurrentUserId() != null);*/
         model.addAttribute("newComment", new CommentDTO());
         model.addAttribute("currentUserId", getCurrentUserId());
-
         model.addAttribute("isLoggedIn", session.getAttribute("currentUser") != null);
 
 
@@ -304,30 +288,6 @@ public class WebController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
-    }
-
-    // Thêm bình luận mới (AJAX) tra về json
-    @PostMapping(value = "/comic/{comicSlug}/chapter/{chapterSlug}/comment/ajax", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<CommentResponseDTO> createCommentAjax(@PathVariable String comicSlug,
-                                                                @PathVariable String chapterSlug,
-                                                                @Valid @RequestBody CommentDTO commentDTO) {
-        try {
-            Long userId = getCurrentUserId();
-            Comic comic = comicService.getComicDetailsBySlug(comicSlug);
-            if (comic == null) {
-                throw new CustomException("Comic not found");
-            }
-            Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
-            if (chapter == null) {
-                throw new CustomException("Chapter not found");
-            }
-            commentDTO.setChapterId(chapter.getId());
-            CommentResponseDTO createdComment = commentService.createComment(userId, commentDTO);
-            return ResponseEntity.ok(createdComment);
-        } catch (CustomException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
     }
 
     // Chỉnh sửa bình luận
@@ -400,7 +360,7 @@ public class WebController {
         } catch (CustomException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-        return "redirect:/asura/report/success";
+        return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug;
     }
 
 
@@ -481,8 +441,8 @@ public class WebController {
         // === PHẦN SỬA ĐỔI CHÍNH ===
         // Xóa bỏ khối if-else. Gọi MỘT phương thức service xử lý tất cả.
         // Chúng ta sẽ truyền 'query' vào 'getComics'
-        Page<Comic> comicPage = comicService.getComics(genre, status, type, orderBy, query, page, size);
-        // ==========================
+        Page<ComicDTO> comicPage =
+                comicService.getComics(genre, status, type, orderBy, query, page, size);        // ==========================
 
         List<ComicTopDTO> top10Weekly = comicService.getTop10CombinedWeekly();
         List<ComicTopDTO> top10Monthly = comicService.getTop10CombinedMonthly();
@@ -585,20 +545,22 @@ public String bookmarks(Model model) {
 
 
     @GetMapping("/report")
-    public String showReportPage(@RequestParam(required = false) Long chapterId,
-                                 @RequestParam(required = false) Long commentId,
+    public String showReportPage(@RequestParam Long commentId,
+                                 @RequestParam String comicSlug,
+                                 @RequestParam String chapterSlug,
                                  Model model) {
+
         if (getCurrentUserId() == null) {
             return "redirect:/asura/login";
         }
-        if (chapterId != null) {
-            model.addAttribute("chapterId", chapterId);
-        }
-        if (commentId != null) {
-            model.addAttribute("commentId", commentId);
-        }
+
+        model.addAttribute("commentId", commentId);
+        model.addAttribute("comicSlug", comicSlug);
+        model.addAttribute("chapterSlug", chapterSlug);
+
         return "web/web-templates/report";
     }
+
 
 
 

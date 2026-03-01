@@ -2,63 +2,100 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Quản Lý Nội Dung | AdminLTE 3</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Danh sách truyện | Admin</title>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
-    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css" />
-    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css" />
-    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <link rel="stylesheet" href="/css/admin-assets/plugins/fontawesome-free/css/all.min.css"/>
+    <link rel="stylesheet" href="/css/admin-assets/dist/css/adminlte.min.css"/>
+    <link rel="stylesheet" href="/css/admin-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"/>
 
     <style>
-        /* Tối ưu bảng hiển thị nội dung */
-        #comicsTable { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; background-color: #fff; border-radius: 8px; overflow: hidden; }
-        #comicsTable thead { background-color: #f8f9fa; color: #333; }
-        #comicsTable th, #comicsTable td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        #comicsTable tbody tr:hover { background-color: #f1f7ff; transition: 0.2s; }
+        #comicsTable {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-        .action-buttons a { margin: 0 5px; font-size: 16px; color: #6c757d; }
-        .action-buttons a:hover { color: #007bff; }
-        .action-buttons .delete:hover { color: #dc3545; }
+        #comicsTable thead {
+            background-color: #f8f9fa;
+        }
 
-        /* Pagination tinh gọn */
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 20px; }
-        .pagination a, .pagination span { padding: 7px 12px; border: 1px solid #dee2e6; border-radius: 4px; color: #007bff; text-decoration: none; }
-        .pagination .active { background-color: #007bff; color: #white; border-color: #007bff; color: #fff; }
-        .pagination .disabled { color: #6c757d; pointer-events: none; background-color: #fff; }
+        #comicsTable th, #comicsTable td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        #comicsTable tbody tr:hover {
+            background-color: #f1f7ff;
+        }
+
+        .action-buttons a {
+            margin: 0 6px;
+            font-size: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .pagination .active {
+            background: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+        .pagination .disabled {
+            color: #6c757d;
+            pointer-events: none;
+        }
     </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-    <!-- ================= NAVBAR ================= -->
+    <!-- NAVBAR -->
     <th:block th:replace="~{admin-templ/fragments/navbar :: navbar}"></th:block>
 
+    <!-- SIDEBAR -->
     <th:block th:replace="~{admin-templ/fragments/sidebar-content :: sidebar-content}"></th:block>
 
-
+    <!-- CONTENT -->
     <div class="content-wrapper">
+
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Danh sách truyện</h1>
-                    </div>
-                </div>
+                <h1 class="m-0">
+                    Danh sách truyện
+                    <span class="badge badge-primary ml-2" th:text="${type}"></span>
+                </h1>
             </div>
         </div>
 
         <section class="content">
             <div class="container-fluid">
+
                 <div class="mb-3">
-                    <a class="btn btn-success" th:href="@{/asura/admin/comic/content/create}">
+                    <a class="btn btn-success"
+                       th:href="@{/asura/admin/comic/content/create}">
                         <i class="fas fa-upload"></i> Upload Truyện Mới
                     </a>
-                    <button type="button" class="btn btn-outline-secondary ml-2" onclick="location.reload();">
-                        <i class="fas fa-sync"></i> Làm mới
-                    </button>
                 </div>
 
                 <div class="card">
@@ -66,50 +103,76 @@
                         <table id="comicsTable">
                             <thead>
                             <tr>
-                                <th style="width: 50px">ID</th>
-                                <th>Tiêu đề truyện</th>
+                                <th width="60">ID</th>
+                                <th>Tiêu đề</th>
                                 <th>Thể loại</th>
                                 <th>Lượt xem</th>
-                                <th style="width: 150px">Thao tác</th>
+                                <th width="150">Thao tác</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="comic : ${comics}" th:id="'comic-row-' + ${comic.id}">
+
+                            <tr th:each="comic : ${comics}"
+                                th:id="'comic-row-' + ${comic.id}">
                                 <td th:text="${comic.id}"></td>
+
                                 <td>
                                     <a th:href="@{'/asura/admin/comic/content/' + ${comic.slug}}"
-                                       th:text="${comic.title}" class="font-weight-bold"></a>
+                                       th:text="${comic.title}"
+                                       class="font-weight-bold"></a>
                                 </td>
-                                <td><span class="badge badge-info" th:text="${comic.type}"></span></td>
+
+                                <td>
+                                    <span class="badge badge-info"
+                                          th:text="${comic.type}"></span>
+                                </td>
+
                                 <td th:text="${#numbers.formatInteger(comic.viewCount, 0, 'COMMA')}"></td>
+
                                 <td class="action-buttons">
-                                    <a th:href="@{'/asura/admin/comic/content/edit/' + ${comic.slug}}" title="Chỉnh sửa">
+                                    <a th:href="@{'/asura/admin/comic/content/edit/' + ${comic.slug}}">
                                         <i class="fas fa-edit text-primary"></i>
                                     </a>
-                                    <a class="delete" th:onclick="'deleteComic(' + ${comic.id} + ')'" title="Xóa">
+                                    <a href="javascript:void(0)"
+                                       th:onclick="'deleteComic(' + ${comic.id} + ')'">
                                         <i class="fas fa-trash-alt text-danger"></i>
                                     </a>
                                 </td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="card-footer clearfix">
-                        <div class="pagination" id="comicsPagination">
-                            <a th:if="${currentPage > 0}" th:href="@{/asura/admin/comic/content/detail(page=${currentPage - 1})}">«</a>
+                    <!-- PAGINATION -->
+                    <div class="card-footer">
+                        <div class="pagination">
+
+                            <!-- Prev -->
+                            <a th:if="${currentPage > 0}"
+                               th:href="@{/asura/admin/comic/content/detail/type/{type}(type=${type}, page=${currentPage - 1})}">
+                                «
+                            </a>
                             <span th:unless="${currentPage > 0}" class="disabled">«</span>
 
+                            <!-- Pages -->
                             <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                               th:text="${i + 1}"
                                th:classappend="${i == currentPage} ? 'active'"
-                               th:href="@{/asura/admin/comic/content/detail(page=${i})}"
-                               th:text="${i + 1}"></a>
+                               th:href="@{/asura/admin/comic/content/detail/type/{type}(type=${type}, page=${i})}">
+                            </a>
 
-                            <a th:if="${currentPage < totalPages - 1}" th:href="@{/asura/admin/comic/content/detail(page=${currentPage + 1})}">»</a>
+                            <!-- Next -->
+                            <a th:if="${currentPage < totalPages - 1}"
+                               th:href="@{/asura/admin/comic/content/detail/type/{type}(type=${type}, page=${currentPage + 1})}">
+                                »
+                            </a>
                             <span th:unless="${currentPage < totalPages - 1}" class="disabled">»</span>
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </div>
@@ -120,20 +183,11 @@
 <script src="/css/admin-assets/dist/js/adminlte.js"></script>
 
 <script>
-    function deleteComic(comicId) {
-        if (confirm("Bạn có chắc chắn muốn xóa truyện này? Hành động này không thể hoàn tác.")) {
-            $.ajax({
-                url: "/api/comics/" + comicId,
-                type: "DELETE",
-                success: function () {
-                    $("#comic-row-" + comicId).fadeOut(400, function() { $(this).remove(); });
-                },
-                error: function (xhr) {
-                    alert("Lỗi: " + xhr.responseText);
-                }
-            });
-        }
+    function deleteComic(id) {
+        if (!confirm("Bạn có chắc chắn muốn xóa truyện này?")) return;
+        alert("Demo UI – chưa gọi backend");
     }
 </script>
+
 </body>
 </html>

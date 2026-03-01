@@ -5,6 +5,7 @@ import com.example.asuracomic.model.enums.*;
 import com.example.asuracomic.repository.*;
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
+import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,6 +68,9 @@ class AsuraComicApplicationTests {
 	private VipConfigRepository vipConfigRepository;
 
 	@Autowired
+	private CoinPackageRepository coinPackageRepository;
+
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	private final Faker faker = new Faker(); // Khởi tạo đối tượng Faker để tạo dữ liệu giả
@@ -75,13 +79,9 @@ class AsuraComicApplicationTests {
 
 	@Test
 	void save_users() {
-
 		for (int i = 0; i < 20; i++) {
-
 			String displayName = faker.name().fullName();
-
 			Role role;
-
 			// Gán role theo index
 			switch (i) {
 				case 0 -> role = Role.SUPER_ADMIN;
@@ -90,7 +90,6 @@ class AsuraComicApplicationTests {
 				case 3 -> role = Role.INTERACTION_ADMIN;
 				default -> role = Role.USER;
 			}
-
 			User user = User.builder()
 					.email(faker.internet().emailAddress())
 					.username(faker.name().username())
@@ -108,7 +107,6 @@ class AsuraComicApplicationTests {
 							LocalDateTime.now().minusDays(
 									faker.number().numberBetween(0, 30)))
 					.build();
-
 			userRepository.save(user);
 		}
 	}
@@ -160,7 +158,7 @@ class AsuraComicApplicationTests {
 		while (count < 10) {
 			String name = faker.book().genre();
 			String slug = slugify.slugify(name);
-			// Kiểm tra slug đã tồn tại trong DB hoặc trong vòng lặp
+			// Kiểm tra slug đã tồn tại trong DB hoặc trong vòng lặp một phần tử có tồn tại trong một tập hợp hay không.
 			if (addedSlugs.contains(slug) || genreRepository.findBySlug(slug) != null) {
 				continue;
 			}
@@ -430,4 +428,59 @@ class AsuraComicApplicationTests {
 			}
 		}
 	}
+
+
+	@Test
+	void save_coin_packages() {
+
+		// Nếu đã có data thì không fake lại
+		if (coinPackageRepository.count() > 0) {
+			System.out.println("⚠️ Coin packages đã tồn tại, bỏ qua fake data");
+			return;
+		}
+
+		List<CoinPackage> packages = List.of(
+				CoinPackage.builder()
+						.name("Gói 10k")
+						.price(BigDecimal.valueOf(10_000))
+						.coin(100)
+						.active(true)
+						.build(),
+
+				CoinPackage.builder()
+						.name("Gói 50k")
+						.price(BigDecimal.valueOf(50_000))
+						.coin(600)
+						.active(true)
+						.build(),
+
+				CoinPackage.builder()
+						.name("Gói 100k")
+						.price(BigDecimal.valueOf(100_000))
+						.coin(1300)
+						.active(true)
+						.build(),
+
+				CoinPackage.builder()
+						.name("Gói 200k")
+						.price(BigDecimal.valueOf(200_000))
+						.coin(3000)
+						.active(true)
+						.build(),
+
+				CoinPackage.builder()
+						.name("Gói 500k")
+						.price(BigDecimal.valueOf(500_000))
+						.coin(8000)
+						.active(true)
+						.build()
+		);
+
+		coinPackageRepository.saveAll(packages);
+
+		System.out.println("✅ Fake coin_packages thành công: " + packages.size() + " gói");
+	}
+
+
+
 }

@@ -70,95 +70,103 @@
                                 <table class="table table-hover table-v-align mb-0">
                                     <thead class="bg-light">
                                     <tr>
-                                        <th style="width: 200px">Người dùng</th>
-                                        <th style="width: 180px">Vị trí</th>
+                                        <th style="width: 200px">ID Người dùng</th>
+                                        <th style="width: 180px">Use Name</th>
+                                        <th style="width: 120px">Chapter</th>
                                         <th>Nội dung bình luận</th>
+                                        <th style="width: 120px">Ngày Tạo</th>
                                         <th style="width: 120px">Trạng thái</th>
                                         <th class="text-center" style="width: 150px">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="comment : ${comments}" th:id="'comment-' + ${comment.id}">
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img th:src="${comment.user.avatar ?: '/css/admin-assets/dist/img/avatar5.png'}" class="user-avatar mr-2 shadow-sm">
-                                                <div>
-                                                    <span class="font-weight-bold d-block" th:text="${comment.user.username}">lethuy_pro</span>
-                                                    <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}">31/12/2025</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="comic-title-small" th:text="${comment.chapter.comic.title}">Solo Leveling</span>
-                                            <span class="chapter-title-small" th:text="${comment.chapter.title}">Chương 200</span>
-                                        </td>
-                                        <td>
-                                            <div class="comment-text-full">
-                                                <span th:if="${comment.parentComment != null}" class="badge badge-light border mb-1">
-                                                    <i class="fas fa-reply fa-flip-horizontal mr-1"></i> Trả lời ID #<span th:text="${comment.parentComment.id}">12</span>
-                                                </span>
-                                                <p class="mb-0" th:text="${comment.content}">Truyện hay quá admin ơi, hóng chương mới từng ngày!</p>
-                                                <small th:if="${comment.isEdited}" class="text-info font-italic text-xs">(Đã chỉnh sửa)</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-success" th:if="${comment.status.name() == 'ACTIVE'}">HIỂN THỊ</span>
-                                            <span class="badge badge-warning" th:if="${comment.status.name() == 'REPORTED'}">BÁO CÁO</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary" title="Xem chi tiết/Thread">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" title="Xóa bình luận" th:onclick="'deleteComment(' + ${comment.id} + ')'">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-dark" title="Khóa User">
-                                                    <i class="fas fa-user-slash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <tr th:each="comment : ${commentsPage.content}">
+                                        <td th:text="${comment.id}"></td>
 
-                                    <tr>
+                                        <td th:text="${comment.user.username}"></td>
                                         <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="/css/admin-assets/dist/img/user8-128x128.jpg" class="user-avatar mr-2 shadow-sm">
-                                                <div>
-                                                    <span class="font-weight-bold d-block">spammer_99</span>
-                                                    <small class="text-muted">31/12/2025 08:20</small>
-                                                </div>
-                                            </div>
+                                            <span th:text="${comment.chapter.title}"></span> -
+                                            <span th:text="${comment.chapter.comic.title}"></span>
                                         </td>
+
+                                        <td th:text="${comment.content}"></td>
+
+                                        <td th:text="${comment.createdAt}"></td>
+
                                         <td>
-                                            <span class="comic-title-small">One Piece</span>
-                                            <span class="chapter-title-small">Chương 1100</span>
+                                        <span th:text="${comment.status}"
+                                          class="badge badge-info"></span>
                                         </td>
+
                                         <td>
-                                            <div class="comment-text-full border-warning">
-                                                <p class="mb-0 text-danger font-weight-bold">Bình luận chứa link lừa đảo nạp xu giá rẻ!!!</p>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge badge-warning">BÁO CÁO</span></td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
-                                                <button class="btn btn-sm btn-outline-dark"><i class="fas fa-user-slash"></i></button>
-                                            </div>
+                                            <form th:action="@{/asura/admin/comment/{id}/delete(id=${comment.id})}"
+                                                  method="post"
+                                                  style="display:inline">
+                                                <button class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Xóa bình luận?')">
+                                                    Xóa
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>
+
                                 </table>
+
                             </div>
-                            <div class="card-footer bg-white border-0 shadow-sm">
-                                <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                </ul>
+                            <div class="card-footer bg-white border-0 shadow-sm" th:if="${totalPages > 0}">
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <div class="text-muted small">
+                                        Trang <strong th:text="${currentPage}">1</strong> / <span th:text="${totalPages}">10</span>
+                                        (Tổng cộng <span th:text="${totalItems}">100</span> bình luận)
+                                    </div>
+
+                                    <nav aria-label="Comment pagination">
+                                        <ul class="pagination pagination-sm m-0">
+
+                                            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                                <a class="page-link" th:href="@{/asura/admin/comic/interact/comments(page=1, size=10)}">
+                                                    <i class="fas fa-angle-double-left"></i>
+                                                </a>
+                                            </li>
+
+                                            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/asura/admin/comic/interact/comments(page=${currentPage - 1}, size=10)}">
+                                                    «
+                                                </a>
+                                            </li>
+
+                                            <th:block th:with="start=${(currentPage - 2 > 0) ? (currentPage - 2) : 1},
+                                            end=${(start + 4 > totalPages) ? totalPages : (start + 4)}">
+
+                                                <li class="page-item"
+                                                    th:each="i : ${#numbers.sequence(start, end)}"
+                                                    th:classappend="${i == currentPage} ? 'active'">
+                                                    <a class="page-link"
+                                                       th:href="@{/asura/admin/comic/interact/comments(page=${i}, size=10)}"
+                                                       th:text="${i}">1</a>
+                                                </li>
+                                            </th:block>
+
+                                            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/asura/admin/comic/interact/comments(page=${currentPage + 1}, size=10)}">
+                                                    »
+                                                </a>
+                                            </li>
+
+                                            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                                <a class="page-link" th:href="@{/asura/admin/comic/interact/comments(page=${totalPages}, size=10)}">
+                                                    <i class="fas fa-angle-double-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

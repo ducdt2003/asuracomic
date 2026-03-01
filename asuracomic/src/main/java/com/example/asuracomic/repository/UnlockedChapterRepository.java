@@ -2,6 +2,7 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.UnlockedChapter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -23,4 +24,9 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     // lấy danh sách các chapter mà người dùng đã mở khóa cầu nối giữa tên biến trong method và tên biến trong query.
     @Query("SELECT uc.chapter.id FROM UnlockedChapter uc WHERE uc.user.id = :userId")
     List<Long> findChapterIdsByUserId(@Param("userId") Long userId);
+
+    @Modifying
+    @Query("DELETE FROM UnlockedChapter uc WHERE uc.chapter.id = :chapterId")
+    void deleteByChapterId(Long chapterId);
+
 }

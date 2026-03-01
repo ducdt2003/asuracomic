@@ -50,35 +50,40 @@
             <div class="comment-text" th:text="${comment.content}">Comment content</div>
 
             <div class="comment-actions" th:if="${isLoggedIn}">
-                <!-- Nếu là chủ sở hữu bình luận -->
+
+                <!-- Nếu là chủ sở hữu bình luận: CHỈ HIỆN NÚT XÓA -->
                 <div th:if="${comment.user.id == currentUserId}">
                     <form th:action="@{/asura/comic/{comicSlug}/chapter/{chapterSlug}/comment/{commentId}/delete(
-                comicSlug=${comic.slug},
-                chapterSlug=${chapter.slug},
-                commentId=${comment.id}
-            )}" method="post" style="display: inline;">
-                        <button type="submit" class="action-btn"
+                        comicSlug=${comic.slug},
+                        chapterSlug=${chapter.slug},
+                        commentId=${comment.id}
+                    )}"
+                          method="post"
+                          style="display: inline;">
+                        <button type="submit"
+                                class="action-btn"
                                 onclick="return confirm('Xác nhận xóa bình luận?')"
-                                style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; transition: background-color 0.3s ease;">
+                                style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
                             Xóa
                         </button>
                     </form>
-                    <a th:href="@{/asura/report(commentId=${comment.id})}" class="action-btn"
-                       style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; transition: background-color 0.3s ease;">
-                        Báo cáo
-                    </a>
                 </div>
 
-                <!-- Nếu không phải chủ sở hữu -->
+                <!-- Nếu KHÔNG phải chủ sở hữu: CHỈ HIỆN NÚT BÁO CÁO -->
                 <div th:if="${comment.user.id != currentUserId}">
-                    <a th:href="@{/asura/report(commentId=${comment.id})}"
+                    <a th:href="@{/asura/report(
+                        commentId=${comment.id},
+                        comicSlug=${comic.slug},
+                        chapterSlug=${chapter.slug}
+                )}"
                        class="action-btn"
-                       style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; transition: background-color 0.3s ease;">
+                       style="background-color: #ff4d4d; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block;">
                         Báo cáo
                     </a>
-
                 </div>
+
             </div>
+
 
         </li>
     </ul>
@@ -114,48 +119,262 @@
 </div>
 </body>
 
-<!-- JavaScript for Comment Actions -->
-<script>
-    function toggleReplyForm(commentId) {
-        const form = document.getElementById('reply-form-' + commentId);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleEditForm(commentId) {
-        const form = document.getElementById('edit-form-' + commentId);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleReportForm(commentId) {
-        const form = document.getElementById('report-form-' + commentId);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function deleteComment(commentId, comicSlug, chapterSlug) {
-        if (confirm('Are you sure you want to delete this comment?')) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/asura/comic/' + comicSlug + '/chapter/' + chapterSlug + '/comment/' + commentId + '/delete';
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // Back to Top Script
-    window.addEventListener('scroll', function() {
-        const backToTopButton = document.querySelector('.back-to-top');
-        if (window.scrollY > 300) {
-            backToTopButton.classList.add('show');
-        } else {
-            backToTopButton.classList.remove('show');
-        }
-    });
-
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-</script>
 </html>
+<!--
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giao diện bình luận</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .comments-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        /* ===== LOGIN STATE ===== */
+        .login-prompt {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .login-prompt a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ===== COMMENT FORM ===== */
+        .comment-input textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        .comment-input button {
+            margin-top: 8px;
+            padding: 8px 16px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .comment-input button:hover {
+            background: #0056b3;
+        }
+
+        /* ===== COMMENT LIST ===== */
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .comment-item {
+            margin-top: 20px;
+        }
+
+        .comment-box {
+            background: #f9f9f9;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+
+        .time {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .comment-text {
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        .comment-actions {
+            font-size: 13px;
+        }
+
+        .comment-actions span {
+            color: #007bff;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+
+        .comment-actions span:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== REPLY ===== */
+        .reply-list {
+            margin-top: 12px;
+            margin-left: 40px;
+            padding-left: 16px;
+            border-left: 2px solid #e0e0e0;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 8px;
+        }
+
+        .pagination a {
+            padding: 6px 12px;
+            background: #007bff;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .pagination a.disabled {
+            background: #ccc;
+            pointer-events: none;
+        }
+
+        .pagination a.active {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="comments-container">
+
+    <h2>Bình luận</h2>
+
+    &lt;!&ndash; ================= CHƯA ĐĂNG NHẬP ================= &ndash;&gt;
+    &lt;!&ndash; Bật khối này khi user chưa login &ndash;&gt;
+    &lt;!&ndash;
+    <div class="login-prompt">
+        Bạn cần <a href="/login">đăng nhập</a> để viết bình luận.
+    </div>
+    &ndash;&gt;
+
+    &lt;!&ndash; ================= ĐÃ ĐĂNG NHẬP ================= &ndash;&gt;
+    &lt;!&ndash; Bật khối này khi user đã login &ndash;&gt;
+    <div class="comment-input">
+        <textarea placeholder="Viết bình luận của bạn..."></textarea>
+        <button>Gửi bình luận</button>
+    </div>
+
+    &lt;!&ndash; ================= COMMENT LIST ================= &ndash;&gt;
+    <ul class="comment-list">
+
+        &lt;!&ndash; COMMENT CHA &ndash;&gt;
+        <li class="comment-item">
+            <div class="comment-box">
+                <div class="user-info">
+                    <img class="avatar" src="https://asuracomic.net/images/logo.webp">
+                    <strong>User123</strong>
+                    <span class="time">28/02/2026</span>
+                </div>
+
+                <div class="comment-text">
+                    Đây là bình luận cha. Nội dung sẽ được backend đổ vào.
+                </div>
+
+                <div class="comment-actions">
+                    <span>Trả lời</span>
+                    <span>Sửa</span>
+                    <span>Xóa</span>
+                </div>
+            </div>
+
+            &lt;!&ndash; REPLY &ndash;&gt;
+            <ul class="reply-list">
+                <li class="comment-item">
+                    <div class="comment-box">
+                        <div class="user-info">
+                            <img class="avatar" src="https://asuracomic.net/images/logo.webp">
+                            <strong>User456</strong>
+                            <span class="time">28/02/2026</span>
+                        </div>
+
+                        <div class="comment-text">
+                            Đây là bình luận trả lời.
+                        </div>
+
+                        <div class="comment-actions">
+                            <span>Trả lời</span>
+                            <span>Báo cáo</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+        &lt;!&ndash; COMMENT CHA KHÁC &ndash;&gt;
+        <li class="comment-item">
+            <div class="comment-box">
+                <div class="user-info">
+                    <img class="avatar" src="https://asuracomic.net/images/logo.webp">
+                    <strong>UserABC</strong>
+                    <span class="time">27/02/2026</span>
+                </div>
+
+                <div class="comment-text">
+                    Một bình luận khác không có reply.
+                </div>
+
+                <div class="comment-actions">
+                    <span>Trả lời</span>
+                    <span>Báo cáo</span>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+    &lt;!&ndash; ================= PAGINATION ================= &ndash;&gt;
+    <div class="pagination">
+        <a href="#" class="disabled">Prev</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">Next</a>
+    </div>
+
+</div>
+
+</body>
+</html>-->

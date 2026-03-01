@@ -3,6 +3,7 @@ package com.example.asuracomic.service;
 
 import com.example.asuracomic.dto.admin.DashboardStatsDTO;
 import com.example.asuracomic.entity.*;
+import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.ReportStatus;
 import com.example.asuracomic.model.enums.Role;
 import com.example.asuracomic.model.enums.TransactionStatus;
@@ -61,6 +62,11 @@ public class DashboardService {
 
     public Page<Comic> getComicPage(Pageable pageable) {
         return comicRepository.findAll(pageable);
+    }
+
+    // DashboardService.java
+    public Page<Comic> getMangaPage(Pageable pageable) {
+        return comicRepository.findByType(ComicType.MANGA, pageable);
     }
 
 

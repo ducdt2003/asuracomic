@@ -21,29 +21,40 @@ public class UserService {
     private final HttpSession session;
 
     public void updateProfile(UpdateProfileRequest request) {
-        // Lấy user hiện tại từ session
-        UserDTO currentUserDTO = (UserDTO) session.getAttribute("currentUser");
-        if (currentUserDTO == null) {
+
+        // 1. Lấy user từ session (DTO)
+        Object sessionUser = session.getAttribute("currentUser");
+        if (sessionUser == null) {
             throw new BadRequestException("Bạn chưa đăng nhập");
         }
 
-        // Lấy user từ DB
+        if (!(sessionUser instanceof UserDTO)) {
+            throw new BadRequestException("Dữ liệu session không hợp lệ");
+        }
+
+        UserDTO currentUserDTO = (UserDTO) sessionUser;
+
+        // 2. Lấy USER ENTITY từ DB
         User user = userRepository.findById(currentUserDTO.getId())
                 .orElseThrow(() -> new BadRequestException("Người dùng không tồn tại"));
 
-        // Cập nhật thông tin (chỉ description hoặc tất cả nếu muốn)
+        // 3. Update dữ liệu
         if (request.getUsername() != null && !request.getUsername().isBlank()) {
             user.setUsername(request.getUsername());
         }
+
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
             user.setEmail(request.getEmail());
         }
-        user.setDescription(request.getDescription());
 
-        // Lưu lại
+        if (request.getDescription() != null) {
+            user.setDescription(request.getDescription());
+        }
+
+        // 4. Save DB
         userRepository.save(user);
 
-        // Cập nhật session
+        // 5. Update lại session bằng DTO mới
         session.setAttribute("currentUser", UserMapper.toDTO(user));
     }
 
@@ -76,5 +87,10 @@ public class UserService {
 
         userRepository.save(user);
         return "Đăng ký thành công! Hãy đăng nhập.";
+    }
+
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

@@ -6,6 +6,8 @@ import com.example.asuracomic.model.enums.CommentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -27,5 +29,15 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByParentComment(Comment parentComment);
 
     List<Comment> findByChapterAndStatusOrderByCreatedAtDesc(Chapter chapter, CommentStatus status);
+
+    @Modifying
+    @Query("DELETE FROM Comment c WHERE c.chapter.id = :chapterId")
+    void deleteByChapterId(Long chapterId);
+
+    // Lấy các bình luận gốc (không có parent) của một chương, sắp xếp mới nhất lên đầu
+    Page<Comment> findByChapterIdAndParentCommentIsNull(Long chapterId, Pageable pageable);
+
+    // Lấy danh sách reply cho một bình luận cha
+    List<Comment> findByParentCommentIdOrderByCreatedAtAsc(Long parentId);
 
 }

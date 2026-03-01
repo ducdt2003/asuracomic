@@ -2,6 +2,8 @@ package com.example.asuracomic.controller.admin;
 
 import com.example.asuracomic.dto.admin.*;
 import com.example.asuracomic.entity.*;
+import com.example.asuracomic.model.enums.ComicStatus;
+import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.Role;
 import com.example.asuracomic.repository.*;
 import com.example.asuracomic.service.DashboardService;
@@ -69,12 +71,99 @@ public class adminComicController {
         model.addAttribute("totalPages", comicPage.getTotalPages());
         return "admin-templ/admin-content/blog-index";
     }
+    // lấy manga
+    @GetMapping("/content/detail/type/{type}")
+    public String getComicByType(
+            @PathVariable ComicType type,
+            @RequestParam(defaultValue = "0") int page,
+            Model model
+    ) {
+        Page<Comic> comicPage =
+                comicRepository.findByType(type, PageRequest.of(page, 5));
+
+
+        model.addAttribute("comics", comicPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+        model.addAttribute("type", type.name());
+
+        return "admin-templ/admin-content/type-list";
+    }
+
+    @GetMapping("/content/detail/type")
+    public String getComicByType(Model model,
+                                 @RequestParam(defaultValue = "0") int page) {
+
+        Page<Comic> comicPage = adminComicService.getTopRatedComics(page);
+        Page<Comic> topViewedPage = adminComicService.getTopViewedComics(page);
+
+
+        model.addAttribute("comics", comicPage.getContent()); // Danh sách 5 truyện
+        model.addAttribute("topViewedComics", topViewedPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", comicPage.getTotalPages());
+
+
+
+        model.addAttribute("mangaCount",
+                comicRepository.countByType(ComicType.MANGA));
+
+        model.addAttribute("manhwaCount",
+                comicRepository.countByType(ComicType.MANHWA));
+
+        model.addAttribute("manhuaCount",
+                comicRepository.countByType(ComicType.MANHUA));
+
+
+
+        return "admin-templ/admin-content/genres";
+    }
 
     // update truyện vtair truyên lên
     @GetMapping("/content/create")
-    public String getCreatePage() {
+    public String getCreatePage(Model model) {
+        model.addAttribute("statuses", ComicStatus.values());
+        model.addAttribute("types", ComicType.values());
+
+        // Data từ DB
+        model.addAttribute("genres", genreRepository.findAll());
+        model.addAttribute("authors", authorRepository.findAll());
+        model.addAttribute("artists", artistRepository.findAll());
         return "admin-templ/admin-content/blog-create";
     }
+    // Trong adminComicController.java
+
+    @PostMapping("/content/create")
+    public String createComic(
+            @ModelAttribute ComicCreateRequest request,
+            RedirectAttributes redirectAttributes
+    ) {
+        adminComicService.createComic(request);
+
+        redirectAttributes.addFlashAttribute(
+                "success", "Tạo truyện thành công!");
+
+        return "redirect:/asura/admin/comic/content/create";
+    }
+
+  /*  @PostMapping("/content/create")
+    public String getComicDetail(@PathVariable String slug,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 Model model) {
+        // 1. Tìm truyện - Nếu không thấy truyện mới báo lỗi
+        Comic comic = dashboardService.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện: " + slug));
+
+        // 2. Lấy chương - Chấp nhận trường hợp 0 chương
+        Page<Chapter> chapterPage = dashboardService.getChaptersByComic(comic, page, 5);
+
+        model.addAttribute("comic", comic);
+        model.addAttribute("chapterPage", chapterPage);
+
+        return "admin-templ/admin-content/blog-detail";
+    }*/
+
+
 
     // chi tiết truyện
     @GetMapping("/content/{slug}")
@@ -94,6 +183,29 @@ public class adminComicController {
         return "admin-templ/admin-content/blog-detail"; // file HTML
     }
 
+    // xóa truyện
+    // XÓA TRUYỆN
+    @PostMapping("/content/delete/{comicId}")
+    public String deleteComic(@PathVariable Long comicId,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            adminComicService.deleteComic(comicId);
+
+            redirectAttributes.addFlashAttribute(
+                    "success", "Đã xóa truyện thành công!");
+
+            return "redirect:/asura/admin/comic/content/detail";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(
+                    "error", "Lỗi: " + e.getMessage());
+
+            return "redirect:/asura/admin/comic/content/detail";
+        }
+    }
+
+
+
 
     // chỉnh sữa truyện
     @GetMapping("/content/edit/{slug}")
@@ -103,10 +215,18 @@ public class adminComicController {
                               Model model) {
         Comic comic = dashboardService.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy truyện"));
+
+        ComicUpdateForm comicForm = adminComicService.fromComic(comic);
+        model.addAttribute("comicForm", comicForm);
+
         // Lấy toàn bộ danh sách để đổ vào các ô Select
         model.addAttribute("allGenres", genreRepository.findAll());
         model.addAttribute("allAuthors", authorRepository.findAll());
         model.addAttribute("allArtists", artistRepository.findAll());
+
+
+
+
 
         // Lấy danh sách ID đã chọn để Thymeleaf check "selected"
         model.addAttribute("selectedGenreIds", comic.getComicGenres().stream().map(cg -> cg.getGenre().getId()).toList());
@@ -121,8 +241,10 @@ public class adminComicController {
     @PostMapping("/content/edit/{slug}")
     public String handleUpdateComic(@PathVariable String slug,
                                     @ModelAttribute("comicForm") ComicUpdateForm form,
+                                    @RequestParam(value = "coverImageFile", required = false) MultipartFile file,
                                     RedirectAttributes redirectAttributes) {
         try {
+            form.setCoverImageFile(file);
             adminComicService.updateComic(slug, form);
             redirectAttributes.addFlashAttribute("success", "Cập nhật thông tin truyện thành công!");
 
@@ -232,6 +354,32 @@ public class adminComicController {
         return "redirect:/asura/admin/comic/content/chapter/edit/" + chapterId;
     }
 
+
+    // xóa chapter
+    @PostMapping("/content/chapter/delete/{chapterId}")
+    public String deleteChapter(@PathVariable Long chapterId,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            String slug = adminChapterService.deleteChapter(chapterId);
+
+            redirectAttributes.addFlashAttribute(
+                    "success", "Đã xóa chương thành công!");
+
+            // ✅ quay lại đúng trang edit comic
+            return "redirect:/asura/admin/comic/content/edit/" + slug;
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(
+                    "error", "Lỗi: " + e.getMessage());
+
+            return "redirect:/asura/admin/comic";
+        }
+    }
+
+    @GetMapping("/type")
+    public String getGenres() {
+        return "admin-templ/admin-content/genres";
+    }
 
 
 

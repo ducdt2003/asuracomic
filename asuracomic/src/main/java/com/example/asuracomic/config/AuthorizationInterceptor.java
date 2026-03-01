@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
+    // Interceptor
     private final HttpSession session;
 
     @Override

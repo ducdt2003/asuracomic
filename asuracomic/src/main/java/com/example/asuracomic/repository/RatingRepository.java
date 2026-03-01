@@ -2,6 +2,9 @@ package com.example.asuracomic.repository;
 
 import com.example.asuracomic.entity.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.Optional;
 
 public interface RatingRepository extends JpaRepository<Rating, Long> {
@@ -13,4 +16,11 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     // Trả về true nếu bản ghi tồn tại, false nếu không
     // Được sử dụng để tránh tạo trùng lặp dữ liệu trong bảng ratings
     boolean existsByUser_IdAndComic_Id(Long userId, Long comicId);
+    void deleteByComicId(Long comicId);
+
+    Optional<Rating> findByUserIdAndComicId(Long userId, Long comicId);
+
+    @Query("SELECT AVG(r.score) FROM Rating r WHERE r.comic.id = :comicId")
+    Double calculateAverageRating(@Param("comicId") Long comicId);
+
 }

@@ -3,6 +3,8 @@ package com.example.asuracomic.repository;
 import com.example.asuracomic.entity.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 // Định nghĩa interface AuthorRepository, mở rộng JpaRepository để cung cấp các phương thức thao tác với thực thể Author
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     // Phương thức tùy chỉnh để tìm kiếm một tác giả (Author) dựa trên trường slug
@@ -10,4 +12,5 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     // Trả về đối tượng Author nếu tìm thấy, null nếu không tìm thấy
     Author findBySlug(String slug); // Tham số slug là chuỗi cần tìm kiếm
 
+    Optional<Author> findByName(String name); // Tương tự cho Genre và Artist
 }
