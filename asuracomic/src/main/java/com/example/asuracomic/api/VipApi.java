@@ -29,6 +29,8 @@ public class VipApi {
     public ResponseEntity<?> buyVip(@RequestParam String slug,
                                     HttpSession session) {
 
+
+        // đăng hập ròi mươ có thng itnn
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -42,5 +44,9 @@ public class VipApi {
         session.setAttribute("currentUser", UserMapper.toDTO(user));
 
         return ResponseEntity.ok("Mua VIP thành công");
+        /*return ResponseEntity.ok(Map.of(
+                "message", "Mua Vip thanh Cong",
+                "vipExpryDate", user.getVipExpiryDate()
+        ));*/
     }
 }

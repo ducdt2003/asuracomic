@@ -3,6 +3,7 @@ package com.example.asuracomic.repository;
 import com.example.asuracomic.entity.Transaction;
 import com.example.asuracomic.model.enums.TransactionStatus;
 import com.example.asuracomic.model.enums.TransactionType;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -37,4 +38,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Modifying
     @Query("UPDATE Transaction t SET t.chapter = null WHERE t.chapter.id = :chapterId")
     void setChapterNullByChapterId(@Param("chapterId") Long chapterId);
+
+    @Modifying
+    @Query("DELETE FROM Transaction t WHERE t.chapter.id IN :chapterIds")
+    void deleteByChapterIdIn(@Param("chapterIds") List<Long> chapterIds);
+
+
+// nap xu
+    List<Transaction> findByUserAndTransactionTypeOrderByCreatedAtDesc(
+            com.example.asuracomic.entity.User user,
+            com.example.asuracomic.model.enums.TransactionType type
+    );
 }

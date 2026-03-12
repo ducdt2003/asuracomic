@@ -5,9 +5,7 @@ import com.example.asuracomic.dto.admin.ChapterUpdateForm;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.ChapterImage;
 import com.example.asuracomic.entity.Comic;
-import com.example.asuracomic.repository.ChapterImageRepository;
-import com.example.asuracomic.repository.ChapterRepository;
-import com.example.asuracomic.repository.ComicRepository;
+import com.example.asuracomic.repository.*;
 import com.example.asuracomic.service.admin.adminuser.CloudinaryService;
 import com.github.slugify.Slugify;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,9 @@ public class AdminChapterService {
     private final ChapterImageRepository chapterImageRepository;
     private final CloudinaryService cloudinaryService;
     private final Slugify slugify = Slugify.builder().build();
-
+    private final CommentRepository commentRepository;
+    private final UnlockedChapterRepository unlockedChapterRepository;
+    private final TransactionRepository transactionRepository;
     // thêm chương
     @Transactional
     public void createChapter(Long comicId, ChapterUpdateForm form) {
@@ -239,6 +239,36 @@ public class AdminChapterService {
     }
 
 
+
+    @Transactional
+    public int deleteAllChaptersByComic(Long comicId) {
+
+        List<Chapter> chapters = chapterRepository.findByComicId(comicId);
+        if (chapters.isEmpty()) {
+            return 0;
+        }
+
+        List<Long> chapterIds = chapters.stream()
+                .map(Chapter::getId)
+                .toList();
+
+        // 1. Xóa ảnh chương
+        chapterImageRepository.deleteByChapterIdIn(chapterIds);
+
+        // 2. Xóa comment
+        commentRepository.deleteByChapterIdIn(chapterIds);
+
+        // 3. Xóa unlocked chapter
+        unlockedChapterRepository.deleteByChapterIdIn(chapterIds);
+
+        // 4. Xóa transaction liên quan chapter
+        transactionRepository.deleteByChapterIdIn(chapterIds);
+
+        // 5. Xóa chapter
+        chapterRepository.deleteAll(chapters);
+
+        return chapters.size();
+    }
 
 
 

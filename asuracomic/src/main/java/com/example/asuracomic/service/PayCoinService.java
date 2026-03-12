@@ -5,6 +5,7 @@ import com.example.asuracomic.entity.CoinPackage;
 import com.example.asuracomic.entity.Transaction;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.exception.BadRequestException;
+import com.example.asuracomic.model.enums.PaymentMethod;
 import com.example.asuracomic.model.enums.TransactionStatus;
 import com.example.asuracomic.model.enums.TransactionType;
 import com.example.asuracomic.repository.CoinPackageRepository;
@@ -56,7 +57,7 @@ public class PayCoinService {
         Transaction transaction = Transaction.builder()
                 .user(user)
                 .transactionType(TransactionType.COIN_PURCHASE)
-                .amount(coinPackage.getPrice()) // tiền thật
+                .amount(coinPackage.getPrice())
                 .status(TransactionStatus.SUCCESS)
                 .transactionCode("COIN-" + UUID.randomUUID().toString().substring(0, 8))
                 .createdAt(LocalDateTime.now())
@@ -67,6 +68,30 @@ public class PayCoinService {
         // 6. Update session
         currentUser.setCoinBalance(user.getCoinBalance());
         session.setAttribute("currentUser", currentUser);
+    }
+
+    @Transactional
+    public void topUpCoinByEmail(Long packageId, String email, String paypalOrderId) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        CoinPackage pkg = coinPackageRepository.findById(packageId).orElseThrow();
+
+        // 1. Cộng xu cho User
+        BigDecimal coinToApp = BigDecimal.valueOf(pkg.getCoin());
+        user.setCoinBalance(user.getCoinBalance().add(coinToApp));
+        userRepository.save(user);
+
+        // 2. LƯU LỊCH SỬ GIAO DỊCH
+        Transaction transaction = Transaction.builder()
+                .user(user)
+                .transactionType(TransactionType.COIN_PURCHASE) // Loại nạp xu
+                .amount(coinToApp) // Số xu nhận được
+                .paymentMethod(PaymentMethod.PAYPAL)
+                .transactionCode(paypalOrderId) // Lưu mã đơn hàng của PayPal để đối soát
+                .status(TransactionStatus.SUCCESS)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        transactionRepository.save(transaction);
     }
 
 

@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/asura/bookmarks");
 
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/asura/admin/**", "/admin/**");
+                .addPathPatterns("/asura/admin/**", "/admin/**", "/api/asura/admin/**");
 
     }
 }

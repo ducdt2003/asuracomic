@@ -191,7 +191,10 @@ class AsuraComicApplicationTests {
 			List<Genre> rdGenres = new ArrayList<>();
 
 			while (rdGenres.size() < 3) { // 3 unique genres
+				// random.nextInt(genres.size()) chọn một thể loại ngẫu nhiên.
 				Genre rdGenre = genres.get(random.nextInt(genres.size()));
+				// !rdGenres.contains(rdGenre) đảm bảo thể loại được chọn không bị trùng trong danh sách.
+				// Nếu chưa tồn tại thì mới thêm vào rdGenres.
 				if (!rdGenres.contains(rdGenre)) {
 					rdGenres.add(rdGenre);
 				}
@@ -283,6 +286,7 @@ class AsuraComicApplicationTests {
 		}
 	}
 
+/*	chưa test 290 385*/
 	@Test
 	void save_comic_views() {
 		// Lấy danh sách tất cả truyện từ cơ sở dữ liệu
@@ -432,13 +436,11 @@ class AsuraComicApplicationTests {
 
 	@Test
 	void save_coin_packages() {
-
 		// Nếu đã có data thì không fake lại
 		if (coinPackageRepository.count() > 0) {
 			System.out.println("⚠️ Coin packages đã tồn tại, bỏ qua fake data");
 			return;
 		}
-
 		List<CoinPackage> packages = List.of(
 				CoinPackage.builder()
 						.name("Gói 10k")

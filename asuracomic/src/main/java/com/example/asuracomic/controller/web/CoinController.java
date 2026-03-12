@@ -278,7 +278,7 @@ public class CoinController {
     private final PayPalService payPalService;
     private final UserService userService;
 
-    @GetMapping("/coin") // ĐƯỜNG DẪN NÀY PHẢI CÓ
+    @GetMapping("/coin")
     public String showCoinShop(Model model, Principal principal) {
         model.addAttribute("coinPackages", coinPackageRepository.findAll());
 
@@ -290,14 +290,6 @@ public class CoinController {
         return "web/web-coin/shop"; // Tên file HTML của bạn (không có .html)
     }
 
-    @GetMapping("/membership")
-    public String membership(Model model, HttpSession session) {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if (currentUser != null) {
-            model.addAttribute("currentUser", currentUser);
-        }
-        return "web/web-coin/membership";
-    }
     @PostMapping("/pay")
     public String pay(@RequestParam Long packageId) {
         try {
@@ -325,6 +317,41 @@ public class CoinController {
             e.printStackTrace();
         }
         return "redirect:/asura/coin?error";
+    }
+    @GetMapping("/membership")
+    public String membership(Model model, HttpSession session) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            model.addAttribute("currentUser", currentUser);
+        }
+        return "web/web-coin/membership";
+    }
+    @PostMapping("/membership/buy/{slug}")
+    public String buyVip(@PathVariable String slug,
+                         HttpSession session,
+                         RedirectAttributes redirectAttributes) {
+
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng đăng nhập");
+            return "redirect:/asura/login";
+        }
+
+        try {
+            vipService.buyVipPackageApi(slug, currentUser.getId());
+
+            // refresh session
+            User user = userRepository.findById(currentUser.getId()).orElseThrow();
+            session.setAttribute("currentUser", UserMapper.toDTO(user));
+
+            redirectAttributes.addFlashAttribute("successMessage", "Mua VIP thành công");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/asura/membership";
     }
 
 

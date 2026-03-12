@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>movie-app</artifactId>
+	<artifactId>asura-comic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>movie-app</name>
-	<description>movie-app</description>
+	<name>asura-comic</name>
+	<description>asura-comic</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -92,6 +92,7 @@
 			<artifactId>checkout-sdk</artifactId>
 			<version>2.0.0</version>
 		</dependency>
+
 
 
 

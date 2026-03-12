@@ -40,6 +40,12 @@ public class CommentService {
     public CommentResponseDTO createComment(Long userId, CommentDTO commentDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("Người dùng không tồn tại"));
+       /* .orElseThrow(new Supplier<CustomException>() {
+            @Override
+            public CustomException get() {
+                return new CustomException("Người dùng không tồn tại");
+            }
+        });*/
         Chapter chapter = chapterRepository.findById(commentDTO.getChapterId())
                 .orElseThrow(() -> new CustomException("Chương không tồn tại"));
 

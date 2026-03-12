@@ -116,7 +116,7 @@ public class VipService {
         LocalDateTime vipStart;
         LocalDateTime vipEnd;
 
-        // 4. Xử lý VIP cộng dồn
+        // 4. Xử lý VIP cộng dồn kiểm tra xem ngày hết hạn VIP của user có sau thời điểm hiện tại hay không.
         if (user.isVipStatus()
                 && user.getVipExpiryDate() != null
                 && user.getVipExpiryDate().isAfter(now)) {

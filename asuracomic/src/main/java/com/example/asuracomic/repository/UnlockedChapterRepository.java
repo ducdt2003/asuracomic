@@ -29,4 +29,7 @@ public interface UnlockedChapterRepository extends JpaRepository<UnlockedChapter
     @Query("DELETE FROM UnlockedChapter uc WHERE uc.chapter.id = :chapterId")
     void deleteByChapterId(Long chapterId);
 
+    @Modifying
+    @Query("DELETE FROM UnlockedChapter uc WHERE uc.chapter.id IN :chapterIds")
+    void deleteByChapterIdIn(@Param("chapterIds") List<Long> chapterIds);
 }

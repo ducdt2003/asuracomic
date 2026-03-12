@@ -15,4 +15,8 @@ public interface ChapterImageRepository extends JpaRepository<ChapterImage, Long
     @Query("DELETE FROM ChapterImage ci WHERE ci.chapter.id = :chapterId")
     void deleteByChapterId(@Param("chapterId") Long chapterId);
 
+
+    @Modifying
+    @Query("DELETE FROM ChapterImage ci WHERE ci.chapter.id IN :chapterIds")
+    void deleteByChapterIdIn(@Param("chapterIds") List<Long> chapterIds);
 }

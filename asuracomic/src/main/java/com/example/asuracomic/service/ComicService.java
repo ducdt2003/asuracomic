@@ -66,10 +66,20 @@ public class ComicService {
     }
 
     public List<Comic> getTopViewedComicsToday(int limit) {
-        LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999_999_999);
+        LocalDateTime startOfDay = LocalDateTime.now()
+                                    .withHour(0)
+                                    .withMinute(0)
+                                    .withSecond(0)
+                                    .withNano(0);
+        LocalDateTime endOfDay = LocalDateTime.now()
+                                    .withHour(23)
+                                    .withMinute(59)
+                                    .withSecond(59)
+                                    .withNano(999_999_999);
 
-        List<Object[]> result = comicViewRepository.findTopViewedPublishedComicsToday(startOfDay, endOfDay, PageRequest.of(0, limit));
+        List<Object[]> result = comicViewRepository.findTopViewedPublishedComicsToday(startOfDay,
+                                                                                        endOfDay,
+                                                                                        PageRequest.of(0, limit));
 
         return result.stream()
                 .map(r -> (Comic) r[0])
@@ -77,11 +87,28 @@ public class ComicService {
     }
 
     // Lấy top 10 truyện tuần
-    public List<ComicTopDTO> getTop10CombinedWeekly() {
+    /*public List<ComicTopDTO> getTop10CombinedWeekly() {
         LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
         List<Object[]> result = comicRepository.findTop10Weekly(startDate);
         System.out.println("Raw result: " + result);
         return result.stream()
+                .map(row -> new ComicTopDTO(
+                        ((Number) row[0]).longValue(), // id
+                        (String) row[1],               // title
+                        (String) row[2],               // coverImage
+                        ((Number) row[3]).doubleValue(), // averageRating
+                        ((Number) row[4]).longValue(), // viewCount
+                        (String) row[5],               // genres
+                        ((Number) row[6]).doubleValue(), // combinedScore
+                        (String) row[7]                // slug
+                ))
+                .collect(Collectors.toList());
+    }*/
+    public List<ComicTopDTO> getTop10CombinedWeekly() {
+        LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
+
+        return comicRepository.findTop10Weekly(startDate)
+                .stream()
                 .map(row -> new ComicTopDTO(
                         ((Number) row[0]).longValue(), // id
                         (String) row[1],               // title
