@@ -22,9 +22,6 @@
                 </a>
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}" th:text="#{nav.home}">Trang chủ</a></li>
-                    <li class="nav-item" th:if="${session.currentUser != null}">
-                        <a class="nav-link" th:href="@{/asura/bookmarks}" th:text="#{nav.following}">Theo dõi</a>
-                    </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}" th:text="#{nav.discover}">Khám phá</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}" th:text="#{nav.rankings}">Xếp hạng</a></li>
                 </ul>
@@ -53,12 +50,11 @@
                                 </div>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{/asura/profile}">Hồ sơ</a></li>
-                            <li th:if="${session.currentUser.role.name() == 'USER'}" ><a class="dropdown-item" th:href="@{/asura/bookmarks}">Truyện yêu thích</a></li>
+                            <li><a class="dropdown-item" th:href="@{/asura/profile}">Profile</a></li>
                             <li th:if="${session.currentUser.role.name() == 'ADMIN'}">
-                                <a class="dropdown-item" th:href="@{/asura/admin/comic}">Bảng điều khiển Admin</a>
+                                <a class="dropdown-item" th:href="@{/asura/admin/comic}">Admin Dashboard</a>
                             </li>
-                            <li><a class="dropdown-item" th:href="@{/asura/logout}">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" th:href="@{/asura/logout}">Logout</a></li>
                         </ul>
                     </div>
                 </th:block>

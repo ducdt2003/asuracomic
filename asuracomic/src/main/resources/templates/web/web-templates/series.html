@@ -85,7 +85,7 @@
                             <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}"
                                th:text="${#strings.abbreviate(comic.title, 30)}"></a>
 
-                            <div class="chapter" th:text="${comic.status != null ? comic.status : 'Chưa rõ trạng thái'}"></div>
+                            <div class="chapter" th:text="${comic.status != null ? comic.status : 'Unknown status'}"></div>
 
                             <div class="rating">
                                 <i th:each="i : ${#numbers.sequence(1, 5)}"

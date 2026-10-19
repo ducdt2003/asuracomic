@@ -22,16 +22,13 @@
                 </a>
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
-                    <li class="nav-item" th:if="${session.currentUser != null}">
-                        <a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Khám phá</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}">Xếp hạng</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Discover</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}">Rankings</a></li>
                 </ul>
             </div>
             <div class="navbar-right">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search comics...">
                     <button><i class="fas fa-search"></i></button>
                 </div>
                 <a href="/asura/login" class="btn btn-login">Login</a>
@@ -74,7 +71,7 @@
 
                     <!-- Nút quên mật khẩu -->
                     <div class="mt-3">
-                        <a th:href="@{/asura/forgot-password}" class="text-decoration-none">Quên mật khẩu?</a>
+                        <a th:href="@{/asura/forgot-password}" class="text-decoration-none">Forgot password?</a>
                     </div>
 
                     <div class="signup-link mt-3">
