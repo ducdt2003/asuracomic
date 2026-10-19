@@ -1,10 +1,9 @@
 package com.example.asuracomic.api;
 
 import com.example.asuracomic.dto.ComicDTO;
-import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
-import com.example.asuracomic.service.ComicService;
+import com.example.asuracomic.service.web.ComicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

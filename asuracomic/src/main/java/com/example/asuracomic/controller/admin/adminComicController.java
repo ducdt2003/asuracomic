@@ -6,7 +6,7 @@ import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.Role;
 import com.example.asuracomic.repository.*;
-import com.example.asuracomic.service.DashboardService;
+import com.example.asuracomic.service.web.DashboardService;
 import com.example.asuracomic.service.admin.admincomic.AdminChapterService;
 import com.example.asuracomic.service.admin.admincomic.AdminComicService;
 import com.example.asuracomic.service.admin.adminuser.AdminUser;
@@ -60,6 +60,13 @@ public class adminComicController {
         DashboardStatsDTO stats = dashboardService.getDashboardStats();
         model.addAttribute("stats", stats);
         return "admin-templ/index";
+    }
+
+    @GetMapping("/crawler")
+    public String getCrawlerPage(Model model) {
+        DashboardStatsDTO stats = dashboardService.getDashboardStats();
+        model.addAttribute("stats", stats);
+        return "admin/admin-template";
     }
 
     @GetMapping("/content/detail")

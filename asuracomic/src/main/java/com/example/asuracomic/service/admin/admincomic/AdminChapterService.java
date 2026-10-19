@@ -190,25 +190,20 @@ public class AdminChapterService {
         for (ChapterImage img : images) {
             img.setOrderIndex(index++);
         }
-
         chapterImageRepository.saveAll(images);
-
         return chapterId;
     }
     // thêm nội dung choater
     @Transactional
     public void addImagesToChapter(Long chapterId, List<MultipartFile> images) {
-
         Chapter chapter = chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy chapter"));
-
         int maxOrder = chapterImageRepository
                 .findByChapterIdOrderByOrderIndexAsc(chapterId)
                 .stream()
                 .map(ChapterImage::getOrderIndex)
                 .max(Integer::compareTo)
                 .orElse(0);
-
         for (MultipartFile file : images) {
             if (file.isEmpty()) continue;
 
@@ -220,7 +215,6 @@ public class AdminChapterService {
                     .orderIndex(++maxOrder)
                     .createdAt(LocalDateTime.now())
                     .build();
-
             chapterImageRepository.save(image);
         }
     }
@@ -231,13 +225,13 @@ public class AdminChapterService {
         Chapter chapter = chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy chương"));
 
+        // Cập nhật tất cả giao dịch liên quan: set chapter_id = null
+        transactionRepository.updateChapterToNull(chapterId);
+
         String slug = chapter.getComic().getSlug();
-
         chapterRepository.delete(chapter);
-
         return slug;
     }
-
 
 
     @Transactional

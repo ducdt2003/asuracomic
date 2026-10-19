@@ -14,7 +14,7 @@ public class ComicCreateRequest {
     private ComicStatus status;
     private ComicType type;
     private String serialization;
-    private List<String> authorIds;
-    private List<String> artistIds;
-    private List<String> genreIds;
+    List<Long> genreIds;
+    List<Long> authorIds;
+    List<Long> artistIds;
 }

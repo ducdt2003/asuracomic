@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-// Định nghĩa interface GenreRepository, mở rộng JpaRepository để cung cấp các phương thức thao tác với thực thể Genre
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     // Phương thức tùy chỉnh để tìm kiếm một thể loại (Genre) dựa trên trường slug
     // slug là chuỗi thân thiện với URL, duy nhất cho mỗi thể loại (được định nghĩa trong thực thể Genre)

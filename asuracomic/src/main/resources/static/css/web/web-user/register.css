@@ -170,6 +170,19 @@
             transform: rotate(5deg);
         }
 
+        .register-brand-mark {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 15px;
+            display: grid;
+            place-items: center;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #a855f7, #6d28d9);
+            color: #fff;
+            font-size: 30px;
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.3);
+        }
+
         h1 {
             font-size: 28px;
             margin: 0;

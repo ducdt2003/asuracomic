@@ -83,4 +83,8 @@ public class User {
     // Trong class User
     private String resetToken;
     private LocalDateTime tokenExpiration;
+
+    public boolean isVipActive() {
+        return vipStatus && vipExpiryDate != null && vipExpiryDate.isAfter(LocalDateTime.now());
+    }
 }

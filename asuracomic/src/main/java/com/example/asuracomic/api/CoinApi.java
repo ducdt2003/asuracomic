@@ -1,7 +1,7 @@
 package com.example.asuracomic.api;
 
 import com.example.asuracomic.dto.UserDTO;
-import com.example.asuracomic.service.PayCoinService;
+import com.example.asuracomic.service.web.PayCoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,19 +21,6 @@ public class CoinApi {
 
     @PostMapping("/topup")
     public Map<String, Object> topup(@RequestParam Long packageId) {
-
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if (currentUser == null) {
-            throw new RuntimeException("Chưa đăng nhập");
-        }
-
-        payCoinService.topUpCoin(packageId, session);
-
-        UserDTO updatedUser = (UserDTO) session.getAttribute("currentUser");
-
-        return Map.of(
-                "message", "Nạp coin thành công",
-                "coinBalance", updatedUser.getCoinBalance()
-        );
+        throw new UnsupportedOperationException("Vui lòng thanh toán qua cổng PayPal để nạp coin.");
     }
 }

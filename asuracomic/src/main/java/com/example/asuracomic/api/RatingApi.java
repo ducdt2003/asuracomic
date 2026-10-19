@@ -1,10 +1,9 @@
 package com.example.asuracomic.api;
 
 import com.example.asuracomic.dto.UserDTO;
-import com.example.asuracomic.entity.User;
 import com.example.asuracomic.model.request.RatingRequest;
 import com.example.asuracomic.response.RatingResponse;
-import com.example.asuracomic.service.RatingService;
+import com.example.asuracomic.service.web.RatingService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

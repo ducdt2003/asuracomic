@@ -1,28 +1,18 @@
 package com.example.asuracomic.controller.web;
 
 import com.example.asuracomic.entity.CoinPackage;
-import com.example.asuracomic.entity.Transaction;
-import com.example.asuracomic.entity.User;
 import com.example.asuracomic.repository.CoinPackageRepository;
-import com.example.asuracomic.repository.TransactionRepository;
-import com.example.asuracomic.service.PayCoinService;
-import com.example.asuracomic.service.PayPalService;
-import com.example.asuracomic.service.UserService;
-import com.paypal.orders.LinkDescription;
+import com.example.asuracomic.service.web.PayCoinService;
+import com.example.asuracomic.service.web.PayPalService;
 import com.paypal.orders.Order;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/asura/paypal")

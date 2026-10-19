@@ -4,9 +4,8 @@ package com.example.asuracomic.api;
 import com.example.asuracomic.entity.CoinPackage;
 import com.example.asuracomic.exception.NotFoundException;
 import com.example.asuracomic.repository.CoinPackageRepository;
-import com.example.asuracomic.service.PayCoinService;
-import com.example.asuracomic.service.PayPalService;
-import com.example.asuracomic.service.RatingService;
+import com.example.asuracomic.service.web.PayCoinService;
+import com.example.asuracomic.service.web.PayPalService;
 import com.paypal.orders.Order;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +40,15 @@ public class PayPalApi {
         CoinPackage pkg = coinPackageRepository.findById(packageId)
                 .orElseThrow(() -> new NotFoundException("Gói coin không tồn tại"));
         try {
-            // Chuyển đổi giá sang USD
-            BigDecimal usd = pkg.getPrice()
-                    .divide(new BigDecimal("25000"), 2, RoundingMode.HALF_UP);
+            // Chuyển đổi sang USD
+            BigDecimal exchangeRate = new BigDecimal("25000");
+            BigDecimal usd = pkg.getPrice().divide(exchangeRate, 2, RoundingMode.HALF_UP);
 
-            // Gọi service (đoạn này phát sinh IOException)
+            if (usd.compareTo(BigDecimal.ZERO) <= 0) {
+                // Có thể set mặc định là 0.01 USD để test hoặc báo lỗi
+                usd = new BigDecimal("0.01");
+            }
+
             Order order = payPalService.createOrder(
                     usd.doubleValue(),
                     "http://localhost:9090/api/paypal/success?packageId=" + packageId,

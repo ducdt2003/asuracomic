@@ -22,9 +22,8 @@
                         <li class="nav-item" th:if="${session.currentUser != null}">
                             <a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/purchase'}">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Khám phá</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}">Xếp hạng</a></li>
                     </ul>
                 </div>
                 <div class="navbar-right">
@@ -42,7 +41,9 @@
     <main>
         <div class="main-container">
             <div class="logo">
-                <img src="https://asuracomic.net/images/logo.webp" alt="Asura Scans Logo">
+                <span class="register-brand-mark" aria-label="AsuraRank">
+                    <i class="fas fa-chart-bar"></i>
+                </span>
             </div>
             <h1><span>Asura</span> Scans</h1>
             <p>Register your account</p>

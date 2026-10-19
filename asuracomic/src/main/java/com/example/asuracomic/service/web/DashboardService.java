@@ -1,4 +1,4 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 
 import com.example.asuracomic.dto.admin.DashboardStatsDTO;

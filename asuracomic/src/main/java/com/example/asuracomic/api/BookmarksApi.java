@@ -3,7 +3,7 @@ package com.example.asuracomic.api;
 
 import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.exception.CustomException;
-import com.example.asuracomic.service.ComicService;
+import com.example.asuracomic.service.web.ComicService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

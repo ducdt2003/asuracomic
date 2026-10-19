@@ -362,10 +362,7 @@
                         </div>
                         <div class="info">
                             <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="card-title" th:text="${comic.title}"></a>
-                            <p class="chapter">
-                                Chapter
-                                <span th:text="${#lists.isEmpty(comic.chapters) ? '??' : comic.chapters[comic.chapters.size() - 1].chapterNumber}"></span>
-                            </p>
+                            <p class="chapter" th:text="${comic.status != null ? comic.status : 'Chưa rõ trạng thái'}">ONGOING</p>
                             <p class="rating">
                                 <span class="stars">
                                     <i th:class="${comic.averageRating != null and comic.averageRating >= 1} ? 'fas fa-star' : 'far fa-star'" style="color: #ffd700;"></i>

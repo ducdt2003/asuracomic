@@ -86,28 +86,35 @@ function setupPagination(tableId, itemsPerPage = 5) {
     'comicsTable', 'chaptersTable', 'usersTable',
     'reportsTable', 'transactionsTable',
     'commentsTable', 'ratingsTable', 'notificationsTable'
-].forEach(id => setupPagination(id));
+].forEach(id => {
+    const el = document.getElementById(id);
+    const pagEl = document.getElementById(`${id}Pagination`);
+    if (el && pagEl) setupPagination(id);
+});
 
 // 📊 Biểu đồ thống kê lượt xem theo truyện
-const ctx = document.getElementById('viewChart').getContext('2d');
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['One Piece', 'Solo Leveling', 'Attack on Titan', 'Tower of God', 'Naruto', 'Berserk'],
-        datasets: [{
-            label: 'Lượt xem',
-            data: [10000, 8000, 6500, 4200, 9000, 3800],
-            backgroundColor: 'rgba(59, 130, 246, 0.6)',
-            borderColor: 'rgba(59, 130, 246, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: { beginAtZero: true } // Bắt đầu từ 0
+const chartCanvas = document.getElementById('viewChart');
+if (chartCanvas && typeof Chart !== 'undefined') {
+    const ctx = chartCanvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['One Piece', 'Solo Leveling', 'Attack on Titan', 'Tower of God', 'Naruto', 'Berserk'],
+            datasets: [{
+                label: 'Lượt xem',
+                data: [10000, 8000, 6500, 4200, 9000, 3800],
+                backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true } // Bắt đầu từ 0
+            }
         }
-    }
-});
+    });
+}
 
 // 🔔 Thêm thông báo hiển thị ở góc
 function addNotification(message, type = 'info') {

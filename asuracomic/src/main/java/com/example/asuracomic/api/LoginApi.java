@@ -5,14 +5,13 @@ import com.example.asuracomic.dto.additional.ResetPasswordRequest;
 import com.example.asuracomic.exception.BadRequestException;
 import com.example.asuracomic.model.request.LoginRequest;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.AuthService;
-import com.example.asuracomic.service.UserService;
+import com.example.asuracomic.service.web.AuthService;
+import com.example.asuracomic.service.web.UserService;
 import jakarta.servlet.http.HttpSession;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,7 +25,7 @@ public class LoginApi {
     private final AuthService authService;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     /* =========================
        LOGIN

@@ -10,7 +10,7 @@ import com.example.asuracomic.entity.Comment;
 import com.example.asuracomic.model.enums.CommentStatus;
 import com.example.asuracomic.repository.CommentRepository;
 import com.example.asuracomic.repository.UnlockedChapterRepository;
-import com.example.asuracomic.service.ComicService;
+import com.example.asuracomic.service.web.ComicService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

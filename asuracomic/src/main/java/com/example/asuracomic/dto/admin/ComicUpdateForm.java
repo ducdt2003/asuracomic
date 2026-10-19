@@ -16,7 +16,7 @@ public class ComicUpdateForm {
     private String title;
     private String slug;
     private String coverImage;
-    private MultipartFile coverImageFile; // Thêm để nhận file từ upload
+    private MultipartFile coverImageFile;
     private String description;
     private String serialization;
     private String status; // ONGOING, COMPLETED

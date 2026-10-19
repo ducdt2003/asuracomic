@@ -1,4 +1,4 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 import com.example.asuracomic.dto.ComicCarouselDTO;
 import com.example.asuracomic.dto.ComicDTO;
@@ -9,19 +9,16 @@ import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.mapper.ComicMapper;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
-import com.example.asuracomic.model.enums.CommentStatus;
 import com.example.asuracomic.repository.*;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -202,7 +199,7 @@ public class ComicService {
 
     // lấy all truyện trên database phân trang đc từ requestPram
     public Page<Comic> getComicPage(int page, int size) {
-        Page<Comic> comicPage = comicRepository.findAllByIsPublishedTrueOrderByUpdatedAtDesc(PageRequest.of(page, size));
+        Page<Comic> comicPage = comicRepository.findPublishedComicsWithCover(PageRequest.of(page, size));
 
         comicPage.getContent().forEach(comic -> {
             List<Chapter> filteredChapters = comic.getChapters().stream()
@@ -382,5 +379,19 @@ public class ComicService {
         // Cập nhật followCount của Comic
         comic.setFollowCount(comic.getFollowCount() - 1);
         comicRepository.save(comic);
+    }
+
+    @Transactional
+    public void recordComicView(Long comicId) {
+        comicRepository.findById(comicId).ifPresent(comic -> {
+            comic.setViewCount(comic.getViewCount() + 1);
+            comicRepository.save(comic);
+
+            ComicView comicView = ComicView.builder()
+                    .comic(comic)
+                    .viewedAt(LocalDateTime.now())
+                    .build();
+            comicViewRepository.save(comicView);
+        });
     }
 }

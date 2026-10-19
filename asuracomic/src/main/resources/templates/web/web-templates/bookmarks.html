@@ -68,7 +68,7 @@
                                 <span class="type" th:text="${comic.type}">Manhwa</span>
                             </div>
                             <a th:href="@{/asura/comic/{slug}(slug=${comic.slug})}" th:text="${comic.title}">Comic Title</a>
-                            <div class="chapter" th:text="'Chapter ' + ${#lists.size(comic.chapters)}">Chapter ?</div>
+                            <div class="chapter" th:text="${comic.status != null ? comic.status : 'Chưa rõ trạng thái'}">ONGOING</div>
                             <div class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -206,7 +206,7 @@
                     }
 
                     // 4. Gửi yêu cầu DELETE bằng Fetch API
-                    fetch(`/asura/api/bookmarks/${comicId}`, {
+                    fetch(`/api/bookmarks/${comicId}`, {
                         method: 'DELETE',
                         headers: headers
                     })

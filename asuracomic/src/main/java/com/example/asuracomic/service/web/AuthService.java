@@ -1,4 +1,4 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.User;
@@ -9,14 +9,14 @@ import com.example.asuracomic.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import com.example.asuracomic.exception.BadRequestException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final HttpSession session;
 
     public void login(LoginRequest request) {

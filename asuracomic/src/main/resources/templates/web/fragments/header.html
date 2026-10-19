@@ -10,32 +10,35 @@
 </head>
 <body>
 <header>
+    <style>
+        .navbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none}.brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#5b21b6);color:#fff}.brand-name{color:#fff;font-size:20px;font-weight:850}.brand-name span{color:#c084fc}.language-switcher{display:flex;padding:3px;background:#151821;border:1px solid #2b3040;border-radius:9px}.language-switcher button{border:0;background:transparent;color:#8f96a5;padding:6px 8px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer}.language-switcher button.active{background:#8b5cf6;color:#fff}
+    </style>
     <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-left">
-                <a th:href="@{'/asura'}" class="navbar-brand">
-                    <img src="https://asuracomic.net/images/logo.webp" alt="Logo">
+                <a th:href="@{'/asura'}" class="navbar-brand" aria-label="AsuraRank trang chủ">
+                    <span class="brand-mark"><i class="fas fa-chart-bar"></i></span>
+                    <span class="brand-name">Asura<span>Rank</span></span>
                 </a>
                 <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}" th:text="#{nav.home}">Trang chủ</a></li>
                     <li class="nav-item" th:if="${session.currentUser != null}">
-                        <a class="nav-link" th:href="@{/asura/bookmarks}">Bookmark</a>
+                        <a class="nav-link" th:href="@{/asura/bookmarks}" th:text="#{nav.following}">Theo dõi</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}">Comics</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/coin'}">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/membership'}">Membership</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}" th:text="#{nav.discover}">Khám phá</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}" th:text="#{nav.rankings}">Xếp hạng</a></li>
                 </ul>
             </div>
             <div class="navbar-right">
                 <div class="search-bar">
                     <form th:action="@{/asura/series}" method="get">
-                        <input type="text" name="query" placeholder="Tìm kiếm truyện..." id="searchInput" autocomplete="off">
+                        <input type="text" name="query" th:placeholder="#{nav.search}" placeholder="Tìm kiếm truyện..." id="searchInput" autocomplete="off">
                         <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <div id="searchResults" class="search-results"></div>
                 </div>
                 <th:block th:if="${session.currentUser == null}">
-                    <a th:href="@{/asura/login}" class="btn btn-login">Login</a>
+                    <a th:href="@{/asura/login}" class="btn btn-login" th:text="#{nav.login}">Đăng nhập</a>
                 </th:block>
                 <th:block th:if="${session.currentUser != null}">
                     <div class="dropdown">
@@ -49,16 +52,6 @@
                                     <i class="fas fa-user"></i> <span th:text="${session.currentUser.username}"></span>
                                 </div>
                             </li>
-                            <li>
-                                <div class="dropdown-item disabled">
-                                    <i class="fas fa-coins"></i> Số dư: <span th:text="${session.currentUser.coinBalance != null ? session.currentUser.coinBalance + ' coins' : '0 coins'}"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="dropdown-item disabled">
-                                    <i class="fas fa-crown"></i> Trạng thái: <span th:text="${session.currentUser.vipStatus ? 'VIP' : 'Thường'}"></span>
-                                </div>
-                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/asura/profile}">Hồ sơ</a></li>
                             <li th:if="${session.currentUser.role.name() == 'USER'}" ><a class="dropdown-item" th:href="@{/asura/bookmarks}">Truyện yêu thích</a></li>
@@ -70,8 +63,19 @@
                     </div>
                 </th:block>
             </div>
+            <div class="language-switcher" aria-label="Language selector">
+                <button type="button" th:classappend="${#locale.language == 'vi'} ? ' active'" onclick="setLanguage('vi')">VI</button>
+                <button type="button" th:classappend="${#locale.language == 'en'} ? ' active'" onclick="setLanguage('en')">EN</button>
+            </div>
         </div>
     </nav>
+    <script>
+        function setLanguage(language) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', language);
+            window.location.href = url.toString();
+        }
+    </script>
 </header>
 
 <main>

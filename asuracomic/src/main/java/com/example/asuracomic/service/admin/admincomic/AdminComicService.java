@@ -196,51 +196,44 @@ public class AdminComicService {
         Comic savedComic = comicRepository.save(comic);
 
         // 3. Lưu quan hệ Tác giả (Xử lý Text -> Tìm hoặc Tạo mới)
-        if (request.getAuthorIds() != null) { // Lưu ý: Bạn có thể đổi tên field trong DTO thành authorNames cho rõ nghĩa
-            request.getAuthorIds().forEach(name -> {
-                Author author = authorRepository.findByName(name)
-                        .orElseGet(() -> {
-                            // Nếu không thấy tên này, tạo mới Author
-                            String authorSlug = slugify.slugify(name);
-                            return authorRepository.save(Author.builder()
-                                    .name(name)
-                                    .slug(authorSlug)
-                                    .createdAt(LocalDateTime.now())
-                                    .build());
-                        });
-                comicAuthorRepository.save(ComicAuthor.builder().comic(savedComic).author(author).build());
+        if (request.getAuthorIds() != null) {
+            List<Author> authors = authorRepository.findAllById(request.getAuthorIds());
+
+            authors.forEach(author -> {
+                comicAuthorRepository.save(
+                        ComicAuthor.builder()
+                                .comic(savedComic)
+                                .author(author)
+                                .build()
+                );
             });
         }
 
         // 4. Lưu quan hệ Họa sĩ (Xử lý Text -> Tìm hoặc Tạo mới)
         if (request.getArtistIds() != null) {
-            request.getArtistIds().forEach(name -> {
-                Artist artist = artistRepository.findByName(name)
-                        .orElseGet(() -> {
-                            String artistSlug = slugify.slugify(name);
-                            return artistRepository.save(Artist.builder()
-                                    .name(name)
-                                    .slug(artistSlug)
-                                    .createdAt(LocalDateTime.now())
-                                    .build());
-                        });
-                comicArtistRepository.save(ComicArtist.builder().comic(savedComic).artist(artist).build());
+            List<Artist> artists = artistRepository.findAllById(request.getArtistIds());
+
+            artists.forEach(artist -> {
+                comicArtistRepository.save(
+                        ComicArtist.builder()
+                                .comic(savedComic)
+                                .artist(artist)
+                                .build()
+                );
             });
         }
 
         // 5. Lưu quan hệ Thể loại (Xử lý Text -> Tìm hoặc Tạo mới)
         if (request.getGenreIds() != null) {
-            request.getGenreIds().forEach(name -> {
-                Genre genre = genreRepository.findByName(name)
-                        .orElseGet(() -> {
-                            String genreSlug = slugify.slugify(name);
-                            return genreRepository.save(Genre.builder()
-                                    .name(name)
-                                    .slug(genreSlug)
-                                    .createdAt(LocalDateTime.now())
-                                    .build());
-                        });
-                comicGenreRepository.save(ComicGenre.builder().comic(savedComic).genre(genre).build());
+            List<Genre> genres = genreRepository.findAllById(request.getGenreIds());
+
+            genres.forEach(genre -> {
+                comicGenreRepository.save(
+                        ComicGenre.builder()
+                                .comic(savedComic)
+                                .genre(genre)
+                                .build()
+                );
             });
         }
         return savedComic;

@@ -1,4 +1,4 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 import com.example.asuracomic.entity.Comic;
 import com.example.asuracomic.entity.Rating;

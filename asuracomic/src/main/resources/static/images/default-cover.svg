@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450" role="img" aria-labelledby="title description">
+    <title id="title">Ảnh bìa mặc định</title>
+    <desc id="description">Ảnh thay thế khi ảnh bìa truyện không tải được</desc>
+    <rect width="300" height="450" fill="#242424"/>
+    <rect x="24" y="24" width="252" height="402" rx="12" fill="#333333" stroke="#555555" stroke-width="2"/>
+    <path d="M96 155h108v140H96z" fill="none" stroke="#888888" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M116 259l31-38 23 27 16-18 18 29" fill="none" stroke="#888888" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="178" cy="190" r="14" fill="#888888"/>
+    <text x="150" y="335" fill="#bbbbbb" font-family="Arial, sans-serif" font-size="18" text-anchor="middle">NO COVER</text>
+</svg>

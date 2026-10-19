@@ -1,4 +1,4 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 import com.example.asuracomic.entity.CoinPackage;
 import com.example.asuracomic.entity.User;
@@ -24,10 +24,9 @@ public class PayPalService {
     private UserRepository userRepository;
 
     public Order createOrder(Double totalAmount, String returnUrl, String cancelUrl) throws IOException {
-        OrderRequest orderRequest = new OrderRequest();
-        orderRequest.checkoutPaymentIntent("CAPTURE");
+        OrderRequest orderRequest = new OrderRequest(); // thoogn tini dh
+        orderRequest.checkoutPaymentIntent("CAPTURE"); // AUTHORIZE
 
-        // PayPal chủ yếu dùng USD cho tk cá nhân, nên quy đổi VNĐ sang USD
         AmountWithBreakdown amount = new AmountWithBreakdown()
                 .currencyCode("USD")
                 .value(String.format("%.2f", totalAmount));
@@ -40,7 +39,7 @@ public class PayPalService {
         ApplicationContext applicationContext = new ApplicationContext()
                 .returnUrl(returnUrl)
                 .cancelUrl(cancelUrl)
-                .shippingPreference("NO_SHIPPING"); // Không cần địa chỉ ship vì là coin
+                .shippingPreference("NO_SHIPPING");
         orderRequest.applicationContext(applicationContext);
 
         OrdersCreateRequest request = new OrdersCreateRequest().requestBody(orderRequest);

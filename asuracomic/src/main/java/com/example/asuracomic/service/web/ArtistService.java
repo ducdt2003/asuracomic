@@ -1,9 +1,9 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 
-import com.example.asuracomic.entity.Author;
+import com.example.asuracomic.entity.Artist;
 import com.example.asuracomic.entity.Comic;
-import com.example.asuracomic.repository.AuthorRepository;
+import com.example.asuracomic.repository.ArtistRepository;
 import com.example.asuracomic.repository.ComicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,21 +14,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AuthorService {
+public class ArtistService {
 
     @Autowired
-    private AuthorRepository authorRepository;
+    private ArtistRepository artistRepository;
 
     @Autowired
     private ComicRepository comicRepository;
 
-    public Author getAuthorBySlug(String slug) {
-        return authorRepository.findBySlug(slug);
+    public Artist getArtistBySlug(String slug) {
+        return artistRepository.findBySlug(slug);
     }
 
     @Transactional(readOnly = true)
-    public Page<Comic> getComicsByAuthorSlug(String authorSlug, int page, int size) {
+    public Page<Comic> getComicsByArtistSlug(String artistSlug, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
-        return comicRepository.findByAuthorSlug(authorSlug, pageable);
+        return comicRepository.findByArtistSlug(artistSlug, pageable); // Sử dụng phương thức mới
     }
+
 }

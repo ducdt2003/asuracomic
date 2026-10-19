@@ -216,9 +216,18 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     // Không cần @Query, chỉ cần dùng method name
     Page<Comic> findAllByIsPublishedTrueOrderByUpdatedAtDesc(Pageable pageable);
 
+    @Query("SELECT c FROM Comic c " +
+            "WHERE c.isPublished = true " +
+            "AND c.coverImage IS NOT NULL " +
+            "AND TRIM(c.coverImage) <> '' " +
+            "ORDER BY c.updatedAt DESC")
+    Page<Comic> findPublishedComicsWithCover(Pageable pageable);
+
 
     // chi tieets truyện và chapter
     Optional<Comic> findBySlug(String slug);
+    Optional<Comic> findFirstByTitleIgnoreCase(String title);
+    long countBySerializationStartingWith(String prefix);
 
     // truyện liên quan Chỉ lấy truyện có ít nhất một thể loại giống truyện hiện tại Bỏ truyện đang xem ra khỏi kết quả
     @Query("SELECT DISTINCT c FROM Comic c " +

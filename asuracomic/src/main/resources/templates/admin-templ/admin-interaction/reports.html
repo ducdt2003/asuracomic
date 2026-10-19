@@ -102,8 +102,8 @@
                                             th:text="${report.user.username}"></td>
 
                                         <td>
-        <span th:if="${report.contentType.name() == 'COMMENT'}"
-              class="badge badge-secondary badge-content-type">Bình luận</span>
+                                            <span th:if="${report.contentType.name() == 'COMMENT'}"
+                                                  class="badge badge-secondary badge-content-type">Bình luận</span>
 
                                             <span th:if="${report.contentType.name() == 'COMIC'}"
                                                   class="badge badge-primary badge-content-type">Truyện</span>

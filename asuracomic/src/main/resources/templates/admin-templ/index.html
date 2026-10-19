@@ -80,6 +80,13 @@
               <p>Tăng trưởng User</p>
             </a>
           </li>
+          <li class="nav-header">CÔNG CỤ HỆ THỐNG</li>
+          <li class="nav-item">
+            <a href="/asura/admin/comic/crawler" class="nav-link" style="color: #c084fc;">
+              <i class="nav-icon fas fa-spider"></i>
+              <p>Crawler AsuraScans</p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -268,6 +275,95 @@
           </div>
         </div>
 
+        <!-- ═══════════════ CRAWLER ASURASCANS ═══════════════ -->
+        <div class="row mt-4" id="crawler-section">
+          <div class="col-12">
+            <div class="card card-purple card-outline" style="border-top: 3px solid #7c3aed;">
+              <div class="card-header border-0 d-flex justify-content-between align-items-center">
+                <h3 class="card-title text-bold" style="color: #7c3aed;">
+                  <i class="fas fa-spider mr-2"></i>Crawler Tự Động AsuraScans.com
+                </h3>
+                <span class="badge badge-info">Chỉ dành cho SUPER_ADMIN</span>
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-3">
+                  Tự động cào danh sách truyện mới nhất từ <strong>asurascans.com</strong> và import trực tiếp vào database.
+                  Ảnh bìa sử dụng link CDN gốc — không tiêu hao quota Cloudinary.
+                </p>
+
+                <div class="row mb-3">
+                  <div class="col-md-4">
+                    <div class="callout callout-info py-2">
+                      <small class="text-muted"><i class="fas fa-link mr-1"></i>Nguồn:</small>
+                      <div class="font-weight-bold">https://asurascans.com</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="callout callout-success py-2">
+                      <small class="text-muted"><i class="fas fa-database mr-1"></i>Dữ liệu lấy:</small>
+                      <div class="font-weight-bold">Tiêu đề, Bìa, Tóm tắt, Thể loại, View, Rating</div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="callout callout-warning py-2">
+                      <small class="text-muted"><i class="fas fa-clock mr-1"></i>Ước tính:</small>
+                      <div class="font-weight-bold">Khoảng 10 - 20 giây</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <button id="crawlBtnIndex" onclick="startCrawlIndex()" class="btn btn-lg" style="background: linear-gradient(135deg, #7c3aed, #4f46e5); color:white; font-weight:600;">
+                    <i class="fas fa-play mr-2" id="crawlBtnIconIndex"></i>
+                    <span id="crawlBtnTextIndex">Bắt đầu Crawl Truyện</span>
+                  </button>
+                  <a href="/asura/admin/comic/content/detail" class="btn btn-lg btn-outline-secondary ml-2">
+                    <i class="fas fa-book mr-1"></i>Xem danh sách truyện
+                  </a>
+                </div>
+
+                <!-- Progress bar -->
+                <div id="crawlProgressIndex" style="display:none;" class="mb-3">
+                  <div class="text-primary font-weight-bold mb-2">
+                    <i class="fas fa-spinner fa-spin mr-1"></i> Đang kết nối và crawl truyện từ asurascans.com... Vui lòng đợi trong giây lát!
+                  </div>
+                  <div class="progress progress-striped active" style="height: 12px; border-radius: 6px;">
+                    <div class="progress-bar bg-purple progress-bar-striped progress-bar-animated" style="width: 100%; background-color: #7c3aed;"></div>
+                  </div>
+                </div>
+
+                <!-- Result panel -->
+                <div id="crawlResultIndex" style="display:none;" class="alert alert-success">
+                  <h5><i class="icon fas fa-check"></i> Hoàn thành!</h5>
+                  <div class="row text-center mt-2 mb-2">
+                    <div class="col-4">
+                      <h3 class="font-weight-bold text-success" id="resImportedIndex">0</h3>
+                      <div>Truyện thêm mới</div>
+                    </div>
+                    <div class="col-4">
+                      <h3 class="font-weight-bold text-primary" id="resUpdatedIndex">0</h3>
+                      <div>Truyện cập nhật</div>
+                    </div>
+                    <div class="col-4">
+                      <h3 class="font-weight-bold text-secondary" id="resSkippedIndex">0</h3>
+                      <div>Bỏ qua (đã có)</div>
+                    </div>
+                  </div>
+                  <div id="resMessageIndex" class="font-weight-bold"></div>
+                  <div id="resErrorsIndex" style="display:none;" class="mt-2 text-danger"></div>
+                </div>
+
+                <!-- Error panel -->
+                <div id="crawlErrorIndex" style="display:none;" class="alert alert-danger">
+                  <h5><i class="icon fas fa-ban"></i> Đã xảy ra lỗi!</h5>
+                  <span id="crawlErrorMsgIndex"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ════════════════════════════════════════════════════ -->
+
       </div>
     </section>
   </div>
@@ -280,6 +376,61 @@
 <script src="/css/admin-assets/plugins/jquery/jquery.min.js"></script>
 <script src="/css/admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/css/admin-assets/dist/js/adminlte.min.js"></script>
+
+<script>
+    async function startCrawlIndex() {
+        const btn = document.getElementById('crawlBtnIndex');
+        const btnIcon = document.getElementById('crawlBtnIconIndex');
+        const btnText = document.getElementById('crawlBtnTextIndex');
+
+        // Reset UI
+        document.getElementById('crawlResultIndex').style.display = 'none';
+        document.getElementById('crawlErrorIndex').style.display = 'none';
+        document.getElementById('resErrorsIndex').style.display = 'none';
+
+        // Loading state
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btnIcon.className = 'fas fa-spinner fa-spin mr-2';
+        btnText.textContent = 'Đang crawl dữ liệu...';
+        document.getElementById('crawlProgressIndex').style.display = 'block';
+
+        try {
+            const res = await fetch('/api/asura/admin/crawl/comics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Lỗi server');
+
+            // Hiển thị kết quả
+            document.getElementById('crawlProgressIndex').style.display = 'none';
+            document.getElementById('crawlResultIndex').style.display = 'block';
+            document.getElementById('resImportedIndex').textContent = data.imported ?? 0;
+            document.getElementById('resUpdatedIndex').textContent = data.updated ?? 0;
+            document.getElementById('resSkippedIndex').textContent = data.skipped ?? 0;
+            document.getElementById('resMessageIndex').textContent = data.message ?? '';
+
+            if (data.errors && data.errors.length > 0) {
+                const errDiv = document.getElementById('resErrorsIndex');
+                errDiv.style.display = 'block';
+                errDiv.innerHTML = '<strong>Chi tiết lỗi:</strong><ul class="mb-0 pl-3">'
+                    + data.errors.map(e => `<li>${e}</li>`).join('')
+                    + '</ul>';
+            }
+        } catch (err) {
+            document.getElementById('crawlProgressIndex').style.display = 'none';
+            document.getElementById('crawlErrorIndex').style.display = 'block';
+            document.getElementById('crawlErrorMsgIndex').textContent = err.message;
+        } finally {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btnIcon.className = 'fas fa-play mr-2';
+            btnText.textContent = 'Crawl Lại';
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -25,4 +25,8 @@ public class UserDTO {
     boolean isVip;
     LocalDateTime vipStartDate;
     LocalDateTime vipExpireAt;
+
+    public boolean isVipActive() {
+        return vipStatus && vipExpireAt != null && vipExpireAt.isAfter(LocalDateTime.now());
+    }
 }

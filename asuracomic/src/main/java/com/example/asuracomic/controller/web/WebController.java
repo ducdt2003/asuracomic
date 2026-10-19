@@ -6,18 +6,16 @@ import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.model.enums.ComicStatus;
 import com.example.asuracomic.model.enums.ComicType;
 import com.example.asuracomic.model.enums.CommentStatus;
-import com.example.asuracomic.model.request.ChangePasswordRequest;
 import com.example.asuracomic.repository.CommentRepository;
 import com.example.asuracomic.repository.GenreRepository;
 import com.example.asuracomic.repository.UnlockedChapterRepository;
-import com.example.asuracomic.service.*;
+import com.example.asuracomic.service.web.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +47,12 @@ public class WebController {
     public String homeLogin(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int size,
                             Model model) {
+        // Khách lần đầu vào website được đưa tới trang đăng ký.
+        // Người đã đăng nhập vẫn xem trang chủ như bình thường.
+        if (session.getAttribute("currentUser") == null) {
+            return "redirect:/asura/register";
+        }
+
         // top comics rating lưu vào biến hco
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
@@ -204,6 +208,22 @@ public class WebController {
         // Lấy chương qua chapterSlug
         Chapter chapter = comicService.getChapterBySlug(comic, chapterSlug);
         if (chapter == null) return "redirect:/error";
+
+        // Kiểm tra quyền đọc nếu chương trả phí
+        if (!chapter.isFree()) {
+            UserDTO currentUserDTO = (UserDTO) session.getAttribute("currentUser");
+            if (currentUserDTO == null) {
+                return "redirect:/asura/login?redirectUrl=/asura/comic/" + comicSlug + "/chapter/" + chapterSlug + "/unlock";
+            }
+            boolean isUnlocked = unlockedChapterRepository.existsByUserIdAndChapterId(currentUserDTO.getId(), chapter.getId());
+            boolean isVip = currentUserDTO.isVipActive();
+            if (!isUnlocked && !isVip) {
+                return "redirect:/asura/comic/" + comicSlug + "/chapter/" + chapterSlug + "/unlock";
+            }
+        }
+
+        // Ghi nhận lượt xem thực tế
+        comicService.recordComicView(comic.getId());
 
         // Lấy danh sách truyện liên quan
         List<RelatedComicDTO> relatedComics = comicService.getRelatedComics(comic.getId(), 5);
@@ -634,7 +654,7 @@ public String bookmarks(Model model) {
     public String proFile(Model model){
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
         if (currentUser == null) {
-            return "redirect:/login";
+            return "redirect:/asura/login";
         }
         model.addAttribute("user", currentUser);
         return "web/web-templates/profile";

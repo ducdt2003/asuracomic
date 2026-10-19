@@ -2,8 +2,6 @@ package com.example.asuracomic.api.admin;
 
 import com.example.asuracomic.entity.ChapterImage;
 import com.example.asuracomic.repository.ChapterImageRepository;
-import com.example.asuracomic.repository.ChapterRepository;
-import com.example.asuracomic.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

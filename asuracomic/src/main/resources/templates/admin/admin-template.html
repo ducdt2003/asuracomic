@@ -7,78 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!--<style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: #f1f5f9; }
-        .container { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: linear-gradient(to bottom, #1f2937, #111827); color: white; position: fixed; height: 100%; transition: width 0.3s; }
-        .sidebar-header { padding: 20px; font-size: 1.5rem; font-weight: bold; border-bottom: 1px solid #374151; display: flex; align-items: center; }
-        .sidebar-nav { list-style: none; }
-        .sidebar-nav li { border-bottom: 1px solid #374151; }
-        .sidebar-nav a { display: flex; align-items: center; padding: 15px 20px; color: white; text-decoration: none; transition: background 0.3s, padding-left 0.3s; }
-        .sidebar-nav a:hover, .sidebar-nav a.active { background-color: #374151; padding-left: 25px; }
-        .sidebar-nav a i { margin-right: 10px; }
-        .main-content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); transition: margin-left 0.3s; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); margin-bottom: 20px; transition: transform 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; display: inline-block; transition: background 0.3s; }
-        .btn-primary { background-color: #3b82f6; color: white; }
-        .btn-primary:hover { background-color: #2563eb; }
-        .btn-danger { background-color: #ef4444; color: white; }
-        .btn-danger:hover { background-color: #dc2626; }
-        .btn-success { background-color: #10b981; color: white; }
-        .btn-success:hover { background-color: #047857; }
-        table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; }
-        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
-        th { background-color: #f3f4f6; font-weight: 600; }
-        tr:hover { background-color: #f9fafb; }
-        .action-buttons a { margin-right: 10px; color: #3b82f6; cursor: pointer; transition: color 0.3s; }
-        .action-buttons a.delete { color: #ef4444; }
-        .action-buttons a.resolve { color: #10b981; }
-        .action-buttons a.ban { color: #ef4444; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; transition: border-color 0.3s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #3b82f6; outline: none; }
-        .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .stat-card { padding: 20px; border-radius: 12px; color: white; transition: transform 0.3s; }
-        .stat-card:hover { transform: scale(1.05); }
-        .stat-card.blue { background: linear-gradient(135deg, #3b82f6, #1e40af); }
-        .stat-card.green { background: linear-gradient(135deg, #10b981, #065f46); }
-        .stat-card.red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-        .stat-card.yellow { background: linear-gradient(135deg, #f59e0b, #b45309); }
-        .stat-card h3 { font-size: 1rem; margin-bottom: 10px; }
-        .stat-card p { font-size: 1.5rem; font-weight: bold; }
-        .section { display: none; }
-        .section.active { display: block; }
-        .form-section { display: none; }
-        .form-section.active { display: block; }
-        .notification-panel { position: fixed; top: 20px; right: 20px; width: 300px; z-index: 1000; }
-        .notification { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: opacity 0.3s; }
-        .notification.success { border-left: 4px solid #10b981; }
-        .notification.error { border-left: 4px solid #ef4444; }
-        .notification:hover { opacity: 0.9; }
-        .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .table-controls input { padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; }
-        .pagination { display: flex; gap: 10px; }
-        .pagination button { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; cursor: pointer; }
-        .pagination button.active { background: #3b82f6; color: white; }
-        @media (max-width: 768px) {
-            .sidebar { width: 200px; }
-            .main-content { margin-left: 200px; width: calc(100% - 200px); }
-        }
-        @media (max-width: 600px) {
-            .sidebar { width: 100%; height: auto; position: static; }
-            .main-content { margin-left: 0; width: 100%; }
-            table { font-size: 0.9rem; }
-            .notification-panel { width: 90%; right: 5%; }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-    </style>-->
+
     <link rel="stylesheet" href="/css/admin/admin-template.css">
 </head>
 <body>
@@ -98,6 +27,7 @@
             <li><a data-tab="ratings" onclick="switchTab('ratings')"><i class="fas fa-star"></i> Đánh giá</a></li>
             <li><a data-tab="notifications" onclick="switchTab('notifications')"><i class="fas fa-bell"></i> Thông báo</a></li>
             <li><a data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Cài đặt</a></li>
+            <li><a data-tab="crawler" onclick="switchTab('crawler')" style="color: #a78bfa;"><i class="fas fa-spider"></i> Nguồn dữ liệu truyện</a></li>
         </ul>
 
     </aside>
@@ -163,7 +93,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="pagination">
+                <div class="pagination"
+                     th:if="${totalPages != null and totalPages > 0 and currentPage != null}">
                     <!-- Nút Trước -->
                     <a th:if="${currentPage > 0}"
                        th:href="@{/asura/admin/comic/detail(page=${currentPage - 1})}">« Trước</a>
@@ -429,7 +360,8 @@ http://example.com/ch100-2.jpg</textarea>
                     </tr>
                     </tbody>
                 </table>
-                <div class="pagination" id="usersPagination">
+                <div class="pagination" id="usersPagination"
+                     th:if="${totalUserPages != null and totalUserPages > 0 and currentUserPage != null}">
     <span th:if="${currentUserPage > 0}">
         <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage - 1})}">&laquo;</a>
     </span>
@@ -526,7 +458,8 @@ http://example.com/ch100-2.jpg</textarea>
                     </tbody>
 
                 </table>
-                <div class="pagination" id="reportsPagination">
+                <div class="pagination" id="reportsPagination"
+                     th:if="${totalReportPages != null and totalReportPages > 0 and currentReportPage != null}">
     <span th:if="${currentReportPage > 0}">
         <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage - 1})}">&laquo;</a>
     </span>
@@ -609,7 +542,8 @@ http://example.com/ch100-2.jpg</textarea>
                     </tbody>
 
                 </table>
-                <div class="pagination" id="transactionsPagination">
+                <div class="pagination" id="transactionsPagination"
+                     th:if="${totalTransactionPages != null and totalTransactionPages > 0 and currentTransactionPage != null}">
     <span th:if="${currentTransactionPage > 0}">
         <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage - 1})}">&laquo;</a>
     </span>
@@ -698,7 +632,8 @@ http://example.com/ch100-2.jpg</textarea>
                     </tbody>
 
                 </table>
-                <div class="pagination" id="commentsPagination">
+                <div class="pagination" id="commentsPagination"
+                     th:if="${totalCommentPages != null and totalCommentPages > 0 and currentCommentPage != null}">
     <span th:if="${currentCommentPage > 0}">
         <a th:href="@{'/asura/admin'(page=${currentPage}, userPage=${currentUserPage}, reportPage=${currentReportPage}, transactionPage=${currentTransactionPage}, commentPage=${currentCommentPage - 1})}">&laquo;</a>
     </span>
@@ -1211,6 +1146,87 @@ http://example.com/ch100-2.jpg</textarea>
                 </div>
             </div>
         </div>
+
+        <!-- ═══════════════ CRAWLER ASURASCANS ═══════════════ -->
+        <div id="crawler" class="section">
+            <div class="card fade-in" style="border-top: 4px solid #7c3aed;">
+                <h2 class="text-2xl font-bold mb-2" style="color: #7c3aed;">
+                    <i class="fas fa-spider mr-2"></i> Nguồn dữ liệu truyện
+                </h2>
+                <p style="color:#6b7280; margin-bottom:20px;">
+                    Nhập metadata truyện từ nhiều nguồn. Chỉ lấy thông tin, ảnh bìa và số liệu — không lấy nội dung chapter.
+                </p>
+
+                <!-- Source info -->
+                <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:8px; padding:14px 18px; margin-bottom:20px; display:flex; gap:24px; flex-wrap:wrap;">
+                    <div><i class="fas fa-link" style="color:#7c3aed;"></i> <strong>Nguồn:</strong> AsuraScans, MangaDex API</div>
+                    <div><i class="fas fa-database" style="color:#059669;"></i> <strong>Dữ liệu:</strong> Tiêu đề, ảnh bìa, mô tả, thể loại, rating, lượt xem</div>
+                    <div><i class="fas fa-clock" style="color:#d97706;"></i> <strong>Thời gian:</strong> ~10-20 giây</div>
+                </div>
+
+                <!-- Crawl Button -->
+                <div style="margin-bottom:24px;">
+                    <button id="crawlBtn" onclick="startCrawl('asura')"
+                        style="background: linear-gradient(135deg, #7c3aed, #4f46e5); color:white; border:none; padding:12px 28px; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:10px; transition:opacity .2s;">
+                        <i class="fas fa-play" id="crawlBtnIcon"></i>
+                        <span id="crawlBtnText">Bắt đầu Crawl</span>
+                    </button>
+                    <button id="mangaDexCrawlBtn" onclick="startCrawl('mangadex')"
+                        style="background:linear-gradient(135deg,#ff6740,#e34b28); color:white; border:none; padding:12px 28px; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:10px; margin-left:10px; transition:opacity .2s;">
+                        <i class="fas fa-play" id="mangaDexCrawlBtnIcon"></i>
+                        <span id="mangaDexCrawlBtnText">Lấy 50 truyện tiếp theo</span>
+                    </button>
+                </div>
+
+                <!-- Progress bar -->
+                <div id="crawlProgress" style="display:none; margin-bottom:20px;">
+                    <p style="color:#7c3aed; font-weight:500; margin-bottom:8px;">
+                        <i class="fas fa-spinner fa-spin mr-2"></i> <span id="crawlProgressText">Đang lấy dữ liệu...</span>
+                    </p>
+                    <div style="background:#e5e7eb; border-radius:99px; height:8px; overflow:hidden;">
+                        <div style="background:linear-gradient(90deg,#7c3aed,#4f46e5); height:100%; width:100%; animation:crawlSlide 1.5s ease-in-out infinite;"></div>
+                    </div>
+                    <style>
+                        @keyframes crawlSlide {
+                            0%   { transform: translateX(-100%); }
+                            100% { transform: translateX(100%); }
+                        }
+                    </style>
+                </div>
+
+                <!-- Result panel -->
+                <div id="crawlResult" style="display:none;">
+                    <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">
+                        <i class="fas fa-check-circle" style="color:#059669;"></i> Kết quả
+                    </h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:16px;">
+                        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:14px; text-align:center;">
+                            <div style="font-size:2rem; font-weight:800; color:#059669;" id="resImported">0</div>
+                            <div style="color:#047857; font-size:.85rem; font-weight:500;">Truyện mới</div>
+                        </div>
+                        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:14px; text-align:center;">
+                            <div style="font-size:2rem; font-weight:800; color:#2563eb;" id="resUpdated">0</div>
+                            <div style="color:#1d4ed8; font-size:.85rem; font-weight:500;">Đã cập nhật</div>
+                        </div>
+                        <div style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:14px; text-align:center;">
+                            <div style="font-size:2rem; font-weight:800; color:#6b7280;" id="resSkipped">0</div>
+                            <div style="color:#4b5563; font-size:.85rem; font-weight:500;">Bỏ qua</div>
+                        </div>
+                    </div>
+                    <div id="resMessage" style="background:#f0fdf4; border:1px solid #86efac; border-radius:6px; padding:10px 14px; color:#166534; font-weight:500;"></div>
+                    <!-- Error list if any -->
+                    <div id="resErrors" style="display:none; margin-top:12px; background:#fef2f2; border:1px solid #fca5a5; border-radius:6px; padding:10px 14px; color:#dc2626;"></div>
+                </div>
+
+                <!-- Error panel -->
+                <div id="crawlError" style="display:none; background:#fef2f2; border:1px solid #fca5a5; border-radius:6px; padding:12px 16px; color:#dc2626;">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span id="crawlErrorMsg"></span>
+                </div>
+            </div>
+        </div>
+        <!-- ════════════════════════════════════════════════════ -->
+
     </main>
 </div>
 
@@ -1228,6 +1244,69 @@ http://example.com/ch100-2.jpg</textarea>
         for (let row of rows) {
             const title = row.cells[1].textContent.toLowerCase();
             row.style.display = title.includes(query) ? '' : 'none';
+        }
+    }
+
+    // ── Multi-source metadata crawler ───────────────────
+    async function startCrawl(source = 'asura') {
+        const isMangaDex = source === 'mangadex';
+        const btn = document.getElementById(isMangaDex ? 'mangaDexCrawlBtn' : 'crawlBtn');
+        const btnIcon = document.getElementById(isMangaDex ? 'mangaDexCrawlBtnIcon' : 'crawlBtnIcon');
+        const btnText = document.getElementById(isMangaDex ? 'mangaDexCrawlBtnText' : 'crawlBtnText');
+        const endpoint = isMangaDex ? '/api/asura/admin/crawl/mangadex' : '/api/asura/admin/crawl/comics';
+
+        // Reset UI
+        document.getElementById('crawlResult').style.display = 'none';
+        document.getElementById('crawlError').style.display = 'none';
+        document.getElementById('resErrors').style.display = 'none';
+
+        // Loading state
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btnIcon.className = 'fas fa-spinner fa-spin';
+        btnText.textContent = 'Đang crawl...';
+        document.getElementById('crawlProgressText').textContent = isMangaDex
+            ? 'Đang lấy metadata từ MangaDex API...'
+            : 'Đang lấy metadata từ AsuraScans...';
+        document.getElementById('crawlProgress').style.display = 'block';
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.message || 'Lỗi server');
+
+            // Show results
+            document.getElementById('crawlProgress').style.display = 'none';
+            document.getElementById('crawlResult').style.display = 'block';
+            document.getElementById('resImported').textContent = data.imported ?? 0;
+            document.getElementById('resUpdated').textContent = data.updated ?? 0;
+            document.getElementById('resSkipped').textContent = data.skipped ?? 0;
+            document.getElementById('resMessage').textContent = data.message ?? '';
+
+            if (data.errors && data.errors.length > 0) {
+                const errDiv = document.getElementById('resErrors');
+                errDiv.style.display = 'block';
+                errDiv.innerHTML = '<strong>Chi tiết lỗi:</strong><ul style="margin-top:6px; padding-left:18px;">'
+                    + data.errors.map(e => `<li>${e}</li>`).join('')
+                    + '</ul>';
+            }
+
+            addNotification('Crawl thành công! ' + data.message, 'success');
+        } catch (err) {
+            document.getElementById('crawlProgress').style.display = 'none';
+            document.getElementById('crawlError').style.display = 'block';
+            document.getElementById('crawlErrorMsg').textContent = err.message;
+            addNotification('Crawl thất bại: ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btnIcon.className = 'fas fa-play';
+            btnText.textContent = isMangaDex ? 'Lấy 50 truyện tiếp theo' : 'Crawl lại AsuraScans';
         }
     }
 </script>
@@ -1253,7 +1332,11 @@ http://example.com/ch100-2.jpg</textarea>
 
     // Tải lại tab đang hoạt động khi load trang (sau phân trang)
     window.addEventListener('DOMContentLoaded', () => {
-        const savedTab = localStorage.getItem('activeTab') || 'dashboard';
+        let defaultTab = 'dashboard';
+        if (window.location.pathname.includes('/crawler') || window.location.hash.includes('crawler')) {
+            defaultTab = 'crawler';
+        }
+        const savedTab = localStorage.getItem('activeTab') || defaultTab;
         switchTab(savedTab);
     });
 </script>

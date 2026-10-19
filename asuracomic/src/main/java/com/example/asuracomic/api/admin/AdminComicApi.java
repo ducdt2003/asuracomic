@@ -1,12 +1,11 @@
 package com.example.asuracomic.api.admin;
 
 
-import com.example.asuracomic.service.DashboardService;
+import com.example.asuracomic.service.web.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/api/comics")

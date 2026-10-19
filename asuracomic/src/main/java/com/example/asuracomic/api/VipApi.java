@@ -4,7 +4,7 @@ import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.mapper.UserMapper;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.VipService;
+import com.example.asuracomic.service.web.VipService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vip")

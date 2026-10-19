@@ -5,7 +5,7 @@ import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.repository.ChapterRepository;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.CoinService;
+import com.example.asuracomic.service.web.CoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

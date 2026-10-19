@@ -53,7 +53,7 @@ import com.example.asuracomic.entity.User;
 import com.example.asuracomic.exception.BadRequestException;
 import com.example.asuracomic.repository.ChapterRepository;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.CoinService;
+import com.example.asuracomic.service.web.CoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -143,7 +143,7 @@ import com.example.asuracomic.exception.BadRequestException;
 import com.example.asuracomic.repository.ChapterRepository;
 import com.example.asuracomic.repository.UnlockedChapterRepository;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.CoinService;
+import com.example.asuracomic.service.web.CoinService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -239,9 +239,8 @@ import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.*;
 import com.example.asuracomic.exception.BadRequestException;
 import com.example.asuracomic.mapper.UserMapper;
-import com.example.asuracomic.model.enums.TransactionType;
 import com.example.asuracomic.repository.*;
-import com.example.asuracomic.service.*;
+import com.example.asuracomic.service.web.*;
 import com.paypal.orders.LinkDescription;
 import com.paypal.orders.Order;
 import jakarta.servlet.http.HttpSession;
@@ -258,7 +257,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/asura")
@@ -471,7 +469,7 @@ public class CoinController {
 
         return "web/web-coin/shop"; // Đường dẫn file HTML của bạn
     }*/
-    // Xử lý nạp coin tiên
+    // Xử lý nạp coin (Chuyển sang cổng PayPal)
     @PostMapping("/topup")
     public String topUp(@RequestParam Long packageId,
                         HttpSession session,
@@ -481,15 +479,7 @@ public class CoinController {
             return "redirect:/asura/login";
         }
 
-        try {
-            payCoinService.topUpCoin(packageId, session);
-            ra.addFlashAttribute("successMessage", "Nạp coin thành công 🎉");
-        } catch (Exception e) {
-            ra.addFlashAttribute("errorMessage", e.getMessage());
-        }
-
-        return "redirect:/asura/coin"; // ❗ KHÔNG phải /purchase
+        // Chuyển hướng sang thanh toán PayPal
+        return "forward:/asura/paypal/pay";
     }
-
-
 }

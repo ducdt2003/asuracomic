@@ -1,8 +1,5 @@
 package com.example.asuracomic.api.admin.admimcomics;
 
-import com.cloudinary.api.ApiResponse;
-import com.cloudinary.provisioning.Account;
-import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.dto.admin.*;
 import com.example.asuracomic.entity.Chapter;
 import com.example.asuracomic.entity.ChapterImage;
@@ -13,10 +10,9 @@ import com.example.asuracomic.repository.ArtistRepository;
 import com.example.asuracomic.repository.AuthorRepository;
 import com.example.asuracomic.repository.ComicRepository;
 import com.example.asuracomic.repository.GenreRepository;
-import com.example.asuracomic.service.DashboardService;
+import com.example.asuracomic.service.web.DashboardService;
 import com.example.asuracomic.service.admin.admincomic.AdminChapterService;
 import com.example.asuracomic.service.admin.admincomic.AdminComicService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -155,7 +150,7 @@ public class AdminComicsApi {
     }
 
     // Xóa truyện
-    @DeleteMapping("/content/delete/{comicId}") // Dùng DELETE method cho đúng chuẩn REST
+    @DeleteMapping("/content/delete/{comicId}")
     public ResponseEntity<Map<String, String>> deleteComic(@PathVariable Long comicId) {
         adminComicService.deleteComic(comicId);
         return ResponseEntity.ok(Map.of("message", "Đã xóa truyện thành công!"));
@@ -201,7 +196,7 @@ public class AdminComicsApi {
     @PutMapping("/content/chapter/edit/{id}")
     public ResponseEntity<Map<String, String>> updateChapter(
             @PathVariable Long id,
-            @RequestBody ChapterEditFormDTO form) {
+            @ModelAttribute ChapterEditFormDTO form) {
 
         adminChapterService.updateChapter(id, form);
         return ResponseEntity.ok(Map.of("message", "Cập nhật chương thành công!"));

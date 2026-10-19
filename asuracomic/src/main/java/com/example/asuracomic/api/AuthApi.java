@@ -1,7 +1,7 @@
 package com.example.asuracomic.api;
 
 import com.example.asuracomic.model.request.LoginRequest;
-import com.example.asuracomic.service.AuthService;
+import com.example.asuracomic.service.web.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

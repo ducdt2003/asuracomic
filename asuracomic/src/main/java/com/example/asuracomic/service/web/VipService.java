@@ -1,6 +1,5 @@
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
-import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.Transaction;
 import com.example.asuracomic.entity.User;
 import com.example.asuracomic.entity.VipConfig;
@@ -10,7 +9,6 @@ import com.example.asuracomic.model.enums.TransactionType;
 import com.example.asuracomic.repository.TransactionRepository;
 import com.example.asuracomic.repository.UserRepository;
 import com.example.asuracomic.repository.VipConfigRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

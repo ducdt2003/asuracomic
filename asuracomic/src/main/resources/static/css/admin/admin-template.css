@@ -6,7 +6,7 @@
         .sidebar-header { padding: 20px; font-size: 1.5rem; font-weight: bold; border-bottom: 1px solid #374151; display: flex; align-items: center; }
         .sidebar-nav { list-style: none; }
         .sidebar-nav li { border-bottom: 1px solid #374151; }
-        .sidebar-nav a { display: flex; align-items: center; padding: 15px 20px; color: white; text-decoration: none; transition: background 0.3s, padding-left 0.3s; }
+        .sidebar-nav a { display: flex; align-items: center; padding: 15px 20px; color: white; text-decoration: none; cursor: pointer; transition: background 0.3s, padding-left 0.3s; }
         .sidebar-nav a:hover, .sidebar-nav a.active { background-color: #374151; padding-left: 25px; }
         .sidebar-nav a i { margin-right: 10px; }
         .main-content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); transition: margin-left 0.3s; }

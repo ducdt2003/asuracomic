@@ -1127,6 +1127,11 @@
             border-radius: 50%;
         }
 
+        .footer-logo {
+            width: 100%;
+            text-align: center;
+        }
+
         /* CSS: Style cho footer */
         footer {
             background: linear-gradient(to bottom, #4b0082, #2c1e3d);
@@ -1159,3 +1164,21 @@
 
 
 
+/* Discovery-only experience */
+.official-reading-panel {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    margin: 22px 0;
+    padding: 24px;
+    color: #f7f8fb;
+    background: linear-gradient(135deg, #191d27, #131620);
+    border: 1px solid #303647;
+    border-radius: 16px;
+}
+.official-icon { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; border-radius: 13px; background: #8b5cf6; font-size: 20px; }
+.official-kicker { color: #c084fc; font-size: 11px; font-weight: 800; letter-spacing: .12em; }
+.official-reading-panel h2 { margin: 5px 0 9px; font-size: 22px; }
+.official-reading-panel p { color: #a5abba; line-height: 1.65; margin: 0 0 16px; }
+.copy-comic-title { border: 0; border-radius: 10px; padding: 11px 16px; background: #8b5cf6; color: #fff; font-weight: 750; cursor: pointer; }
+.copy-comic-title:hover { background: #9f70fa; }

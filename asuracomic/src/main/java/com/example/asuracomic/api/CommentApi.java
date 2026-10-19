@@ -7,7 +7,7 @@ import com.example.asuracomic.dto.ReportDTO;
 import com.example.asuracomic.entity.Report;
 import com.example.asuracomic.exception.CustomException;
 import com.example.asuracomic.repository.UserRepository;
-import com.example.asuracomic.service.CommentService;
+import com.example.asuracomic.service.web.CommentService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

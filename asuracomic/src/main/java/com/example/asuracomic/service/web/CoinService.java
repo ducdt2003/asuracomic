@@ -198,7 +198,7 @@ public class CoinService {
 }*/
 
 
-package com.example.asuracomic.service;
+package com.example.asuracomic.service.web;
 
 import com.example.asuracomic.dto.UserDTO;
 import com.example.asuracomic.entity.Chapter;

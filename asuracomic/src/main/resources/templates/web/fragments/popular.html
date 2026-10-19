@@ -14,11 +14,11 @@
     <section class="popular-section">
         <div class="container">
             <!-- Title -->
-            <h2>Popular</h2>
+            <h2 th:text="#{ranking.title}">Bảng xếp hạng</h2>
             <!-- Navigation Tabs -->
             <div class="tabs">
-                <span class="tab" data-tab="weekly">Weekly</span>
-                <span class="tab active" data-tab="monthly">Monthly</span>
+                <span class="tab" data-tab="weekly" th:text="#{ranking.week}">Tuần này</span>
+                <span class="tab active" data-tab="monthly" th:text="#{ranking.month}">Tháng này</span>
             </div>
 
             <!-- Weekly Comic List -->
@@ -27,12 +27,12 @@
                     <span class="comic-rank" th:text="${iterStat.count}"></span>
                     <!-- Bọc ảnh trong thẻ <a> để khi nhấp vào ảnh sẽ chuyển hướng -->
                     <a th:href="@{'/asura/comic/' + ${comic.slug}}">
-                        <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                        <img th:src="${comic.coverImage}" onerror="this.onerror=null;this.src='/images/default-cover.svg'" class="comic-image" th:alt="${comic.title}">
                     </a>
                     <div class="comic-info">
                         <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="comic-title" th:title="${comic.title}" th:text="${comic.title}"></a>                        <div class="comic-meta">
-                        <span class="genre-label">Genres:</span>
-                        <span th:text="${comic.genres != null} ? ${comic.genres} : 'Unknown'"></span>
+                        <span class="genre-label" th:text="#{ranking.genres}">Thể loại:</span>
+                        <span th:text="${comic.genres != null} ? ${comic.genres} : #{ranking.unknown}"></span>
                     </div>
                         <div class="comic-rating">
                 <span class="stars">
@@ -55,12 +55,12 @@
                 <div th:each="comic, iterStat : ${top10Monthly}" class="comic-item" th:attr="data-id=${comic.id}">
                     <span class="comic-rank" th:text="${iterStat.count}"></span>
                     <a th:href="@{'/asura/comic/' + ${comic.slug}}">
-                        <img th:src="${comic.coverImage}" class="comic-image" th:alt="${comic.title}">
+                        <img th:src="${comic.coverImage}" onerror="this.onerror=null;this.src='/images/default-cover.svg'" class="comic-image" th:alt="${comic.title}">
                     </a>
                     <div class="comic-info">
                         <a th:href="@{'/asura/comic/' + ${comic.slug}}" class="comic-title" th:title="${comic.title}" th:text="${comic.title}"></a>                        <div class="comic-meta">
-                        <span class="genre-label">Genres:</span>
-                        <span th:text="${comic.genres != null} ? ${comic.genres} : 'Unknown'"></span>
+                        <span class="genre-label" th:text="#{ranking.genres}">Thể loại:</span>
+                        <span th:text="${comic.genres != null} ? ${comic.genres} : #{ranking.unknown}"></span>
                     </div>
                         <div class="comic-rating">
                             <span class="stars">
