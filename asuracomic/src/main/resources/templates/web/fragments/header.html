@@ -22,8 +22,13 @@
                 </a>
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura'}" th:text="#{nav.home}">Trang chủ</a></li>
+                    <li class="nav-item" th:if="${session.currentUser != null}">
+                        <a class="nav-link" th:href="@{/asura/bookmarks}" th:text="#{nav.following}">Theo dõi</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura/series'}" th:text="#{nav.discover}">Khám phá</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{'/asura#rankings'}" th:text="#{nav.rankings}">Xếp hạng</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/coin}" th:text="#{nav.shop}">Cửa hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/asura/membership}" th:text="#{nav.membership}">Thành viên</a></li>
                 </ul>
             </div>
             <div class="navbar-right">
@@ -49,8 +54,24 @@
                                     <i class="fas fa-user"></i> <span th:text="${session.currentUser.username}"></span>
                                 </div>
                             </li>
+                            <li>
+                                <div class="dropdown-item disabled">
+                                    <i class="fas fa-coins"></i>
+                                    <span th:text="${session.currentUser.coinBalance != null ? session.currentUser.coinBalance + ' coins' : '0 coins'}">0 coins</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item disabled">
+                                    <i class="fas fa-crown"></i>
+                                    <span th:text="${session.currentUser.vipStatus ? 'VIP' : 'Normal'}">Normal</span>
+                                </div>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/asura/profile}">Profile</a></li>
+                            <li th:if="${session.currentUser.role.name() == 'USER'}">
+                                <a class="dropdown-item" th:href="@{/asura/bookmarks}" th:text="#{nav.following}">Theo dõi</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/asura/transaction-history}" th:text="#{nav.history}">Lịch sử giao dịch</a></li>
                             <li th:if="${session.currentUser.role.name() == 'ADMIN'}">
                                 <a class="dropdown-item" th:href="@{/asura/admin/comic}">Admin Dashboard</a>
                             </li>

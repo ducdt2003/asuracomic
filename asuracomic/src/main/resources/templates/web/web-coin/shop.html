@@ -2,86 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/web/web-main/home.css">
-    <title>Nạp Coin - Asura</title>
+    <title>Nạp Coin | AsuraRank</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .coin-package {
-            transition: transform 0.3s;
-            border: 2px solid #f8f9fa;
-        }
-        .coin-package:hover {
-            transform: translateY(-5px);
-            border-color: #ffc107;
-        }
-        .coin-image img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-        }
-        .purchase-btn {
-            background-color: #0070ba; /* Màu đặc trưng của PayPal */
-            color: white;
-            font-weight: bold;
-            border: none;
-        }
-        .purchase-btn:hover {
-            background-color: #005ea6;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/web/web-coin/shop.css">
 </head>
-<body class="bg-light">
+<body class="shop-page">
 <th:block th:replace="~{web/fragments/header::header}"></th:block>
 
-<div class="container py-5">
+<main class="shop-main">
+<div class="shop-container">
 
-    <div class="text-center mb-5">
-        <h2 class="fw-bold">NẠP COIN HỆ THỐNG</h2>
-        <p class="text-muted">Sử dụng PayPal để thanh toán an toàn và nhanh chóng</p>
+    <section class="shop-hero">
+        <span class="shop-kicker"><i class="fas fa-wallet"></i> ASURARANK WALLET</span>
+        <h1>Nạp coin tài khoản</h1>
+        <p>Chọn gói coin phù hợp và thanh toán an toàn qua PayPal.</p>
 
-        <a th:href="@{/asura/profile/history}" class="btn btn-light shadow-sm border mt-2">
-            <i class="fas fa-list-ul me-2 text-primary"></i> Xem lịch sử giao dịch của bạn
+        <a th:href="@{/asura/transaction-history}" class="history-link">
+            <i class="fas fa-clock-rotate-left"></i> Xem lịch sử giao dịch
         </a>
-    </div>
+    </section>
 
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <div th:if="${successMessage}" class="alert shop-alert alert-success alert-dismissible fade show" role="alert">
         <i class="fas fa-check-circle me-2"></i> <span th:text="${successMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div th:if="${errorMessage}" class="alert shop-alert alert-danger alert-dismissible fade show" role="alert">
         <i class="fas fa-exclamation-triangle me-2"></i> <span th:text="${errorMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-  <!--  <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-body d-flex justify-content-between align-items-center">
+    <section class="package-section">
+        <div class="package-heading">
             <div>
-                <span class="text-muted">Tài khoản:</span>
-                <strong th:text="${currentUser?.userName}">Khách</strong>
+                <span class="shop-kicker">GÓI COIN</span>
+                <h2>Chọn số coin bạn cần</h2>
             </div>
-            <div>
-                <span class="text-muted">Số dư:</span>
-                <span th:text="${currentUser?.coinBalance ?: 0}">0</span>
-            </div>
+            <div class="secure-payment"><i class="fas fa-shield-halved"></i> Thanh toán bảo mật</div>
         </div>
-    </div>-->
 
-    <div class="row g-4">
-        <div class="col-md-4 col-sm-6" th:each="pkg : ${coinPackages}">
-            <div class="card h-100 text-center coin-package shadow-sm">
-                <div class="card-body p-4">
-                    <div class="coin-image mb-3">
-                        <img src="https://storage.vexmanga.com/public/upload/2025/01/03/shop_img_gold_0-6d176be16477dd4c.webp"
-                             alt="Coin Pack">
+        <div class="coin-grid">
+            <article class="coin-package" th:each="pkg, stat : ${coinPackages}" th:classappend="${stat.index == 1} ? ' featured'">
+                <span class="popular-badge" th:if="${stat.index == 1}">PHỔ BIẾN</span>
+                <div class="coin-card-body">
+                    <div class="coin-image" aria-hidden="true">
+                        <i class="fas fa-coins"></i>
                     </div>
 
-                    <h3 class="fw-bold text-primary mb-1" th:text="${pkg.coin} + ' Coins'">100 Coins</h3>
-                    <p class="text-muted small">Nhận ngay coin sau khi thanh toán</p>
+                    <h3 th:text="${pkg.coin} + ' Coins'">100 Coins</h3>
+                    <p>Coin được cộng vào tài khoản ngay sau khi thanh toán.</p>
 
-                    <div class="h4 fw-bold text-dark mb-4"
+                    <div class="coin-price"
                          th:text="${#numbers.formatDecimal(pkg.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
                         10,000 VNĐ
                     </div>
@@ -89,20 +63,24 @@
                     <form th:action="@{/asura/paypal/pay}" method="post">
                         <input type="hidden" name="packageId" th:value="${pkg.id}">
 
-                        <button type="submit" class="btn purchase-btn w-100 py-2 shadow-sm"
+                        <button type="submit" class="purchase-btn"
                                 th:onclick="return confirm('Bạn sẽ được chuyển hướng sang cổng PayPal để thanh toán gói này?')">
-                            <i class="fab fa-paypal me-2"></i>Thanh toán ngay
+                            <i class="fab fa-paypal"></i> Thanh toán ngay
                         </button>
                     </form>
                 </div>
+            </article>
+
+            <div class="empty-packages" th:if="${#lists.isEmpty(coinPackages)}">
+                <i class="fas fa-box-open"></i>
+                <p>Hiện tại không có gói nạp nào khả dụng.</p>
             </div>
         </div>
-
-        <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(coinPackages)}">
-            <p class="text-muted italic">Hiện tại không có gói nạp nào khả dụng.</p>
-        </div>
-    </div>
+    </section>
 </div>
+</main>
+
+<th:block th:replace="~{web/fragments/footer::footer}"></th:block>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

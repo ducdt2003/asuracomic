@@ -47,12 +47,6 @@ public class WebController {
     public String homeLogin(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int size,
                             Model model) {
-        // Khách lần đầu vào website được đưa tới trang đăng ký.
-        // Người đã đăng nhập vẫn xem trang chủ như bình thường.
-        if (session.getAttribute("currentUser") == null) {
-            return "redirect:/asura/register";
-        }
-
         // top comics rating lưu vào biến hco
         List<ComicCarouselDTO> hotComics = comicService.getHotComicsForCarousel();
         model.addAttribute("hotComics", hotComics);
@@ -101,11 +95,6 @@ public class WebController {
     public String detail(@PathVariable String slug,
                          @RequestParam(required = false) String redirectToAuthor,
                          Model model, HttpSession session) {
-        // Chưa đăng nhập thì chuyển về trang đăng nhập
-        if (session.getAttribute("currentUser") == null) {
-            return "redirect:/asura/login";
-        }
-
         // Lấy chi tiết truyện theo slug
         Comic comicDetail = comicService.getComicDetailsBySlug(slug);
 
@@ -205,11 +194,6 @@ public class WebController {
                           @RequestParam(defaultValue = "0") int commentPage,
                           @RequestParam(defaultValue = "10") int commentSize,
                           Model model, HttpSession session) {
-
-        // Chưa đăng nhập thì chuyển về trang đăng nhập
-        if (session.getAttribute("currentUser") == null) {
-            return "redirect:/asura/login";
-        }
 
         // Lấy chi tiết truyện qua comicSlug
         Comic comic = comicService.getComicDetailsBySlug(comicSlug);
